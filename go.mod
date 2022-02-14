@@ -1,4 +1,4 @@
-module github/jumpserver/wisp
+module github.com/jumpserver/wisp
 
 go 1.17
 
