@@ -1,0 +1,117 @@
+syntax = "proto3";
+package message;
+
+option go_package = "/protobuf";
+
+message User {
+  string id = 1;
+  string name = 2;
+  string username = 3;
+  string role = 4;
+  bool is_valid = 5;
+  bool is_active = 6;
+}
+
+message SystemUserAuthInfo {
+  string id = 1;
+  string name = 2;
+  string protocol = 3;
+  string username = 4;
+  string password = 5;
+  string private_key = 6;
+  string token = 7;
+  string ad_domain = 8;
+  string org_name = 9;
+  string org_id = 10;
+}
+
+message Application {
+  message Attrs {
+    string host = 1;
+    int32 Port = 2;
+    string Database = 3;
+  }
+
+  string id = 1;
+  string name = 2;
+  string category = 3;
+  string type_name = 4;
+  string domain = 5;
+  string org_id = 6;
+  string org_name = 7;
+  Attrs attrs = 8;
+}
+
+message Gateway {
+  string id = 1;
+  string name = 2;
+  string ip = 3;
+  int32 port = 4;
+  string protocol = 5;
+  string username = 6;
+  string password = 7;
+  string private_key = 8;
+}
+
+message Permission {
+  bool enable_connect = 1;
+  bool enable_download = 2;
+  bool enable_upload = 3;
+  bool enable_copy = 4;
+  bool enable_paste = 5;
+}
+
+message FilterRule {
+  enum Action {
+    Deny = 0;
+    Allow = 1;
+    Confirm = 2;
+    Unknown = 3;
+  }
+  string id = 1;
+  int32 priority = 2;
+  string type = 3;
+  string content = 4;
+  Action action = 5;
+  string org_id = 6;
+  string pattern = 7;
+  bool ignore_case = 8;
+}
+
+message ExpireInfo { int64 expire_at = 1; }
+
+message Session {
+  string id = 1;
+  string user = 2;
+  string asset = 3;
+  string system_user = 4;
+  string login_from = 5;
+  string remote_addr = 6;
+  string protocol = 7;
+  string date_start = 8;
+  string org_id = 9;
+  string user_id = 10;
+  string asset_id = 11;
+  string system_user_id = 12;
+}
+
+message TerminalTask {
+  string id = 1;
+  string name = 2;
+  string args = 3;
+  TaskMeta meta = 4;
+}
+
+message TaskMeta { string terminated_by = 1; }
+
+message DBTokenAuthInfo {
+  string key_id = 1;
+  string secrete_id = 2;
+  Application application = 3;
+  User user = 4;
+  SystemUserAuthInfo system_user = 5;
+  Permission permission = 6;
+  ExpireInfo expire_info = 7;
+  repeated FilterRule filter_rules = 8;
+  repeated Gateway gateways = 9;
+}

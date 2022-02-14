@@ -1,0 +1,67 @@
+syntax = "proto3";
+import "common.proto";
+
+package message;
+
+option go_package = "/protobuf";
+
+service Service {
+  rpc GetDBTokenAuthInfo(DBTokenRequest) returns (DBTokenResponse) {};
+  rpc CreateSession(SessionCreateRequest) returns (SessionCreateResponse) {};
+  rpc FinishSession(SessionFinishRequest) returns (SessionFinishResp) {};
+  rpc UploadActiveSessions(ActiveSessRequest) returns (ActiveSessResponse) {};
+  rpc UploadReplayFile(ReplayRequest) returns (ReplayResponse) {};
+  rpc UploadCommand(CommandRequest) returns (CommandResponse) {};
+}
+
+message Status {
+  bool ok = 1;
+  string err = 2;
+}
+
+message DBTokenRequest { string token = 1; }
+
+message DBTokenResponse {
+  Status status = 1;
+  DBTokenAuthInfo data = 2;
+}
+
+message SessionCreateRequest { Session data = 1; }
+
+message SessionCreateResponse {
+  Status status = 1;
+  Session data = 2;
+}
+
+message SessionFinishRequest { string id = 1; }
+
+message SessionFinishResp { Status status = 1; }
+
+message ActiveSessRequest { repeated string sids = 1; }
+
+message ActiveSessResponse {
+  Status status = 1;
+  repeated TerminalTask tasks = 2;
+}
+
+message ReplayRequest {
+  string session_id = 1;
+  string replay_file_path = 2;
+}
+
+message ReplayResponse { Status status = 1; }
+
+message CommandRequest {
+  string sid = 1;
+  string org_id = 2;
+  string input = 3;
+  string output = 4;
+  string user = 5;
+  string asset = 6;
+  string system_user = 7;
+  string timestamp = 8;
+  string risk_level = 9;
+  string date_created = 10;
+};
+
+message CommandResponse { Status status = 1; };
