@@ -2,6 +2,7 @@ package client
 
 import (
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 
 	pb "github.com/jumpserver/wisp/protobuf-go/protobuf"
 )
@@ -15,6 +16,7 @@ func NewClient(opts ...Options) (pb.ServiceClient, error) {
 	}
 	conn, err := grpc.Dial(
 		opt.addr,
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
 	if err != nil {
 		return nil, err
