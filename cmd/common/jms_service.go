@@ -6,10 +6,10 @@ import (
 	"os"
 	"time"
 
-	"github/jumpserver/wisp/pkg/config"
-	"github/jumpserver/wisp/pkg/jms-sdk-go/model"
-	"github/jumpserver/wisp/pkg/jms-sdk-go/service"
-	"github/jumpserver/wisp/pkg/logger"
+	"github.com/jumpserver/wisp/pkg/config"
+	"github.com/jumpserver/wisp/pkg/jms-sdk-go/model"
+	"github.com/jumpserver/wisp/pkg/jms-sdk-go/service"
+	"github.com/jumpserver/wisp/pkg/logger"
 )
 
 func MustJMService(conf config.Config) *service.JMService {

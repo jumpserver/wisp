@@ -2,7 +2,8 @@ package service
 
 import (
 	"fmt"
-	"github/jumpserver/wisp/pkg/jms-sdk-go/model"
+
+	"github.com/jumpserver/wisp/pkg/jms-sdk-go/model"
 )
 
 func (s *JMService) CreateShareRoom(sessionId string, expired int) (res model.SharingSession, err error) {

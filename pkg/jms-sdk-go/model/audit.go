@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github/jumpserver/wisp/pkg/jms-sdk-go/common"
+	"github.com/jumpserver/wisp/pkg/jms-sdk-go/common"
 )
 
 type FTPLog struct {

@@ -1,6 +1,6 @@
 package main
 
-import "github/jumpserver/wisp/cmd"
+import "github.com/jumpserver/wisp/cmd"
 
 func main() {
 	cmd.Execute()

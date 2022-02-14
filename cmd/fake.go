@@ -5,9 +5,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github/jumpserver/wisp/cmd/common"
-	"github/jumpserver/wisp/cmd/impl"
-	"github/jumpserver/wisp/pkg/config"
+	"github.com/jumpserver/wisp/cmd/common"
+	"github.com/jumpserver/wisp/cmd/impl"
+	"github.com/jumpserver/wisp/pkg/config"
 )
 
 var fakeCmd = &cobra.Command{

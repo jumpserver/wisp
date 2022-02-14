@@ -6,8 +6,8 @@ import (
 
 	"google.golang.org/grpc"
 
-	"github/jumpserver/wisp/pkg/logger"
-	pb "github/jumpserver/wisp/protobuf-go/protobuf"
+	"github.com/jumpserver/wisp/pkg/logger"
+	pb "github.com/jumpserver/wisp/protobuf-go/protobuf"
 )
 
 func NewServer(addr string, imp pb.ServiceServer) *Server {

@@ -1,7 +1,7 @@
 package service
 
 import (
-	"github/jumpserver/wisp/pkg/jms-sdk-go/model"
+	"github.com/jumpserver/wisp/pkg/jms-sdk-go/model"
 )
 
 func (s *JMService) GetPermission(userId, assetId, systemUserId string) (perms model.Permission, err error) {

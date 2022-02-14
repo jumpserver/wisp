@@ -3,7 +3,7 @@ package service
 import (
 	"fmt"
 
-	"github/jumpserver/wisp/pkg/jms-sdk-go/model"
+	"github.com/jumpserver/wisp/pkg/jms-sdk-go/model"
 )
 
 func (s *JMService) GetAssetById(assetId string) (asset model.Asset, err error) {

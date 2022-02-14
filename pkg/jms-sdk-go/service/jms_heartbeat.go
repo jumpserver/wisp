@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github/jumpserver/wisp/pkg/jms-sdk-go/common"
-	"github/jumpserver/wisp/pkg/jms-sdk-go/model"
+	"github.com/jumpserver/wisp/pkg/jms-sdk-go/common"
+	"github.com/jumpserver/wisp/pkg/jms-sdk-go/model"
 )
 
 func (s *JMService) TerminalHeartBeat(sIds []string) (res []model.TerminalTask, err error) {

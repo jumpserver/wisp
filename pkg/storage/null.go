@@ -1,7 +1,7 @@
 package recorderstorage
 
 import (
-	"github/jumpserver/wisp/pkg/jms-sdk-go/model"
+	"github.com/jumpserver/wisp/pkg/jms-sdk-go/model"
 )
 
 func NewNullStorage() (storage NullStorage) {

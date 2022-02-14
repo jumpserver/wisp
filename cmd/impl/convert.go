@@ -1,8 +1,8 @@
 package impl
 
 import (
-	"github/jumpserver/wisp/pkg/jms-sdk-go/model"
-	pb "github/jumpserver/wisp/protobuf-go/protobuf"
+	"github.com/jumpserver/wisp/pkg/jms-sdk-go/model"
+	pb "github.com/jumpserver/wisp/protobuf-go/protobuf"
 )
 
 func ConvertToProtobufUser(user *model.User) *pb.User {

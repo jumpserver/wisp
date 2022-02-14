@@ -3,7 +3,7 @@ package model
 import (
 	"strings"
 
-	"github/jumpserver/wisp/pkg/jms-sdk-go/common"
+	"github.com/jumpserver/wisp/pkg/jms-sdk-go/common"
 )
 
 type Session struct {

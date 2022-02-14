@@ -3,7 +3,7 @@ package client
 import (
 	"google.golang.org/grpc"
 
-	pb "github/jumpserver/wisp/protobuf-go/protobuf"
+	pb "github.com/jumpserver/wisp/protobuf-go/protobuf"
 )
 
 func NewClient(opts ...Options) (pb.ServiceClient, error) {

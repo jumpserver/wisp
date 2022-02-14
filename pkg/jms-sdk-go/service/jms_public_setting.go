@@ -1,6 +1,6 @@
 package service
 
-import "github/jumpserver/wisp/pkg/jms-sdk-go/model"
+import "github.com/jumpserver/wisp/pkg/jms-sdk-go/model"
 
 func (s *JMService) GetPublicSetting() (result model.PublicSetting, err error) {
 	var response struct {

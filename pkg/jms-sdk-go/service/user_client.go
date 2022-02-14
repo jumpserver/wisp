@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github/jumpserver/wisp/pkg/jms-sdk-go/httplib"
-	"github/jumpserver/wisp/pkg/jms-sdk-go/model"
+	"github.com/jumpserver/wisp/pkg/jms-sdk-go/httplib"
+	"github.com/jumpserver/wisp/pkg/jms-sdk-go/model"
 )
 
 func NewUserClient(setters ...UserClientOption) *UserClient {

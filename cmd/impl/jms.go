@@ -1,8 +1,8 @@
 package impl
 
 import (
-	"github/jumpserver/wisp/pkg/jms-sdk-go/service"
-	pb "github/jumpserver/wisp/protobuf-go/protobuf"
+	"github.com/jumpserver/wisp/pkg/jms-sdk-go/service"
+	pb "github.com/jumpserver/wisp/protobuf-go/protobuf"
 )
 
 type JmsService struct {

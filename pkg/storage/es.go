@@ -9,7 +9,7 @@ import (
 
 	"github.com/elastic/go-elasticsearch/v7"
 
-	"github/jumpserver/wisp/pkg/jms-sdk-go/model"
+	"github.com/jumpserver/wisp/pkg/jms-sdk-go/model"
 )
 
 type ESCommandStorage struct {

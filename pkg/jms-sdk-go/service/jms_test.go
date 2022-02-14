@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github/jumpserver/wisp/pkg/jms-sdk-go/httplib"
+	"github.com/jumpserver/wisp/pkg/jms-sdk-go/httplib"
 )
 
 func setup() *JMService {

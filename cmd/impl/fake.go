@@ -8,9 +8,9 @@ import (
 
 	"github.com/gofrs/uuid"
 
-	"github/jumpserver/wisp/pkg/jms-sdk-go/model"
-	"github/jumpserver/wisp/pkg/logger"
-	pb "github/jumpserver/wisp/protobuf-go/protobuf"
+	"github.com/jumpserver/wisp/pkg/jms-sdk-go/model"
+	"github.com/jumpserver/wisp/pkg/logger"
+	pb "github.com/jumpserver/wisp/protobuf-go/protobuf"
 )
 
 func NewFakeServer(testFile string) *FakeServer {

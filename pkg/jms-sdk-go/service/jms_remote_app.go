@@ -2,7 +2,8 @@ package service
 
 import (
 	"fmt"
-	"github/jumpserver/wisp/pkg/jms-sdk-go/model"
+
+	"github.com/jumpserver/wisp/pkg/jms-sdk-go/model"
 )
 
 func (s *JMService) GetRemoteApp(remoteAppId string) (remoteApp model.RemoteAPP, err error) {
