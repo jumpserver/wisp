@@ -69,6 +69,7 @@ func getDefaultConfig() Config {
 		CoreHost:          "http://localhost:8080",
 		BootstrapToken:    "",
 		BindHost:          "0.0.0.0",
+		BindPort:          "9090",
 		AccessKeyFilePath: accessKeyFilePath,
 		LogLevel:          "INFO",
 		RootPath:          rootPath,
