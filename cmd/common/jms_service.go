@@ -2,7 +2,6 @@ package common
 
 import (
 	"errors"
-	"fmt"
 	"os"
 	"time"
 
@@ -27,26 +26,26 @@ func MustJMService(conf config.Config) *service.JMService {
 
 func MustLoadValidAccessKey(conf *config.Config) model.AccessKey {
 	var (
+		dstFilePath = conf.AccessKeyFilePath
+	)
+	if key, err := model.LoadAccessKeyFromFile(dstFilePath); err == nil {
+		MustValidKey(conf, &key)
+		return key
+	}
+	return MustRegisterTerminal(conf)
+}
+
+func MustRegisterTerminal(conf *config.Config) (key model.AccessKey) {
+	var (
+		componentName  = conf.ComponentName
 		coreHost       = conf.CoreHost
 		name           = conf.Name
 		bootstrapToken = conf.BootstrapToken
 		dstFilePath    = conf.AccessKeyFilePath
 	)
-	if key, err := model.LoadAccessKeyFromFile(dstFilePath); err == nil {
-		if err = MustValidKey(conf, key); err == nil {
-			return key
-		}
-	}
-	key := MustRegisterTerminalAccount(coreHost, name, bootstrapToken)
-	if err := key.SaveToFile(dstFilePath); err != nil {
-		logger.Error("保存key失败: " + err.Error())
-	}
-	return key
-}
 
-func MustRegisterTerminalAccount(coreHost, name, token string) (key model.AccessKey) {
 	for i := 0; i < 10; i++ {
-		terminal, err := service.RegisterTerminalAccount(coreHost, name, token)
+		terminal, err := service.RegisterTerminalAccount(coreHost, componentName, name, bootstrapToken)
 		if err != nil {
 			logger.Error(err.Error())
 			time.Sleep(5 * time.Second)
@@ -54,29 +53,31 @@ func MustRegisterTerminalAccount(coreHost, name, token string) (key model.Access
 		}
 		key.ID = terminal.ServiceAccount.AccessKey.ID
 		key.Secret = terminal.ServiceAccount.AccessKey.Secret
+		if err2 := key.SaveToFile(dstFilePath); err2 != nil {
+			logger.Error("保存key失败: %s", err)
+		}
 		return key
 	}
-	logger.Error("注册终端失败退出")
-	os.Exit(1)
+	logger.Fatal("注册终端失败退出")
 	return
 }
 
-func MustValidKey(conf *config.Config, key model.AccessKey) error {
+func MustValidKey(conf *config.Config, key *model.AccessKey) {
 	for i := 0; i < 10; i++ {
-		if err := service.ValidAccessKey(conf.CoreHost, key); err != nil {
+		if err := service.ValidAccessKey(conf.CoreHost, *key); err != nil {
 			switch {
 			case errors.Is(err, service.ErrUnauthorized):
-				logger.Error("Access key unauthorized, try to register new access key")
-				return err
+				logger.Error("Access key 已失效, 重新注册")
+				newKey := MustRegisterTerminal(conf)
+				key.ID = newKey.ID
+				key.Secret = newKey.Secret
 			default:
 				logger.Error("校验 access key failed: " + err.Error())
 			}
 			time.Sleep(5 * time.Second)
 			continue
 		}
-		return nil
+		return
 	}
-	logger.Error("校验 access key failed 退出")
-	os.Exit(1)
-	return fmt.Errorf("校验 access key %s 失败: ", conf.AccessKeyFilePath)
+	logger.Fatal("校验 access key failed 退出")
 }

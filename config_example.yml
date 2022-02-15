@@ -1,4 +1,4 @@
-# COMPONENT_NAME: // required
+# COMPONENT_NAME:  # required, this is a component name defined by JumpServer
 # CORE_HOST: http://127.0.0.1:8080
 # BOOTSTRAP_TOKEN: abcd
 # BIND_HOST: 0.0.0.0

@@ -1,13 +1,16 @@
 proto_path=./protos/
 proto_files=./protos/*.proto
 
+protobuf_go_dir=./protobuf-go/protobuf
+protobuf_py_dir=./protobuf-py/protobuf
 
 .PHONY: proto
 proto: proto-go proto-py
 
 .PHONY: proto-go
 proto-go:
-	rm -rf  ./protobuf-go/protobuf/*
+	@mkdir -p ${protobuf_go_dir}
+	rm -rf  ${protobuf_go_dir}/*
 	protoc --proto_path=${proto_path} --go_out=./protobuf-go/  \
 	--go-grpc_out=./protobuf-go/ \
 	--go_opt=paths=import \
@@ -15,9 +18,10 @@ proto-go:
 
 .PHONY: proto-py
 proto-py:
-	rm -rf ./protobuf-py/protobuf/*
-	python -m grpc_tools.protoc --proto_path=${proto_path} --python_out=./protobuf-py/protobuf/ \
-	--grpc_python_out=./protobuf-py/protobuf/ \
+	@mkdir -p ${protobuf_py_dir}
+	rm -rf ${protobuf_py_dir}/*
+	python -m grpc_tools.protoc --proto_path=${proto_path} --python_out=${protobuf_py_dir} \
+	--grpc_python_out=${protobuf_py_dir} \
 	${proto_files}
 
 NAME=wisp

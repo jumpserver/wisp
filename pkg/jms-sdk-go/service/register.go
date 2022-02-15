@@ -10,17 +10,15 @@ import (
 	"github.com/jumpserver/wisp/pkg/jms-sdk-go/model"
 )
 
-const ComponentName = "koko"
-
-func RegisterTerminalAccount(coreHost, name, token string) (res model.Terminal, err error) {
+func RegisterTerminalAccount(coreHost, componentName, name, token string) (res model.Terminal, err error) {
 	client, err := httplib.NewClient(coreHost, time.Second*30)
 	if err != nil {
 		return model.Terminal{}, err
 	}
 	client.SetHeader("Authorization", fmt.Sprintf("BootstrapToken %s", token))
 	data := map[string]string{"name": name,
-		"comment": ComponentName,
-		"type":    ComponentName}
+		"comment": componentName,
+		"type":    componentName}
 	_, err = client.Post(TerminalRegisterURL, data, &res)
 	return
 }
