@@ -18,12 +18,35 @@ type Config struct {
 	BindHost       string `mapstructure:"BIND_HOST"`
 	BindPort       string `mapstructure:"BIND_PORT"`
 	LogLevel       string `mapstructure:"LOG_LEVEL"`
+	RootPath          string `mapstructure:"WORKDIR"`
 
-	RootPath          string
 	DataFolderPath    string
 	LogDirPath        string
 	KeyFolderPath     string
 	AccessKeyFilePath string
+}
+
+func (c *Config) ensureFolder() {
+	if c.RootPath == "" {
+		c.RootPath = getPwdDirPath()
+	}
+
+	dataFolderPath := filepath.Join(c.RootPath, "data")
+	LogDirPath := filepath.Join(dataFolderPath, "logs")
+	keyFolderPath := filepath.Join(dataFolderPath, "keys")
+	accessKeyFilePath := filepath.Join(keyFolderPath, ".access_key")
+
+	folders := []string{dataFolderPath, keyFolderPath, LogDirPath}
+	for i := range folders {
+		if err := EnsureDirExist(folders[i]); err != nil {
+			fmt.Printf("Create folder failed: %s\n", err)
+			os.Exit(1)
+		}
+	}
+	c.DataFolderPath = dataFolderPath
+	c.LogDirPath = LogDirPath
+	c.KeyFolderPath = keyFolderPath
+	c.AccessKeyFilePath = accessKeyFilePath
 }
 
 var (
@@ -36,6 +59,7 @@ func Get() Config {
 		if GlobalConfig == nil {
 			conf := getDefaultConfig()
 			GlobalConfig = &conf
+			GlobalConfig.ensureFolder()
 		}
 	})
 	return *GlobalConfig
@@ -51,31 +75,13 @@ func Setup(configPath string) {
 
 func getDefaultConfig() Config {
 	defaultName := getDefaultName()
-	rootPath := getPwdDirPath()
-	dataFolderPath := filepath.Join(rootPath, "data")
-	LogDirPath := filepath.Join(dataFolderPath, "logs")
-	keyFolderPath := filepath.Join(dataFolderPath, "keys")
-	accessKeyFilePath := filepath.Join(keyFolderPath, ".access_key")
-
-	folders := []string{dataFolderPath, keyFolderPath, LogDirPath}
-	for i := range folders {
-		if err := EnsureDirExist(folders[i]); err != nil {
-			fmt.Printf("Create folder failed: %s\n", err)
-			os.Exit(1)
-		}
-	}
 	return Config{
-		Name:              defaultName,
-		CoreHost:          "http://localhost:8080",
-		BootstrapToken:    "",
-		BindHost:          "0.0.0.0",
-		BindPort:          "9090",
-		AccessKeyFilePath: accessKeyFilePath,
-		LogLevel:          "INFO",
-		RootPath:          rootPath,
-		DataFolderPath:    dataFolderPath,
-		LogDirPath:        LogDirPath,
-		KeyFolderPath:     keyFolderPath,
+		Name:           defaultName,
+		CoreHost:       "http://localhost:8080",
+		BootstrapToken: "",
+		BindHost:       "0.0.0.0",
+		BindPort:       "9090",
+		LogLevel:       "INFO",
 	}
 
 }

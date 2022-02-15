@@ -11,8 +11,8 @@ import (
 	"github.com/jumpserver/wisp/pkg/logger"
 )
 
-func MustJMService(conf config.Config) *service.JMService {
-	key := MustLoadValidAccessKey(&conf)
+func MustJMService(conf *config.Config) *service.JMService {
+	key := MustLoadValidAccessKey(conf)
 	jmsService, err := service.NewAuthJMService(service.JMSCoreHost(
 		conf.CoreHost), service.JMSTimeOut(30*time.Second),
 		service.JMSAccessKey(key.ID, key.Secret),
