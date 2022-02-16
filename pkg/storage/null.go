@@ -1,4 +1,4 @@
-package recorderstorage
+package storage
 
 import (
 	"github.com/jumpserver/wisp/pkg/jms-sdk-go/model"

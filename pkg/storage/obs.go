@@ -1,4 +1,4 @@
-package recorderstorage
+package storage
 
 import (
 	"github.com/huaweicloud/huaweicloud-sdk-go-obs/obs"

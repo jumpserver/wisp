@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -18,33 +19,31 @@ type Config struct {
 	BindHost       string `mapstructure:"BIND_HOST"`
 	BindPort       string `mapstructure:"BIND_PORT"`
 	LogLevel       string `mapstructure:"LOG_LEVEL"`
-	RootPath          string `mapstructure:"WORKDIR"`
+	RootPath       string `mapstructure:"WORK_DIR"`
 
 	DataFolderPath    string
-	LogDirPath        string
+	LogFolderPath     string
 	KeyFolderPath     string
 	AccessKeyFilePath string
 }
 
-func (c *Config) ensureFolder() {
+func (c *Config) ensureFolders() {
 	if c.RootPath == "" {
 		c.RootPath = getPwdDirPath()
 	}
-
 	dataFolderPath := filepath.Join(c.RootPath, "data")
-	LogDirPath := filepath.Join(dataFolderPath, "logs")
+	LogFolderPath := filepath.Join(dataFolderPath, "logs")
 	keyFolderPath := filepath.Join(dataFolderPath, "keys")
 	accessKeyFilePath := filepath.Join(keyFolderPath, ".access_key")
 
-	folders := []string{dataFolderPath, keyFolderPath, LogDirPath}
+	folders := []string{dataFolderPath, LogFolderPath, keyFolderPath}
 	for i := range folders {
 		if err := EnsureDirExist(folders[i]); err != nil {
-			fmt.Printf("Create folder failed: %s\n", err)
-			os.Exit(1)
+			log.Fatalf("Create folder failed: %s\n", err)
 		}
 	}
 	c.DataFolderPath = dataFolderPath
-	c.LogDirPath = LogDirPath
+	c.LogFolderPath = LogFolderPath
 	c.KeyFolderPath = keyFolderPath
 	c.AccessKeyFilePath = accessKeyFilePath
 }
@@ -58,8 +57,8 @@ func Get() Config {
 	once.Do(func() {
 		if GlobalConfig == nil {
 			conf := getDefaultConfig()
+			conf.ensureFolders()
 			GlobalConfig = &conf
-			GlobalConfig.ensureFolder()
 		}
 	})
 	return *GlobalConfig
@@ -69,6 +68,7 @@ func Setup(configPath string) {
 	var conf = getDefaultConfig()
 	loadConfigFromEnv(&conf)
 	loadConfigFromFile(configPath, &conf)
+	conf.ensureFolders()
 	GlobalConfig = &conf
 	fmt.Printf("%+v\n", conf)
 }

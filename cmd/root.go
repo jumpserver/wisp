@@ -25,7 +25,7 @@ func initConfig() {
 
 func initLogger() {
 	conf := config.Get()
-	logFilePath := filepath.Join(conf.LogDirPath, "wisp.log")
+	logFilePath := filepath.Join(conf.LogFolderPath, "wisp.log")
 	logger.Setup(conf.LogLevel, logFilePath)
 }
 

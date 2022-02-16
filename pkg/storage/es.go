@@ -1,4 +1,4 @@
-package recorderstorage
+package storage
 
 import (
 	"bytes"

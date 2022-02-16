@@ -6,9 +6,18 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
+	"github.com/jumpserver/wisp/cmd/common"
+	"github.com/jumpserver/wisp/pkg/config"
 	"github.com/jumpserver/wisp/pkg/jms-sdk-go/service"
 	pb "github.com/jumpserver/wisp/protobuf-go/protobuf"
 )
+
+func NewJMServer(conf *config.Config) *JMServer {
+	apiClient := common.MustJMService(conf)
+	return &JMServer{
+		apiClient: apiClient,
+	}
+}
 
 type JMServer struct {
 	pb.UnimplementedServiceServer
