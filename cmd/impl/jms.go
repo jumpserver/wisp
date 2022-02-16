@@ -22,6 +22,9 @@ func NewJMServer(conf *config.Config) *JMServer {
 type JMServer struct {
 	pb.UnimplementedServiceServer
 	apiClient *service.JMService
+
+	uploader *common.UploaderService
+	beat     *common.BeatService
 }
 
 func (j *JMServer) GetAPIClient() *service.JMService {

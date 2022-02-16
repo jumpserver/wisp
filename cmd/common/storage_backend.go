@@ -23,16 +23,6 @@ type CommandStorage interface {
 }
 
 func NewCommandBackend(apiClient *service.JMService, cfg *model.CommandConfig) CommandStorage {
-
-	/*
-		{
-		'DOC_TYPE': 'command',
-		  'HOSTS': ['http://172.16.10.122:9200'],
-		  'INDEX': 'jumpserver',
-		  'OTHER': {'IGNORE_VERIFY_CERTS': True},
-		  'TYPE': 'es'
-		}
-	*/
 	switch cfg.TypeName {
 	case "es", "elasticsearch":
 		var hosts = cfg.Hosts
