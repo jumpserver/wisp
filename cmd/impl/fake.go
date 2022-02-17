@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"os"
 
 	"github.com/gofrs/uuid"
@@ -38,11 +39,11 @@ func (f *FakeServer) GetDBTokenAuthInfo(ctx context.Context,
 	dbTokenInfo := pb.DBTokenAuthInfo{
 		KeyId:       data.ID,
 		SecreteId:   data.Secrete,
-		Application: ConvertToProtobufApplication(&data.Application),
-		User:        ConvertToProtobufUser(&data.User),
-		SystemUser:  ConvertToProtobufSystemUser(&data.SystemUserAuthInfo),
-		Permission:  ConvertToProtobufPermission(&data.Permission),
-		ExpireInfo:  ConvertToProtobufExpireInfo(&data.ExpireInfo),
+		Application: ConvertToProtobufApplication(data.Application),
+		User:        ConvertToProtobufUser(data.User),
+		SystemUser:  ConvertToProtobufSystemUser(data.SystemUserAuthInfo),
+		Permission:  ConvertToProtobufPermission(data.Permission),
+		ExpireInfo:  ConvertToProtobufExpireInfo(data.ExpireInfo),
 		Gateways:    ConvertToProtobufGateWays(data.Gateways),
 		FilterRules: ConvertToProtobufFilterRules(data.FilterRules),
 	}
@@ -66,14 +67,6 @@ func (f *FakeServer) FinishSession(ctx context.Context,
 	return &pb.SessionFinishResp{Status: &status}, nil
 }
 
-func (f *FakeServer) UploadActiveSessions(ctx context.Context,
-	req *pb.ActiveSessRequest) (*pb.ActiveSessResponse, error) {
-	logger.Infof("Upload Active sessions req: %+v", req)
-	status := pb.Status{Ok: true}
-	return &pb.ActiveSessResponse{
-		Status: &status}, nil
-}
-
 func (f *FakeServer) UploadReplayFile(ctx context.Context,
 	req *pb.ReplayRequest) (*pb.ReplayResponse, error) {
 	logger.Infof("Upload replay file %+v", req)
@@ -88,6 +81,19 @@ func (f *FakeServer) UploadCommand(ctx context.Context,
 	status := pb.Status{Ok: true}
 	return &pb.CommandResponse{
 		Status: &status}, nil
+}
+
+func (f *FakeServer) DispatchStreamingTask(taskSrv pb.Service_DispatchStreamingTaskServer) error {
+	for {
+		req, err := taskSrv.Recv()
+		if err != nil {
+			if err == io.EOF {
+				return nil
+			}
+			return err
+		}
+		logger.Infof("dispatch task %+v", req)
+	}
 }
 
 type testData struct {

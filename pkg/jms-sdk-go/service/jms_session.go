@@ -20,34 +20,34 @@ func (s *JMService) UploadReplay(sid, gZipFile string, version model.ReplayVersi
 	return s.authClient.PostFileWithFields(Url, gZipFile, fields, &res)
 }
 
-func (s *JMService) FinishReply(sid string) error {
+func (s *JMService) FinishReply(sid string) (model.Session, error) {
 	data := map[string]bool{"has_replay": true}
 	return s.sessionPatch(sid, data)
 }
 
-func (s *JMService) CreateSession(sess model.Session) error {
-	_, err := s.authClient.Post(SessionListURL, sess, nil)
-	return err
+func (s *JMService) CreateSession(sess model.Session) (resp model.Session, err error) {
+	_, err = s.authClient.Post(SessionListURL, sess, &resp)
+	return
 }
 
-func (s *JMService) SessionSuccess(sid string) error {
+func (s *JMService) SessionSuccess(sid string) (model.Session, error) {
 	data := map[string]bool{
 		"is_success": true,
 	}
 	return s.sessionPatch(sid, data)
 }
 
-func (s *JMService) SessionFailed(sid string, err error) error {
+func (s *JMService) SessionFailed(sid string, err error) (model.Session, error) {
 	data := map[string]bool{
 		"is_success": false,
 	}
 	return s.sessionPatch(sid, data)
 }
-func (s *JMService) SessionDisconnect(sid string) error {
+func (s *JMService) SessionDisconnect(sid string) (model.Session, error){
 	return s.SessionFinished(sid, common.NewNowUTCTime())
 }
 
-func (s *JMService) SessionFinished(sid string, time common.UTCTime) error {
+func (s *JMService) SessionFinished(sid string, time common.UTCTime) (resp model.Session, err error) {
 	data := map[string]interface{}{
 		"is_finished": true,
 		"date_end":    time,
@@ -55,10 +55,10 @@ func (s *JMService) SessionFinished(sid string, time common.UTCTime) error {
 	return s.sessionPatch(sid, data)
 }
 
-func (s *JMService) sessionPatch(sid string, data interface{}) error {
+func (s *JMService) sessionPatch(sid string, data interface{}) (resp model.Session, err error) {
 	Url := fmt.Sprintf(SessionDetailURL, sid)
-	_, err := s.authClient.Patch(Url, data, nil)
-	return err
+	_, err = s.authClient.Patch(Url, data, &resp)
+	return
 }
 
 func (s *JMService) GetSessionById(sid string) (data model.Session, err error) {

@@ -57,3 +57,11 @@ const (
 	categoryDB    = "db"
 	categoryCloud = "cloud"
 )
+
+
+type ConnectType string
+
+const (
+	ConnectApplication ConnectType = "application"
+	ConnectAsset       ConnectType = "asset"
+)

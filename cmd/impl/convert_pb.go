@@ -5,7 +5,7 @@ import (
 	pb "github.com/jumpserver/wisp/protobuf-go/protobuf"
 )
 
-func ConvertToProtobufUser(user *model.User) *pb.User {
+func ConvertToProtobufUser(user model.User) *pb.User {
 	return &pb.User{
 		Id:       user.ID,
 		Name:     user.Name,
@@ -16,7 +16,7 @@ func ConvertToProtobufUser(user *model.User) *pb.User {
 	}
 }
 
-func ConvertToProtobufApplication(app *model.Application) *pb.Application {
+func ConvertToProtobufApplication(app model.Application) *pb.Application {
 	return &pb.Application{
 		Id:       app.ID,
 		Name:     app.Name,
@@ -31,7 +31,7 @@ func ConvertToProtobufApplication(app *model.Application) *pb.Application {
 	}
 }
 
-func ConvertToProtobufGateWay(gateway *model.Gateway) *pb.Gateway {
+func ConvertToProtobufGateWay(gateway model.Gateway) *pb.Gateway {
 	return &pb.Gateway{
 		Id:         gateway.ID,
 		Name:       gateway.Name,
@@ -44,7 +44,7 @@ func ConvertToProtobufGateWay(gateway *model.Gateway) *pb.Gateway {
 	}
 }
 
-func ConvertToProtobufPermission(perm *model.Permission) *pb.Permission {
+func ConvertToProtobufPermission(perm model.Permission) *pb.Permission {
 	return &pb.Permission{
 		EnableConnect:  perm.EnableConnect(),
 		EnablePaste:    perm.EnablePaste(),
@@ -54,7 +54,7 @@ func ConvertToProtobufPermission(perm *model.Permission) *pb.Permission {
 	}
 }
 
-func ConvertToProtobufSystemUser(systemUserAuthInfo *model.SystemUserAuthInfo) *pb.SystemUserAuthInfo {
+func ConvertToProtobufSystemUser(systemUserAuthInfo model.SystemUserAuthInfo) *pb.SystemUserAuthInfo {
 	return &pb.SystemUserAuthInfo{
 		Id:         systemUserAuthInfo.ID,
 		Name:       systemUserAuthInfo.Name,
@@ -76,7 +76,7 @@ var ruleActionMap = map[model.RuleAction]pb.FilterRule_Action{
 	model.ActionDeny:    pb.FilterRule_Deny,
 }
 
-func ConvertToProtobufFilterRule(rule *model.FilterRule) *pb.FilterRule {
+func ConvertToProtobufFilterRule(rule model.FilterRule) *pb.FilterRule {
 	action, ok := ruleActionMap[rule.Action]
 	if ok {
 		action = pb.FilterRule_Unknown
@@ -93,7 +93,7 @@ func ConvertToProtobufFilterRule(rule *model.FilterRule) *pb.FilterRule {
 	}
 }
 
-func ConvertToProtobufExpireInfo(info *model.ExpireInfo) *pb.ExpireInfo {
+func ConvertToProtobufExpireInfo(info model.ExpireInfo) *pb.ExpireInfo {
 	return &pb.ExpireInfo{
 		ExpireAt: info.ExpireAt,
 	}
@@ -105,7 +105,7 @@ func ConvertToProtobufGateWays(gateways []model.Gateway) []*pb.Gateway {
 	}
 	pbGateways := make([]*pb.Gateway, len(gateways))
 	for i := range gateways {
-		pbGateways[i] = ConvertToProtobufGateWay(&gateways[i])
+		pbGateways[i] = ConvertToProtobufGateWay(gateways[i])
 	}
 	return pbGateways
 }
@@ -116,7 +116,24 @@ func ConvertToProtobufFilterRules(rules []model.FilterRule) []*pb.FilterRule {
 	}
 	pbRules := make([]*pb.FilterRule, len(rules))
 	for i := range rules {
-		pbRules[i] = ConvertToProtobufFilterRule(&rules[i])
+		pbRules[i] = ConvertToProtobufFilterRule(rules[i])
 	}
 	return pbRules
+}
+
+func ConvertToProtobufSession(sess model.Session) *pb.Session {
+	return &pb.Session{
+		Id:           sess.ID,
+		User:         sess.User,
+		Asset:        sess.Asset,
+		SystemUser:   sess.SystemUser,
+		LoginFrom:    sess.LoginFrom,
+		RemoteAddr:   sess.RemoteAddr,
+		Protocol:     sess.Protocol,
+		DateStart:    sess.DateStart.Unix(),
+		OrgId:        sess.OrgID,
+		UserId:       sess.UserID,
+		AssetId:      sess.AssetID,
+		SystemUserId: sess.SystemUserID,
+	}
 }

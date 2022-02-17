@@ -25,9 +25,9 @@ type ServiceClient interface {
 	GetDBTokenAuthInfo(ctx context.Context, in *DBTokenRequest, opts ...grpc.CallOption) (*DBTokenResponse, error)
 	CreateSession(ctx context.Context, in *SessionCreateRequest, opts ...grpc.CallOption) (*SessionCreateResponse, error)
 	FinishSession(ctx context.Context, in *SessionFinishRequest, opts ...grpc.CallOption) (*SessionFinishResp, error)
-	UploadActiveSessions(ctx context.Context, in *ActiveSessRequest, opts ...grpc.CallOption) (*ActiveSessResponse, error)
 	UploadReplayFile(ctx context.Context, in *ReplayRequest, opts ...grpc.CallOption) (*ReplayResponse, error)
 	UploadCommand(ctx context.Context, in *CommandRequest, opts ...grpc.CallOption) (*CommandResponse, error)
+	DispatchStreamingTask(ctx context.Context, opts ...grpc.CallOption) (Service_DispatchStreamingTaskClient, error)
 }
 
 type serviceClient struct {
@@ -65,15 +65,6 @@ func (c *serviceClient) FinishSession(ctx context.Context, in *SessionFinishRequ
 	return out, nil
 }
 
-func (c *serviceClient) UploadActiveSessions(ctx context.Context, in *ActiveSessRequest, opts ...grpc.CallOption) (*ActiveSessResponse, error) {
-	out := new(ActiveSessResponse)
-	err := c.cc.Invoke(ctx, "/message.Service/UploadActiveSessions", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *serviceClient) UploadReplayFile(ctx context.Context, in *ReplayRequest, opts ...grpc.CallOption) (*ReplayResponse, error) {
 	out := new(ReplayResponse)
 	err := c.cc.Invoke(ctx, "/message.Service/UploadReplayFile", in, out, opts...)
@@ -92,6 +83,37 @@ func (c *serviceClient) UploadCommand(ctx context.Context, in *CommandRequest, o
 	return out, nil
 }
 
+func (c *serviceClient) DispatchStreamingTask(ctx context.Context, opts ...grpc.CallOption) (Service_DispatchStreamingTaskClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Service_ServiceDesc.Streams[0], "/message.Service/DispatchStreamingTask", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &serviceDispatchStreamingTaskClient{stream}
+	return x, nil
+}
+
+type Service_DispatchStreamingTaskClient interface {
+	Send(*TaskRequest) error
+	Recv() (*TaskResponse, error)
+	grpc.ClientStream
+}
+
+type serviceDispatchStreamingTaskClient struct {
+	grpc.ClientStream
+}
+
+func (x *serviceDispatchStreamingTaskClient) Send(m *TaskRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *serviceDispatchStreamingTaskClient) Recv() (*TaskResponse, error) {
+	m := new(TaskResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // ServiceServer is the server API for Service service.
 // All implementations must embed UnimplementedServiceServer
 // for forward compatibility
@@ -99,9 +121,9 @@ type ServiceServer interface {
 	GetDBTokenAuthInfo(context.Context, *DBTokenRequest) (*DBTokenResponse, error)
 	CreateSession(context.Context, *SessionCreateRequest) (*SessionCreateResponse, error)
 	FinishSession(context.Context, *SessionFinishRequest) (*SessionFinishResp, error)
-	UploadActiveSessions(context.Context, *ActiveSessRequest) (*ActiveSessResponse, error)
 	UploadReplayFile(context.Context, *ReplayRequest) (*ReplayResponse, error)
 	UploadCommand(context.Context, *CommandRequest) (*CommandResponse, error)
+	DispatchStreamingTask(Service_DispatchStreamingTaskServer) error
 	mustEmbedUnimplementedServiceServer()
 }
 
@@ -118,14 +140,14 @@ func (UnimplementedServiceServer) CreateSession(context.Context, *SessionCreateR
 func (UnimplementedServiceServer) FinishSession(context.Context, *SessionFinishRequest) (*SessionFinishResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FinishSession not implemented")
 }
-func (UnimplementedServiceServer) UploadActiveSessions(context.Context, *ActiveSessRequest) (*ActiveSessResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UploadActiveSessions not implemented")
-}
 func (UnimplementedServiceServer) UploadReplayFile(context.Context, *ReplayRequest) (*ReplayResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UploadReplayFile not implemented")
 }
 func (UnimplementedServiceServer) UploadCommand(context.Context, *CommandRequest) (*CommandResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UploadCommand not implemented")
+}
+func (UnimplementedServiceServer) DispatchStreamingTask(Service_DispatchStreamingTaskServer) error {
+	return status.Errorf(codes.Unimplemented, "method DispatchStreamingTask not implemented")
 }
 func (UnimplementedServiceServer) mustEmbedUnimplementedServiceServer() {}
 
@@ -194,24 +216,6 @@ func _Service_FinishSession_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Service_UploadActiveSessions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ActiveSessRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ServiceServer).UploadActiveSessions(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/message.Service/UploadActiveSessions",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ServiceServer).UploadActiveSessions(ctx, req.(*ActiveSessRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Service_UploadReplayFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ReplayRequest)
 	if err := dec(in); err != nil {
@@ -248,6 +252,32 @@ func _Service_UploadCommand_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Service_DispatchStreamingTask_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(ServiceServer).DispatchStreamingTask(&serviceDispatchStreamingTaskServer{stream})
+}
+
+type Service_DispatchStreamingTaskServer interface {
+	Send(*TaskResponse) error
+	Recv() (*TaskRequest, error)
+	grpc.ServerStream
+}
+
+type serviceDispatchStreamingTaskServer struct {
+	grpc.ServerStream
+}
+
+func (x *serviceDispatchStreamingTaskServer) Send(m *TaskResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *serviceDispatchStreamingTaskServer) Recv() (*TaskRequest, error) {
+	m := new(TaskRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // Service_ServiceDesc is the grpc.ServiceDesc for Service service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -268,10 +298,6 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Service_FinishSession_Handler,
 		},
 		{
-			MethodName: "UploadActiveSessions",
-			Handler:    _Service_UploadActiveSessions_Handler,
-		},
-		{
 			MethodName: "UploadReplayFile",
 			Handler:    _Service_UploadReplayFile_Handler,
 		},
@@ -280,6 +306,13 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Service_UploadCommand_Handler,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "DispatchStreamingTask",
+			Handler:       _Service_DispatchStreamingTask_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
+		},
+	},
 	Metadata: "service.proto",
 }

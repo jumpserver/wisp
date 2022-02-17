@@ -78,7 +78,7 @@ message FilterRule {
   bool ignore_case = 8;
 }
 
-message ExpireInfo { int64 expire_at = 1; }
+message ExpireInfo {int64 expire_at = 1;}
 
 message Session {
   string id = 1;
@@ -88,21 +88,29 @@ message Session {
   string login_from = 5;
   string remote_addr = 6;
   string protocol = 7;
-  string date_start = 8;
+  int64 date_start = 8;
   string org_id = 9;
   string user_id = 10;
   string asset_id = 11;
   string system_user_id = 12;
 }
 
-message TerminalTask {
-  string id = 1;
-  string name = 2;
-  string args = 3;
-  TaskMeta meta = 4;
+enum TaskAction {
+  KillSession = 0;
 }
 
-message TaskMeta { string terminated_by = 1; }
+message TerminalTask {
+  string id = 1;
+  TaskAction action = 2;
+  string session_id = 3;
+  string terminated_by = 4;
+}
+
+enum RiskLevel {
+  Normal = 0;
+  Danger = 1;
+}
+
 
 message DBTokenAuthInfo {
   string key_id = 1;

@@ -1,7 +1,6 @@
 package common
 
 import (
-	"context"
 	"os"
 	"path/filepath"
 	"strings"
@@ -15,28 +14,42 @@ import (
 	"github.com/jumpserver/wisp/pkg/logger"
 )
 
+func NewUploader(apiClient *service.JMService,
+	cfg *model.TerminalConfig) *UploaderService {
+	uploader := UploaderService{
+		commandChan: make(chan *model.Command, 10),
+		apiClient:   apiClient,
+		closed:      make(chan struct{}),
+	}
+	uploader.updateBackendCfg(cfg)
+	return &uploader
+}
+
 type UploaderService struct {
 	commandChan chan *model.Command
+	closed      chan struct{}
+	apiClient   *service.JMService
 
 	commandCfg atomic.Value // model.CommandConfig
 	replayCfg  atomic.Value // model.ReplayConfig
 
-	apiClient *service.JMService
-
 	wg sync.WaitGroup
-
-	once   sync.Once
-	closed chan struct{}
 }
 
-func (u *UploaderService) watchConfig(ctx context.Context) {
+func (u *UploaderService) Start() {
+	u.wg.Add(2)
+	go u.run()
+	go u.watchConfig()
+}
+
+func (u *UploaderService) watchConfig() {
 	ticker := time.NewTicker(time.Minute)
 	defer ticker.Stop()
 	defer u.wg.Done()
 	for {
 		select {
-		case <-ctx.Done():
-			logger.Info("Upload service watch config task done")
+		case <-u.closed:
+			logger.Info("Uploader service watch config task done")
 			return
 		case <-ticker.C:
 			termCfg, err := u.apiClient.GetTerminalConfig()
@@ -44,10 +57,14 @@ func (u *UploaderService) watchConfig(ctx context.Context) {
 				logger.Errorf("Upload service watch config err: %s", err)
 				continue
 			}
-			u.commandCfg.Store(termCfg.CommandStorage)
-			u.replayCfg.Store(termCfg.ReplayStorage)
+			u.updateBackendCfg(&termCfg)
 		}
 	}
+}
+
+func (u *UploaderService) updateBackendCfg(termCfg *model.TerminalConfig) {
+	u.commandCfg.Store(termCfg.CommandStorage)
+	u.replayCfg.Store(termCfg.ReplayStorage)
 }
 
 func (u *UploaderService) getCommandBackend() CommandStorage {
@@ -60,7 +77,7 @@ func (u *UploaderService) getReplayBackend() ReplayStorage {
 	return NewReplayBackend(u.apiClient, &cfg)
 }
 
-func (u *UploaderService) run(ctx context.Context) {
+func (u *UploaderService) run() {
 	cmdList := make([]*model.Command, 0, 10)
 	notificationList := make([]*model.Command, 0, 10)
 	ticker := time.NewTicker(10 * time.Second)
@@ -69,8 +86,8 @@ func (u *UploaderService) run(ctx context.Context) {
 	maxRetry := 0
 	for {
 		select {
-		case <-ctx.Done():
-			logger.Info("Upload Service command task done")
+		case <-u.closed:
+			logger.Info("Uploader Service command task done")
 			return
 		case p := <-u.commandChan:
 			if p.RiskLevel == model.DangerLevel {
@@ -89,15 +106,15 @@ func (u *UploaderService) run(ctx context.Context) {
 			if err := u.apiClient.NotifyCommand(notificationList); err == nil {
 				notificationList = notificationList[:0]
 			} else {
-				logger.Errorf("Upload Service command notify err: %s", err)
+				logger.Errorf("Uploader Service command notify err: %s", err)
 			}
 		}
 		commandBackend := u.getCommandBackend()
 		if err := commandBackend.BulkSave(cmdList); err != nil {
-			logger.Errorf("Upload Service command bulk save err: %s", err)
+			logger.Errorf("Uploader Service command bulk save err: %s", err)
 			maxRetry++
 		}
-		logger.Infof("Upload Service command backend %s upload %d commands",
+		logger.Infof("Uploader Service command backend %s upload %d commands",
 			commandBackend.TypeName(), len(cmdList))
 		cmdList = cmdList[:0]
 		maxRetry = 0
@@ -111,7 +128,7 @@ func (u *UploaderService) UploadReplay(sid, replayPath string) {
 	u.wg.Add(1)
 	defer u.wg.Done()
 	if !HaveFile(replayPath) {
-		logger.Info("Replay file not found: %s ", replayPath)
+		logger.Errorf("Replay file not found: %s ", replayPath)
 		return
 	}
 	sess, err := u.apiClient.GetSessionById(sid)
@@ -128,6 +145,7 @@ func (u *UploaderService) UploadReplay(sid, replayPath string) {
 			return
 		}
 		defer os.Remove(replayPath)
+		logger.Infof("Gzip Compress completed and will remove %s", replayPath)
 	}
 	replayBackend := u.getReplayBackend()
 	gzFilename := filepath.Base(absGzFile)
@@ -138,16 +156,28 @@ func (u *UploaderService) UploadReplay(sid, replayPath string) {
 		return
 	}
 	logger.Infof("Upload Replay file %s by %s", absGzFile, replayBackend.TypeName())
-	_ = os.Remove(absGzFile)
+
+	if _, err = u.apiClient.FinishReply(sid); err != nil {
+		logger.Errorf("Finish session replay ")
+	}
+	if err = os.Remove(absGzFile); err != nil {
+		logger.Errorf("Remove replay file %s failed: %s", absGzFile, err)
+		return
+	}
 }
 
 func (u *UploaderService) UploadCommand(cmd *model.Command) {
 	u.commandChan <- cmd
 }
 
-func (u *UploaderService) WaitTaskDone() {
+func (u *UploaderService) Stop() {
+	select {
+	case <-u.closed:
+	default:
+		close(u.closed)
+	}
 	u.wg.Wait()
-	logger.Info("Upload Service all task done")
+	logger.Info("Uploader Service stop")
 }
 
 func HaveFile(src string) bool {

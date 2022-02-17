@@ -9,12 +9,20 @@ import (
 	"github.com/jumpserver/wisp/pkg/logger"
 )
 
+func NewBeatService(apiClient *service.JMService) *BeatService {
+	return &BeatService{
+		sessMap:   make(map[string]struct{}),
+		apiClient: apiClient,
+		taskChan:  make(chan *model.TerminalTask, 5),
+	}
+}
+
 type BeatService struct {
 	sessMap map[string]struct{}
 
 	apiClient *service.JMService
 
-	callBack func()
+	taskChan chan *model.TerminalTask
 
 	sync.Mutex
 }
@@ -29,12 +37,11 @@ func (b *BeatService) KeepHeartBeat() {
 			continue
 		}
 		if len(tasks) != 0 {
-			for _, task := range tasks {
-				switch task.Name {
-				case model.TaskKillSession:
-					// todo: grpc 双向流 发送 core 的任务
+			for i := range tasks {
+				select {
+				case b.taskChan <- &tasks[i]:
 				default:
-
+					logger.Infof("Discard task %v", tasks[i])
 				}
 			}
 		}
@@ -51,6 +58,8 @@ func (b *BeatService) getSessions() []string {
 	return sids
 }
 
+var empty = struct{}{}
+
 func (b *BeatService) StoreSessionId(sid string) {
 	b.Lock()
 	defer b.Unlock()
@@ -63,4 +72,10 @@ func (b *BeatService) RemoveSessionId(sid string) {
 	delete(b.sessMap, sid)
 }
 
-var empty = struct{}{}
+func (b *BeatService) GetTerminalTaskChan() <-chan *model.TerminalTask {
+	return b.taskChan
+}
+
+func (b *BeatService) FinishTask(taskId string) error {
+	return b.apiClient.FinishTask(taskId)
+}

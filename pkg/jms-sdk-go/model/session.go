@@ -7,9 +7,8 @@ import (
 )
 
 type Session struct {
-	ID string `json:"id"`
-	// "%s(%s)" Name Username
-	User         string         `json:"user"`
+	ID           string         `json:"id,omitempty"`
+	User         string         `json:"user"` // "%s(%s)" Name Username
 	Asset        string         `json:"asset"`
 	SystemUser   string         `json:"system_user"`
 	LoginFrom    string         `json:"login_from"`

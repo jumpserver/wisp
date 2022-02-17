@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"github.com/jumpserver/wisp/cmd/impl"
 	"net"
 	"path/filepath"
 
@@ -37,10 +38,28 @@ var rootCmd = &cobra.Command{
 		initConfig()
 		initLogger()
 		conf := config.Get()
-		ctx := common.GetSignalCtx()
 		addr := net.JoinHostPort(conf.BindHost, conf.BindPort)
-		srv := NewServer(addr, nil)
-		Run(ctx, srv)
+		apiClient := common.MustJMService(&conf)
+		cfg, err := apiClient.GetTerminalConfig()
+		if err != nil {
+			logger.Fatalf("Get Terminal Cfg failed: %s", err)
+		}
+		uploader := common.NewUploader(apiClient, &cfg)
+		{
+			go uploader.Start()
+			defer uploader.Stop()
+		}
+		beat := common.NewBeatService(apiClient)
+		{
+			go beat.KeepHeartBeat()
+		}
+		grpcImplSrv := impl.NewJMServer(apiClient, uploader, beat)
+		{
+			srv := NewServer(addr, grpcImplSrv)
+			ctx := common.GetSignalCtx()
+			Run(ctx, srv)
+		}
+
 	}}
 
 func Execute() {

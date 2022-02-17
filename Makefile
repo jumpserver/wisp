@@ -27,10 +27,19 @@ proto-py:
 NAME=wisp
 VERSION ?=Unknown
 BuildTime:=$(shell date -u '+%Y-%m-%d %I:%M:%S%p')
-# COMMIT:=$(shell git rev-parse HEAD)
+COMMIT:=$(shell git rev-parse HEAD)
 GOVERSION:=$(shell go version)
 GOLDFLAGS=-X 'github.com/jumpserver/wisp/cmd.version=$(VERSION)'
 GOLDFLAGS+=-X 'github.com/jumpserver/wisp/cmd.BuildTime=$(BuildTime)'
 GOLDFLAGS+=-X 'github.com/jumpserver/wisp/cmd.GitCommit=$(COMMIT)'
 GOLDFLAGS+=-X 'github.com/jumpserver/wisp/cmd.GoVersion=$(GOVERSION)'
+WISPBUILD=CGO_ENABLED=0 go build -trimpath -ldflags "$(KOKOLDFLAGS)"
+
+
+PLATFORM_LIST = \
+	darwin-amd64 \
+	darwin-arm64 \
+	linux-amd64 \
+	linux-arm64
+
 

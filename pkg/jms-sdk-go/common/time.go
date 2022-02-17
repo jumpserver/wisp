@@ -50,3 +50,7 @@ func parseTimeFromSupportedFormat(data []byte) (time.Time, error) {
 	}
 	return time.Time{}, fmt.Errorf("%w: %s", ErrUnSupportFormat, data)
 }
+
+func ParseUnixTime(t int64) UTCTime {
+	return NewUTCTime(time.Unix(t, 0))
+}
