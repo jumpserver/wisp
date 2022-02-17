@@ -78,7 +78,7 @@ message FilterRule {
   bool ignore_case = 8;
 }
 
-message ExpireInfo {int64 expire_at = 1;}
+message ExpireInfo { int64 expire_at = 1; }
 
 message Session {
   string id = 1;
@@ -95,9 +95,7 @@ message Session {
   string system_user_id = 12;
 }
 
-enum TaskAction {
-  KillSession = 0;
-}
+enum TaskAction { KillSession = 0; }
 
 message TerminalTask {
   string id = 1;
@@ -110,7 +108,6 @@ enum RiskLevel {
   Normal = 0;
   Danger = 1;
 }
-
 
 message DBTokenAuthInfo {
   string key_id = 1;

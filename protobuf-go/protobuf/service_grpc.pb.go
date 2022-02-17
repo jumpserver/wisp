@@ -27,7 +27,7 @@ type ServiceClient interface {
 	FinishSession(ctx context.Context, in *SessionFinishRequest, opts ...grpc.CallOption) (*SessionFinishResp, error)
 	UploadReplayFile(ctx context.Context, in *ReplayRequest, opts ...grpc.CallOption) (*ReplayResponse, error)
 	UploadCommand(ctx context.Context, in *CommandRequest, opts ...grpc.CallOption) (*CommandResponse, error)
-	DispatchStreamingTask(ctx context.Context, opts ...grpc.CallOption) (Service_DispatchStreamingTaskClient, error)
+	DispatchTask(ctx context.Context, opts ...grpc.CallOption) (Service_DispatchTaskClient, error)
 }
 
 type serviceClient struct {
@@ -83,30 +83,30 @@ func (c *serviceClient) UploadCommand(ctx context.Context, in *CommandRequest, o
 	return out, nil
 }
 
-func (c *serviceClient) DispatchStreamingTask(ctx context.Context, opts ...grpc.CallOption) (Service_DispatchStreamingTaskClient, error) {
-	stream, err := c.cc.NewStream(ctx, &Service_ServiceDesc.Streams[0], "/message.Service/DispatchStreamingTask", opts...)
+func (c *serviceClient) DispatchTask(ctx context.Context, opts ...grpc.CallOption) (Service_DispatchTaskClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Service_ServiceDesc.Streams[0], "/message.Service/DispatchTask", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &serviceDispatchStreamingTaskClient{stream}
+	x := &serviceDispatchTaskClient{stream}
 	return x, nil
 }
 
-type Service_DispatchStreamingTaskClient interface {
-	Send(*TaskRequest) error
+type Service_DispatchTaskClient interface {
+	Send(*FinishedTaskRequest) error
 	Recv() (*TaskResponse, error)
 	grpc.ClientStream
 }
 
-type serviceDispatchStreamingTaskClient struct {
+type serviceDispatchTaskClient struct {
 	grpc.ClientStream
 }
 
-func (x *serviceDispatchStreamingTaskClient) Send(m *TaskRequest) error {
+func (x *serviceDispatchTaskClient) Send(m *FinishedTaskRequest) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *serviceDispatchStreamingTaskClient) Recv() (*TaskResponse, error) {
+func (x *serviceDispatchTaskClient) Recv() (*TaskResponse, error) {
 	m := new(TaskResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -123,7 +123,7 @@ type ServiceServer interface {
 	FinishSession(context.Context, *SessionFinishRequest) (*SessionFinishResp, error)
 	UploadReplayFile(context.Context, *ReplayRequest) (*ReplayResponse, error)
 	UploadCommand(context.Context, *CommandRequest) (*CommandResponse, error)
-	DispatchStreamingTask(Service_DispatchStreamingTaskServer) error
+	DispatchTask(Service_DispatchTaskServer) error
 	mustEmbedUnimplementedServiceServer()
 }
 
@@ -146,8 +146,8 @@ func (UnimplementedServiceServer) UploadReplayFile(context.Context, *ReplayReque
 func (UnimplementedServiceServer) UploadCommand(context.Context, *CommandRequest) (*CommandResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UploadCommand not implemented")
 }
-func (UnimplementedServiceServer) DispatchStreamingTask(Service_DispatchStreamingTaskServer) error {
-	return status.Errorf(codes.Unimplemented, "method DispatchStreamingTask not implemented")
+func (UnimplementedServiceServer) DispatchTask(Service_DispatchTaskServer) error {
+	return status.Errorf(codes.Unimplemented, "method DispatchTask not implemented")
 }
 func (UnimplementedServiceServer) mustEmbedUnimplementedServiceServer() {}
 
@@ -252,26 +252,26 @@ func _Service_UploadCommand_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Service_DispatchStreamingTask_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(ServiceServer).DispatchStreamingTask(&serviceDispatchStreamingTaskServer{stream})
+func _Service_DispatchTask_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(ServiceServer).DispatchTask(&serviceDispatchTaskServer{stream})
 }
 
-type Service_DispatchStreamingTaskServer interface {
+type Service_DispatchTaskServer interface {
 	Send(*TaskResponse) error
-	Recv() (*TaskRequest, error)
+	Recv() (*FinishedTaskRequest, error)
 	grpc.ServerStream
 }
 
-type serviceDispatchStreamingTaskServer struct {
+type serviceDispatchTaskServer struct {
 	grpc.ServerStream
 }
 
-func (x *serviceDispatchStreamingTaskServer) Send(m *TaskResponse) error {
+func (x *serviceDispatchTaskServer) Send(m *TaskResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *serviceDispatchStreamingTaskServer) Recv() (*TaskRequest, error) {
-	m := new(TaskRequest)
+func (x *serviceDispatchTaskServer) Recv() (*FinishedTaskRequest, error) {
+	m := new(FinishedTaskRequest)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -308,8 +308,8 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 	},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "DispatchStreamingTask",
-			Handler:       _Service_DispatchStreamingTask_Handler,
+			StreamName:    "DispatchTask",
+			Handler:       _Service_DispatchTask_Handler,
 			ServerStreams: true,
 			ClientStreams: true,
 		},

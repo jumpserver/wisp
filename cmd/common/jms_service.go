@@ -54,7 +54,7 @@ func MustRegisterTerminal(conf *config.Config) (key model.AccessKey) {
 		key.ID = terminal.ServiceAccount.AccessKey.ID
 		key.Secret = terminal.ServiceAccount.AccessKey.Secret
 		if err2 := key.SaveToFile(dstFilePath); err2 != nil {
-			logger.Error("保存key失败: %s", err)
+			logger.Errorf("保存key失败: %s", err)
 		}
 		return key
 	}

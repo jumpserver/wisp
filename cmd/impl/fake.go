@@ -83,7 +83,7 @@ func (f *FakeServer) UploadCommand(ctx context.Context,
 		Status: &status}, nil
 }
 
-func (f *FakeServer) DispatchStreamingTask(taskSrv pb.Service_DispatchStreamingTaskServer) error {
+func (f *FakeServer) DispatchTask(taskSrv pb.Service_DispatchTaskServer) error {
 	for {
 		req, err := taskSrv.Recv()
 		if err != nil {

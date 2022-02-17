@@ -11,7 +11,7 @@ service Service {
   rpc FinishSession(SessionFinishRequest) returns (SessionFinishResp) {};
   rpc UploadReplayFile(ReplayRequest) returns (ReplayResponse) {};
   rpc UploadCommand(CommandRequest) returns (CommandResponse) {};
-  rpc DispatchStreamingTask(stream TaskRequest) returns (stream TaskResponse) {};
+  rpc DispatchTask(stream FinishedTaskRequest) returns (stream TaskResponse) {};
 }
 
 message Status {
@@ -19,14 +19,14 @@ message Status {
   string err = 2;
 }
 
-message DBTokenRequest {string token = 1;}
+message DBTokenRequest { string token = 1; }
 
 message DBTokenResponse {
   Status status = 1;
   DBTokenAuthInfo data = 2;
 }
 
-message SessionCreateRequest {Session data = 1;}
+message SessionCreateRequest { Session data = 1; }
 
 message SessionCreateResponse {
   Status status = 1;
@@ -40,14 +40,14 @@ message SessionFinishRequest {
   string err = 4;
 }
 
-message SessionFinishResp {Status status = 1;}
+message SessionFinishResp { Status status = 1; }
 
 message ReplayRequest {
   string session_id = 1;
   string replay_file_path = 2;
 }
 
-message ReplayResponse {Status status = 1;}
+message ReplayResponse { Status status = 1; }
 
 message CommandRequest {
   string sid = 1;
@@ -61,12 +61,8 @@ message CommandRequest {
   RiskLevel risk_level = 9;
 };
 
-message CommandResponse {Status status = 1;};
+message CommandResponse { Status status = 1; };
 
-message  TaskRequest {
-  string task_id = 1;
-}
+message FinishedTaskRequest { string task_id = 1; }
 
-message TaskResponse{
-  TerminalTask task = 1;
-}
+message TaskResponse { TerminalTask task = 1; }

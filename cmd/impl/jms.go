@@ -111,8 +111,8 @@ func (j *JMServer) UploadCommand(ctx context.Context, req *pb.CommandRequest) (*
 	return &pb.CommandResponse{Status: &status}, nil
 }
 
-func (j *JMServer) DispatchStreamingTask(stream pb.Service_DispatchStreamingTaskServer) error {
-	ctx, cancel := context.WithCancel(context.Background())
+func (j *JMServer) DispatchStreamingTask(stream pb.Service_DispatchTaskServer) error {
+	ctx, cancel := context.WithCancel(stream.Context())
 	defer cancel()
 	go j.sendStreamTask(ctx, stream)
 	for {
@@ -128,11 +128,12 @@ func (j *JMServer) DispatchStreamingTask(stream pb.Service_DispatchStreamingTask
 	}
 }
 
-func (j *JMServer) sendStreamTask(ctx context.Context, stream pb.Service_DispatchStreamingTaskServer) {
+func (j *JMServer) sendStreamTask(ctx context.Context, stream pb.Service_DispatchTaskServer) {
 	taskChan := j.beat.GetTerminalTaskChan()
 	for {
 		select {
 		case <-ctx.Done():
+			logger.Info("Send terminal task stop")
 			return
 		case task := <-taskChan:
 			var pbTask pb.TerminalTask
@@ -150,7 +151,7 @@ func (j *JMServer) sendStreamTask(ctx context.Context, stream pb.Service_Dispatc
 		}
 	}
 }
-func (j *JMServer) handleTerminalTask(req *pb.TaskRequest) {
+func (j *JMServer) handleTerminalTask(req *pb.FinishedTaskRequest) {
 	if err := j.beat.FinishTask(req.TaskId); err != nil {
 		logger.Errorf("Handle task id %s failed: %s", req.TaskId, err)
 	}

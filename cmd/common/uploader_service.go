@@ -113,6 +113,7 @@ func (u *UploaderService) run() {
 		if err := commandBackend.BulkSave(cmdList); err != nil {
 			logger.Errorf("Uploader Service command bulk save err: %s", err)
 			maxRetry++
+			continue
 		}
 		logger.Infof("Uploader Service command backend %s upload %d commands",
 			commandBackend.TypeName(), len(cmdList))
@@ -158,7 +159,7 @@ func (u *UploaderService) UploadReplay(sid, replayPath string) {
 	logger.Infof("Upload Replay file %s by %s", absGzFile, replayBackend.TypeName())
 
 	if _, err = u.apiClient.FinishReply(sid); err != nil {
-		logger.Errorf("Finish session replay ")
+		logger.Errorf("Finish %s replay api failed: %s", sid, err)
 	}
 	if err = os.Remove(absGzFile); err != nil {
 		logger.Errorf("Remove replay file %s failed: %s", absGzFile, err)
