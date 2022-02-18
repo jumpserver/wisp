@@ -34,7 +34,7 @@ func (j *JMServer) GetDBTokenAuthInfo(ctx context.Context, req *pb.DBTokenReques
 	tokenAuthInfo, err := j.apiClient.GetConnectTokenAuth(req.Token)
 	if err != nil {
 		status.Err = err.Error()
-		logger.Error("Get Connect token auth failed: %s", err)
+		logger.Errorf("Get Connect token auth failed: %s", err)
 		return &pb.DBTokenResponse{Status: &status}, nil
 	}
 	if tokenAuthInfo.TypeName != model.ConnectApplication {

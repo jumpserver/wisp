@@ -23,6 +23,7 @@ func ConvertToProtobufApplication(app model.Application) *pb.Application {
 		Category: app.Category,
 		TypeName: app.TypeName,
 		Domain:   app.Domain,
+		OrgId:    app.OrgID,
 		Attrs: &pb.Application_Attrs{
 			Host:     app.Attrs.Host,
 			Port:     int32(app.Attrs.Port),
