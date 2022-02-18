@@ -27,7 +27,7 @@ type TokenAuthInfo struct {
 	User        model.User        `json:"user"`
 	Actions     []string          `json:"actions,omitempty"`
 	Application model.Application `json:"application,omitempty"`
-	Asset       model.Asset      `json:"asset,omitempty"`
+	Asset       *model.Asset      `json:"asset,omitempty"`
 	ExpiredAt   int64             `json:"expired_at"`
 	Gateway     model.Gateway     `json:"gateway,omitempty"`
 
