@@ -111,7 +111,7 @@ func (j *JMServer) UploadCommand(ctx context.Context, req *pb.CommandRequest) (*
 	return &pb.CommandResponse{Status: &status}, nil
 }
 
-func (j *JMServer) DispatchStreamingTask(stream pb.Service_DispatchTaskServer) error {
+func (j *JMServer) DispatchTask(stream pb.Service_DispatchTaskServer) error {
 	ctx, cancel := context.WithCancel(stream.Context())
 	defer cancel()
 	go j.sendStreamTask(ctx, stream)
