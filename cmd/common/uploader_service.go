@@ -1,6 +1,7 @@
 package common
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -125,17 +126,15 @@ func (u *UploaderService) run() {
 
 const dateTimeFormat = "2006-01-02"
 
-func (u *UploaderService) UploadReplay(sid, replayPath string) {
-	u.wg.Add(1)
-	defer u.wg.Done()
+func (u *UploaderService) UploadReplay(sid, replayPath string) error {
 	if !HaveFile(replayPath) {
 		logger.Errorf("Replay file not found: %s ", replayPath)
-		return
+		return fmt.Errorf("not found %s", replayPath)
 	}
 	sess, err := u.apiClient.GetSessionById(sid)
 	if err != nil {
 		logger.Errorf("Retrieve session %s detail failed:  %s", sid, err)
-		return
+		return err
 	}
 	today := sess.DateStart.UTC().Format(dateTimeFormat)
 	absGzFile := replayPath
@@ -143,7 +142,7 @@ func (u *UploaderService) UploadReplay(sid, replayPath string) {
 		absGzFile = absGzFile + model.SuffixGz
 		if err = modelCommon.CompressToGzipFile(replayPath, absGzFile); err != nil {
 			logger.Errorf("Gzip Compress replay file %s failed: %s", replayPath, err)
-			return
+			return err
 		}
 		defer os.Remove(replayPath)
 		logger.Infof("Gzip Compress completed and will remove %s", replayPath)
@@ -153,22 +152,99 @@ func (u *UploaderService) UploadReplay(sid, replayPath string) {
 	target := strings.Join([]string{today, gzFilename}, "/")
 	err = replayBackend.Upload(absGzFile, target)
 	if err != nil {
-		logger.Errorf("Upload Replay file %s failed: %s", absGzFile, err)
-		return
+		logger.Errorf("Upload service Replay file %s failed: %s", absGzFile, err)
+		return err
 	}
-	logger.Infof("Upload Replay file %s by %s", absGzFile, replayBackend.TypeName())
+	logger.Infof("Upload service replay file %s by %s", absGzFile, replayBackend.TypeName())
 
 	if _, err = u.apiClient.FinishReply(sid); err != nil {
 		logger.Errorf("Finish %s replay api failed: %s", sid, err)
+		return err
 	}
 	if err = os.Remove(absGzFile); err != nil {
 		logger.Errorf("Remove replay file %s failed: %s", absGzFile, err)
-		return
 	}
+	return nil
 }
 
 func (u *UploaderService) UploadCommand(cmd *model.Command) {
 	u.commandChan <- cmd
+}
+
+func (u *UploaderService) UploadRemainReplays(replayDir string) {
+	allRemainReplays := scanRemainReplays(u.apiClient, replayDir)
+	if len(allRemainReplays) <= 0 {
+		return
+	}
+	logger.Debugf("Upload Remain %d replay files", len(allRemainReplays))
+	for replayPath := range allRemainReplays {
+		remainReplay := allRemainReplays[replayPath]
+		if err := u.uploadRemainReplay(&remainReplay); err != nil {
+			logger.Errorf("Upload service clean remain replay %s failed: %s",
+				replayPath, err)
+			continue
+		}
+		// 上传完成 删除原录像文件
+		if err := os.Remove(replayPath); err != nil {
+			logger.Errorf("Upload service clean remain replay %s failed: %s",
+				replayPath, err)
+		}
+		if _, err := u.apiClient.FinishReply(remainReplay.Id); err != nil {
+			logger.Errorf("Upload service notify session %s replay finished failed: %s",
+				remainReplay.Id, err)
+		}
+	}
+}
+
+func (u *UploaderService) uploadRemainReplay(replay *RemainReplay) error {
+	replayAbsGzPath := replay.AbsFilePath
+	if !isGzipFile(replayAbsGzPath) {
+		dirPath := filepath.Dir(replay.AbsFilePath)
+		replayAbsGzPath = filepath.Join(dirPath, replay.GetGzFilename())
+		if err := modelCommon.CompressToGzipFile(replay.AbsFilePath, replayAbsGzPath); err != nil {
+			return fmt.Errorf("Upload service compress gzip file %s: %s", replay.AbsFilePath, err)
+		}
+		defer os.Remove(replayAbsGzPath)
+	}
+	replayBackend := u.getReplayBackend()
+	return replayBackend.Upload(replayAbsGzPath, replay.TargetPath())
+}
+
+func scanRemainReplays(apiClient *service.JMService, replayDir string) map[string]RemainReplay {
+	allRemainReplays := make(map[string]RemainReplay)
+	_ = filepath.Walk(replayDir, func(path string, info os.FileInfo, err error) error {
+		if err != nil || info.IsDir() {
+			return nil
+		}
+		var (
+			sid        string
+			targetDate string
+			version    model.ReplayVersion
+			ok         bool
+		)
+		if sid, ok = ParseReoplaySessionID(info.Name()); !ok {
+			return nil
+		}
+		if version, ok = ParseReplayVersion(info.Name()); !ok {
+			version = model.Version2
+		}
+		finishedTime := modelCommon.NewUTCTime(info.ModTime())
+		finishedSession, err2 := apiClient.SessionFinished(sid, finishedTime)
+		if err2 != nil {
+			logger.Errorf("Upload service mark session %s finished failed: %s", sid, err2)
+			return nil
+		}
+		targetDate = finishedSession.DateStart.UTC().Format("2006-01-02")
+		allRemainReplays[path] = RemainReplay{
+			Id:          sid,
+			Version:     version,
+			TargetDate:  targetDate,
+			AbsFilePath: path,
+			IsGzip:      isGzipFile(info.Name()),
+		}
+		return nil
+	})
+	return allRemainReplays
 }
 
 func (u *UploaderService) Stop() {
@@ -188,4 +264,67 @@ func HaveFile(src string) bool {
 
 func isGzipFile(src string) bool {
 	return strings.HasSuffix(src, model.SuffixGz)
+}
+
+/*
+koko   文件名为 sid | sid.replay.gz | sid.cast | sid.cast.gz
+lion   文件名为 sid | sid.replay.gz
+omnidb 文件名为 sid.cast | sid.cast.gz
+xrdp   文件名为 sid.guac
+
+如果存在日期目录，targetDate 使用日期目录的
+文件路径名称中解析 录像文件信息
+
+*/
+
+var suffixesMap = map[string]model.ReplayVersion{
+	model.SuffixGuac:     model.Version2,
+	model.SuffixCast:     model.Version3,
+	model.SuffixCastGz:   model.Version3,
+	model.SuffixReplayGz: model.Version2,
+}
+
+type RemainReplay struct {
+	Id          string // session id
+	TargetDate  string
+	AbsFilePath string
+	Version     model.ReplayVersion
+	IsGzip      bool
+}
+
+func (r *RemainReplay) TargetPath() string {
+	gzFilename := r.GetGzFilename()
+	return strings.Join([]string{r.TargetDate, gzFilename}, "/")
+}
+
+func (r *RemainReplay) GetGzFilename() string {
+	suffixGz := ".replay.gz"
+	switch r.Version {
+	case model.Version3:
+		suffixGz = ".cast.gz"
+	case model.Version2:
+		suffixGz = ".replay.gz"
+	}
+	return r.Id + suffixGz
+}
+
+func ParseReoplaySessionID(filename string) (string, bool) {
+	if len(filename) == 36 && modelCommon.IsUUID(filename) {
+		return filename, true
+	}
+	sid := strings.Split(filename, ".")[0]
+	if !modelCommon.IsUUID(sid) {
+		return "", false
+	}
+	return sid, true
+}
+
+func ParseReplayVersion(filename string) (model.ReplayVersion, bool) {
+	for suffix := range suffixesMap {
+		if strings.HasSuffix(filename, suffix) {
+			return suffixesMap[suffix], true
+
+		}
+	}
+	return model.UnKnown, false
 }

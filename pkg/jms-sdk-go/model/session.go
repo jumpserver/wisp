@@ -33,6 +33,7 @@ const (
 	SuffixReplayGz = ".replay.gz"
 	SuffixCastGz   = ".cast.gz"
 	SuffixCast     = ".cast"
+	SuffixGuac     = ".guac"
 	SuffixGz       = ".gz"
 )
 

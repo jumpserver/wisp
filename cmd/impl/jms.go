@@ -94,9 +94,14 @@ func (j *JMServer) FinishSession(ctx context.Context, req *pb.SessionFinishReque
 }
 
 func (j *JMServer) UploadReplayFile(ctx context.Context, req *pb.ReplayRequest) (*pb.ReplayResponse, error) {
-	j.uploader.UploadReplay(req.SessionId, req.ReplayFilePath)
-	status := pb.Status{Ok: true}
 	logger.Debugf("Upload Replay File Session %s path %s ", req.SessionId, req.ReplayFilePath)
+	status := pb.Status{Ok: true}
+	if err := j.uploader.UploadReplay(req.SessionId, req.ReplayFilePath); err != nil {
+		status.Ok = false
+		status.Err = err.Error()
+		logger.Errorf("Upload Replay File Session %s path %s: %s ", req.SessionId,
+			req.ReplayFilePath, err)
+	}
 	return &pb.ReplayResponse{Status: &status}, nil
 }
 
