@@ -95,6 +95,15 @@ func (f *FakeServer) DispatchTask(taskSrv pb.Service_DispatchTaskServer) error {
 		logger.Infof("dispatch task %+v", req)
 	}
 }
+func (f *FakeServer) ScanRemainReplays(ctx context.Context, req *pb.RemainReplayRequest) (*pb.RemainReplayResponse, error) {
+	status := pb.Status{Ok: true}
+	logger.Infof("Scan Remain Replays %+v", req)
+	return &pb.RemainReplayResponse{Status: &status,
+		SuccessFiles: []string{},
+		FailureFiles: []string{},
+		FailureErrs:  []string{},
+	}, nil
+}
 
 type testData struct {
 	ID                 string                   `json:"id"`
