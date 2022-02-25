@@ -12,6 +12,7 @@ service Service {
   rpc UploadReplayFile(ReplayRequest) returns (ReplayResponse) {};
   rpc UploadCommand(CommandRequest) returns (CommandResponse) {};
   rpc DispatchTask(stream FinishedTaskRequest) returns (stream TaskResponse) {};
+  rpc ScanRemainReplays(RemainReplayRequest) returns (RemainReplayResponse) {};
 }
 
 message Status {
@@ -66,3 +67,12 @@ message CommandResponse { Status status = 1; };
 message FinishedTaskRequest { string task_id = 1; }
 
 message TaskResponse { TerminalTask task = 1; }
+
+message RemainReplayRequest { string replay_dir = 1; }
+
+message RemainReplayResponse {
+  Status status = 1;
+  repeated string success_files = 2;
+  repeated string failure_files = 3;
+  repeated string failure_errs = 4;
+}

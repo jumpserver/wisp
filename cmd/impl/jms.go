@@ -133,6 +133,21 @@ func (j *JMServer) DispatchTask(stream pb.Service_DispatchTaskServer) error {
 	}
 }
 
+func (j *JMServer) ScanRemainReplays(ctx context.Context, req *pb.RemainReplayRequest) (*pb.RemainReplayResponse, error) {
+	status := pb.Status{Ok: true}
+	ret := j.uploader.UploadRemainReplays(req.GetReplayDir())
+	if len(ret.FailureErrs) > 0 {
+		status.Ok = false
+		status.Err = fmt.Sprintf("there are %d errs in FailureErrs", len(ret.FailureErrs))
+	}
+	return &pb.RemainReplayResponse{
+		Status:       &status,
+		SuccessFiles: ret.SuccessFiles,
+		FailureFiles: ret.FailureFiles,
+		FailureErrs:  ret.FailureErrs,
+	}, nil
+}
+
 func (j *JMServer) sendStreamTask(ctx context.Context, stream pb.Service_DispatchTaskServer) {
 	taskChan := j.beat.GetTerminalTaskChan()
 	for {

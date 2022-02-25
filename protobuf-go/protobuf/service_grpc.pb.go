@@ -28,6 +28,7 @@ type ServiceClient interface {
 	UploadReplayFile(ctx context.Context, in *ReplayRequest, opts ...grpc.CallOption) (*ReplayResponse, error)
 	UploadCommand(ctx context.Context, in *CommandRequest, opts ...grpc.CallOption) (*CommandResponse, error)
 	DispatchTask(ctx context.Context, opts ...grpc.CallOption) (Service_DispatchTaskClient, error)
+	ScanRemainReplays(ctx context.Context, in *RemainReplayRequest, opts ...grpc.CallOption) (*RemainReplayResponse, error)
 }
 
 type serviceClient struct {
@@ -114,6 +115,15 @@ func (x *serviceDispatchTaskClient) Recv() (*TaskResponse, error) {
 	return m, nil
 }
 
+func (c *serviceClient) ScanRemainReplays(ctx context.Context, in *RemainReplayRequest, opts ...grpc.CallOption) (*RemainReplayResponse, error) {
+	out := new(RemainReplayResponse)
+	err := c.cc.Invoke(ctx, "/message.Service/ScanRemainReplays", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ServiceServer is the server API for Service service.
 // All implementations must embed UnimplementedServiceServer
 // for forward compatibility
@@ -124,6 +134,7 @@ type ServiceServer interface {
 	UploadReplayFile(context.Context, *ReplayRequest) (*ReplayResponse, error)
 	UploadCommand(context.Context, *CommandRequest) (*CommandResponse, error)
 	DispatchTask(Service_DispatchTaskServer) error
+	ScanRemainReplays(context.Context, *RemainReplayRequest) (*RemainReplayResponse, error)
 	mustEmbedUnimplementedServiceServer()
 }
 
@@ -148,6 +159,9 @@ func (UnimplementedServiceServer) UploadCommand(context.Context, *CommandRequest
 }
 func (UnimplementedServiceServer) DispatchTask(Service_DispatchTaskServer) error {
 	return status.Errorf(codes.Unimplemented, "method DispatchTask not implemented")
+}
+func (UnimplementedServiceServer) ScanRemainReplays(context.Context, *RemainReplayRequest) (*RemainReplayResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ScanRemainReplays not implemented")
 }
 func (UnimplementedServiceServer) mustEmbedUnimplementedServiceServer() {}
 
@@ -278,6 +292,24 @@ func (x *serviceDispatchTaskServer) Recv() (*FinishedTaskRequest, error) {
 	return m, nil
 }
 
+func _Service_ScanRemainReplays_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemainReplayRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).ScanRemainReplays(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/message.Service/ScanRemainReplays",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).ScanRemainReplays(ctx, req.(*RemainReplayRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Service_ServiceDesc is the grpc.ServiceDesc for Service service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -304,6 +336,10 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UploadCommand",
 			Handler:    _Service_UploadCommand_Handler,
+		},
+		{
+			MethodName: "ScanRemainReplays",
+			Handler:    _Service_ScanRemainReplays_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
