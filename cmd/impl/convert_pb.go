@@ -128,7 +128,7 @@ func ConvertToProtobufSession(sess model.Session) *pb.Session {
 		User:         sess.User,
 		Asset:        sess.Asset,
 		SystemUser:   sess.SystemUser,
-		LoginFrom:    sess.LoginFrom,
+		LoginFrom:    ConvertToPbLoginFrom(sess.LoginFrom),
 		RemoteAddr:   sess.RemoteAddr,
 		Protocol:     sess.Protocol,
 		DateStart:    sess.DateStart.Unix(),
@@ -137,4 +137,15 @@ func ConvertToProtobufSession(sess model.Session) *pb.Session {
 		AssetId:      sess.AssetID,
 		SystemUserId: sess.SystemUserID,
 	}
+}
+
+func ConvertToPbLoginFrom(s string) pb.Session_LoginFrom {
+	return pbLoginFrom[s]
+}
+
+var pbLoginFrom = map[string]pb.Session_LoginFrom{
+	model.LoginFromWT: pb.Session_WT,
+	model.LoginFromST: pb.Session_ST,
+	model.LoginFromRT: pb.Session_RT,
+	model.LoginFromDT: pb.Session_DT,
 }

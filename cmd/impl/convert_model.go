@@ -6,13 +6,24 @@ import (
 	pb "github.com/jumpserver/wisp/protobuf-go/protobuf"
 )
 
+var modelLoginFrom = map[pb.Session_LoginFrom]string{
+	pb.Session_WT: model.LoginFromWT,
+	pb.Session_ST: model.LoginFromST,
+	pb.Session_RT: model.LoginFromRT,
+	pb.Session_DT: model.LoginFromDT,
+}
+
+func ConvertModelLoginFrom(lf pb.Session_LoginFrom) string {
+	return modelLoginFrom[lf]
+}
+
 func ConvertToSession(sees *pb.Session) model.Session {
 	return model.Session{
 		ID:           sees.Id,
 		User:         sees.User,
 		Asset:        sees.Asset,
 		SystemUser:   sees.SystemUser,
-		LoginFrom:    sees.LoginFrom,
+		LoginFrom:    ConvertModelLoginFrom(sees.LoginFrom),
 		RemoteAddr:   sees.RemoteAddr,
 		Protocol:     sees.Protocol,
 		DateStart:    common.ParseUnixTime(sees.DateStart),

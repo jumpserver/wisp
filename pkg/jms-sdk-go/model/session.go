@@ -50,3 +50,10 @@ func ParseReplayVersion(gzFile string, defaultValue ReplayVersion) ReplayVersion
 	}
 	return defaultValue
 }
+
+const (
+	LoginFromWT = "WT"
+	LoginFromST = "ST"
+	LoginFromRT = "RT"
+	LoginFromDT = "DT"
+)

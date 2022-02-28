@@ -78,14 +78,22 @@ message FilterRule {
   bool ignore_case = 8;
 }
 
-message ExpireInfo { int64 expire_at = 1; }
+message ExpireInfo {
+  int64 expire_at = 1;
+}
 
 message Session {
+  enum LoginFrom {
+    WT = 0;
+    ST = 1;
+    RT = 2;
+    DT = 3;
+  }
   string id = 1;
   string user = 2;
   string asset = 3;
   string system_user = 4;
-  string login_from = 5;
+  LoginFrom login_from = 5;
   string remote_addr = 6;
   string protocol = 7;
   int64 date_start = 8;

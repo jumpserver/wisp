@@ -43,6 +43,9 @@ func MustRegisterTerminal(conf *config.Config) (key model.AccessKey) {
 		bootstrapToken = conf.BootstrapToken
 		dstFilePath    = conf.AccessKeyFilePath
 	)
+	if _, ok := model.SupportedComponent(componentName); !ok {
+		logger.Fatalf("组件名称错误: %s", componentName)
+	}
 
 	for i := 0; i < 10; i++ {
 		terminal, err := service.RegisterTerminalAccount(coreHost, componentName, name, bootstrapToken)
