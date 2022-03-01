@@ -123,10 +123,12 @@ func (j *JMServer) DispatchTask(stream pb.Service_DispatchTaskServer) error {
 	for {
 		taskReq, err := stream.Recv()
 		if err != nil {
-			logger.Errorf("Dispatch Task streaming err: %v", err)
+			msg := fmt.Sprintf("Dispatch Task streaming err: %v", err)
 			if err == io.EOF {
+				logger.Infof(msg)
 				return nil
 			}
+			logger.Errorf(msg)
 			return err
 		}
 		j.handleTerminalTask(taskReq)
@@ -175,4 +177,56 @@ func (j *JMServer) handleTerminalTask(req *pb.FinishedTaskRequest) {
 	if err := j.beat.FinishTask(req.TaskId); err != nil {
 		logger.Errorf("Handle task id %s failed: %s", req.TaskId, err)
 	}
+}
+
+func (j *JMServer) CreateCommandTicket(ctx context.Context, req *pb.CommandConfirmRequest) (*pb.CommandConfirmResponse, error) {
+	var (
+		status pb.Status
+	)
+	sid := req.GetSessionId()
+	ruleId := req.GetRuleId()
+	cmd := req.GetCmd()
+	res, err := j.apiClient.SubmitCommandConfirm(sid, ruleId, cmd)
+	if err != nil {
+		logger.Errorf("Create command ticket err: %s", err)
+		status.Err = err.Error()
+		return &pb.CommandConfirmResponse{Status: &status}, nil
+	}
+	status.Ok = true
+	return &pb.CommandConfirmResponse{Status: &status,
+		Info: ConvertToPbTicketInfo(&res.TicketInfo),
+	}, nil
+}
+
+func (j *JMServer) CheckTicketState(ctx context.Context, req *pb.TicketRequest) (*pb.TicketStateResponse, error) {
+	var (
+		status pb.Status
+	)
+	reqInfo := ConvertToReqInfo(req.Req)
+
+	res, err := j.apiClient.CheckConfirmStatusByRequestInfo(reqInfo)
+	if err != nil {
+		logger.Errorf("Check ticket status %+v err: %s", reqInfo, err)
+		status.Err = err.Error()
+		return &pb.TicketStateResponse{Status: &status}, nil
+	}
+	status.Ok = true
+	return &pb.TicketStateResponse{
+		Data:   ConvertToPbTicketState(&res),
+		Status: &status,
+	}, nil
+}
+
+func (j *JMServer) CancelTicket(ctx context.Context, req *pb.TicketRequest) (*pb.StatusResponse, error) {
+	var (
+		status pb.Status
+	)
+	status.Ok = true
+	reqInfo := ConvertToReqInfo(req.Req)
+	if err := j.apiClient.CancelConfirmByRequestInfo(reqInfo); err != nil {
+		logger.Errorf("Cancel ticket req %+v err: %s", reqInfo, err)
+		status.Ok = false
+		status.Err = err.Error()
+	}
+	return &pb.StatusResponse{Status: &status}, nil
 }

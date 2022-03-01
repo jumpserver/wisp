@@ -29,6 +29,9 @@ type ServiceClient interface {
 	UploadCommand(ctx context.Context, in *CommandRequest, opts ...grpc.CallOption) (*CommandResponse, error)
 	DispatchTask(ctx context.Context, opts ...grpc.CallOption) (Service_DispatchTaskClient, error)
 	ScanRemainReplays(ctx context.Context, in *RemainReplayRequest, opts ...grpc.CallOption) (*RemainReplayResponse, error)
+	CreateCommandTicket(ctx context.Context, in *CommandConfirmRequest, opts ...grpc.CallOption) (*CommandConfirmResponse, error)
+	CheckTicketState(ctx context.Context, in *TicketRequest, opts ...grpc.CallOption) (*TicketStateResponse, error)
+	CancelTicket(ctx context.Context, in *TicketRequest, opts ...grpc.CallOption) (*StatusResponse, error)
 }
 
 type serviceClient struct {
@@ -124,6 +127,33 @@ func (c *serviceClient) ScanRemainReplays(ctx context.Context, in *RemainReplayR
 	return out, nil
 }
 
+func (c *serviceClient) CreateCommandTicket(ctx context.Context, in *CommandConfirmRequest, opts ...grpc.CallOption) (*CommandConfirmResponse, error) {
+	out := new(CommandConfirmResponse)
+	err := c.cc.Invoke(ctx, "/message.Service/CreateCommandTicket", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *serviceClient) CheckTicketState(ctx context.Context, in *TicketRequest, opts ...grpc.CallOption) (*TicketStateResponse, error) {
+	out := new(TicketStateResponse)
+	err := c.cc.Invoke(ctx, "/message.Service/CheckTicketState", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *serviceClient) CancelTicket(ctx context.Context, in *TicketRequest, opts ...grpc.CallOption) (*StatusResponse, error) {
+	out := new(StatusResponse)
+	err := c.cc.Invoke(ctx, "/message.Service/CancelTicket", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ServiceServer is the server API for Service service.
 // All implementations must embed UnimplementedServiceServer
 // for forward compatibility
@@ -135,6 +165,9 @@ type ServiceServer interface {
 	UploadCommand(context.Context, *CommandRequest) (*CommandResponse, error)
 	DispatchTask(Service_DispatchTaskServer) error
 	ScanRemainReplays(context.Context, *RemainReplayRequest) (*RemainReplayResponse, error)
+	CreateCommandTicket(context.Context, *CommandConfirmRequest) (*CommandConfirmResponse, error)
+	CheckTicketState(context.Context, *TicketRequest) (*TicketStateResponse, error)
+	CancelTicket(context.Context, *TicketRequest) (*StatusResponse, error)
 	mustEmbedUnimplementedServiceServer()
 }
 
@@ -162,6 +195,15 @@ func (UnimplementedServiceServer) DispatchTask(Service_DispatchTaskServer) error
 }
 func (UnimplementedServiceServer) ScanRemainReplays(context.Context, *RemainReplayRequest) (*RemainReplayResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ScanRemainReplays not implemented")
+}
+func (UnimplementedServiceServer) CreateCommandTicket(context.Context, *CommandConfirmRequest) (*CommandConfirmResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateCommandTicket not implemented")
+}
+func (UnimplementedServiceServer) CheckTicketState(context.Context, *TicketRequest) (*TicketStateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CheckTicketState not implemented")
+}
+func (UnimplementedServiceServer) CancelTicket(context.Context, *TicketRequest) (*StatusResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CancelTicket not implemented")
 }
 func (UnimplementedServiceServer) mustEmbedUnimplementedServiceServer() {}
 
@@ -310,6 +352,60 @@ func _Service_ScanRemainReplays_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Service_CreateCommandTicket_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CommandConfirmRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).CreateCommandTicket(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/message.Service/CreateCommandTicket",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).CreateCommandTicket(ctx, req.(*CommandConfirmRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Service_CheckTicketState_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TicketRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).CheckTicketState(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/message.Service/CheckTicketState",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).CheckTicketState(ctx, req.(*TicketRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Service_CancelTicket_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TicketRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).CancelTicket(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/message.Service/CancelTicket",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).CancelTicket(ctx, req.(*TicketRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Service_ServiceDesc is the grpc.ServiceDesc for Service service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -340,6 +436,18 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ScanRemainReplays",
 			Handler:    _Service_ScanRemainReplays_Handler,
+		},
+		{
+			MethodName: "CreateCommandTicket",
+			Handler:    _Service_CreateCommandTicket_Handler,
+		},
+		{
+			MethodName: "CheckTicketState",
+			Handler:    _Service_CheckTicketState_Handler,
+		},
+		{
+			MethodName: "CancelTicket",
+			Handler:    _Service_CancelTicket_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

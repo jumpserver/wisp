@@ -55,7 +55,7 @@ func (u *UploaderService) watchConfig() {
 		case <-ticker.C:
 			termCfg, err := u.apiClient.GetTerminalConfig()
 			if err != nil {
-				logger.Errorf("Upload service watch config err: %s", err)
+				logger.Errorf("Uploader service watch config err: %s", err)
 				continue
 			}
 			u.updateBackendCfg(&termCfg)
@@ -88,7 +88,7 @@ func (u *UploaderService) run() {
 	for {
 		select {
 		case <-u.closed:
-			logger.Info("Uploader Service command task done")
+			logger.Info("Uploader service command task done")
 			return
 		case p := <-u.commandChan:
 			if p.RiskLevel == model.DangerLevel {
@@ -107,16 +107,16 @@ func (u *UploaderService) run() {
 			if err := u.apiClient.NotifyCommand(notificationList); err == nil {
 				notificationList = notificationList[:0]
 			} else {
-				logger.Errorf("Uploader Service command notify err: %s", err)
+				logger.Errorf("Uploader service command notify err: %s", err)
 			}
 		}
 		commandBackend := u.getCommandBackend()
 		if err := commandBackend.BulkSave(cmdList); err != nil {
-			logger.Errorf("Uploader Service command bulk save err: %s", err)
+			logger.Errorf("Uploader service command bulk save err: %s", err)
 			maxRetry++
 			continue
 		}
-		logger.Infof("Uploader Service command backend %s upload %d commands",
+		logger.Infof("Uploader service command backend %s upload %d commands",
 			commandBackend.TypeName(), len(cmdList))
 		cmdList = cmdList[:0]
 		maxRetry = 0
@@ -152,10 +152,10 @@ func (u *UploaderService) UploadReplay(sid, replayPath string) error {
 	target := strings.Join([]string{today, gzFilename}, "/")
 	err = replayBackend.Upload(absGzFile, target)
 	if err != nil {
-		logger.Errorf("Upload service Replay file %s failed: %s", absGzFile, err)
+		logger.Errorf("Uploader service replay file %s failed: %s", absGzFile, err)
 		return err
 	}
-	logger.Infof("Upload service replay file %s by %s", absGzFile, replayBackend.TypeName())
+	logger.Infof("Uploader service replay file %s by %s", absGzFile, replayBackend.TypeName())
 
 	if _, err = u.apiClient.FinishReply(sid); err != nil {
 		logger.Errorf("Finish %s replay api failed: %s", sid, err)
@@ -183,7 +183,7 @@ func (u *UploaderService) UploadRemainReplays(replayDir string) (ret RemainRepla
 	for replayPath := range allRemainReplays {
 		remainReplay := allRemainReplays[replayPath]
 		if err := u.uploadRemainReplay(&remainReplay); err != nil {
-			logger.Errorf("Upload service clean remain replay %s failed: %s",
+			logger.Errorf("Uploader service clean remain replay %s failed: %s",
 				replayPath, err)
 			failureFiles = append(failureFiles, replayPath)
 			failureErrs = append(failureErrs, err.Error())
@@ -192,11 +192,11 @@ func (u *UploaderService) UploadRemainReplays(replayDir string) (ret RemainRepla
 		successFiles = append(successFiles, replayPath)
 		// 上传完成 删除原录像文件
 		if err := os.Remove(replayPath); err != nil {
-			logger.Errorf("Upload service clean remain replay %s failed: %s",
+			logger.Errorf("Uploader service clean remain replay %s failed: %s",
 				replayPath, err)
 		}
 		if _, err := u.apiClient.FinishReply(remainReplay.Id); err != nil {
-			logger.Errorf("Upload service notify session %s replay finished failed: %s",
+			logger.Errorf("Uploader service notify session %s replay finished failed: %s",
 				remainReplay.Id, err)
 		}
 	}
@@ -212,7 +212,7 @@ func (u *UploaderService) uploadRemainReplay(replay *RemainReplay) error {
 		dirPath := filepath.Dir(replay.AbsFilePath)
 		replayAbsGzPath = filepath.Join(dirPath, replay.GetGzFilename())
 		if err := modelCommon.CompressToGzipFile(replay.AbsFilePath, replayAbsGzPath); err != nil {
-			return fmt.Errorf("Upload service compress gzip file %s: %s", replay.AbsFilePath, err)
+			return fmt.Errorf("uploader service compress gzip file %s: %s", replay.AbsFilePath, err)
 		}
 		defer os.Remove(replayAbsGzPath)
 	}
@@ -241,7 +241,7 @@ func scanRemainReplays(apiClient *service.JMService, replayDir string) map[strin
 		finishedTime := modelCommon.NewUTCTime(info.ModTime())
 		finishedSession, err2 := apiClient.SessionFinished(sid, finishedTime)
 		if err2 != nil {
-			logger.Errorf("Upload service mark session %s finished failed: %s", sid, err2)
+			logger.Errorf("Uploader service  mark session %s finished failed: %s", sid, err2)
 			return nil
 		}
 		targetDate = finishedSession.DateStart.UTC().Format("2006-01-02")
@@ -264,7 +264,7 @@ func (u *UploaderService) Stop() {
 		close(u.closed)
 	}
 	u.wg.Wait()
-	logger.Info("Uploader Service stop")
+	logger.Info("Uploader service stop")
 }
 
 func HaveFile(src string) bool {

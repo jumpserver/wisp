@@ -13,6 +13,10 @@ service Service {
   rpc UploadCommand(CommandRequest) returns (CommandResponse) {};
   rpc DispatchTask(stream FinishedTaskRequest) returns (stream TaskResponse) {};
   rpc ScanRemainReplays(RemainReplayRequest) returns (RemainReplayResponse) {};
+  rpc CreateCommandTicket(CommandConfirmRequest)
+      returns (CommandConfirmResponse) {};
+  rpc CheckTicketState(TicketRequest) returns (TicketStateResponse) {};
+  rpc CancelTicket(TicketRequest) returns (StatusResponse) {};
 }
 
 message Status {
@@ -20,14 +24,18 @@ message Status {
   string err = 2;
 }
 
-message DBTokenRequest { string token = 1; }
+message DBTokenRequest {
+  string token = 1;
+}
 
 message DBTokenResponse {
   Status status = 1;
   DBTokenAuthInfo data = 2;
 }
 
-message SessionCreateRequest { Session data = 1; }
+message SessionCreateRequest {
+  Session data = 1;
+}
 
 message SessionCreateResponse {
   Status status = 1;
@@ -41,14 +49,18 @@ message SessionFinishRequest {
   string err = 4;
 }
 
-message SessionFinishResp { Status status = 1; }
+message SessionFinishResp {
+  Status status = 1;
+}
 
 message ReplayRequest {
   string session_id = 1;
   string replay_file_path = 2;
 }
 
-message ReplayResponse { Status status = 1; }
+message ReplayResponse {
+  Status status = 1;
+}
 
 message CommandRequest {
   string sid = 1;
@@ -60,19 +72,71 @@ message CommandRequest {
   string system_user = 7;
   int64 timestamp = 8;
   RiskLevel risk_level = 9;
-};
+}
 
-message CommandResponse { Status status = 1; };
+message CommandResponse {
+  Status status = 1;
+}
 
-message FinishedTaskRequest { string task_id = 1; }
+message FinishedTaskRequest {
+  string task_id = 1;
+}
 
-message TaskResponse { TerminalTask task = 1; }
+message TaskResponse {
+  TerminalTask task = 1;
+}
 
-message RemainReplayRequest { string replay_dir = 1; }
+message RemainReplayRequest {
+  string replay_dir = 1;
+}
 
 message RemainReplayResponse {
   Status status = 1;
   repeated string success_files = 2;
   repeated string failure_files = 3;
   repeated string failure_errs = 4;
+}
+message StatusResponse {
+  Status status = 1;
+}
+message CommandConfirmRequest {
+  string session_id = 1;
+  string rule_id = 2;
+  string cmd = 3;
+}
+
+message ReqInfo {
+  string method = 1;
+  string url = 2;
+}
+message CommandConfirmResponse {
+  Status status = 1;
+  TicketInfo info = 2;
+}
+
+message TicketInfo {
+  ReqInfo confirm_req = 1;
+  ReqInfo cancel_req = 2;
+  string ticket_detail_url = 3;
+  repeated string reviewers = 4;
+}
+
+message TicketRequest {
+  ReqInfo req = 1;
+}
+
+message TicketStateResponse {
+  TicketState Data = 1;
+  Status status = 2;
+}
+
+message TicketState {
+  enum State {
+    Open = 0;
+    Approved = 1;
+    Rejected = 2;
+    Closed = 3;
+  }
+  State state = 1;
+  string processor = 2;
 }

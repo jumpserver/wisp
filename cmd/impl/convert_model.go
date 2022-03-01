@@ -65,3 +65,11 @@ func convertRiskLevel(lvl pb.RiskLevel) int64 {
 
 	}
 }
+
+func ConvertToReqInfo(req *pb.ReqInfo) model.ReqInfo {
+	return model.ReqInfo{
+		Method: req.GetMethod(),
+		URL:    req.GetUrl(),
+	}
+}
+

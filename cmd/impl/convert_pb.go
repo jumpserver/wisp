@@ -149,3 +149,34 @@ var pbLoginFrom = map[string]pb.Session_LoginFrom{
 	model.LoginFromRT: pb.Session_RT,
 	model.LoginFromDT: pb.Session_DT,
 }
+
+func ConvertToPbTicketInfo(info *model.TicketInfo) *pb.TicketInfo {
+	return &pb.TicketInfo{
+		ConfirmReq:      ConvertToPbReqInfo(info.CheckReq),
+		CancelReq:       ConvertToPbReqInfo(info.CloseReq),
+		TicketDetailUrl: info.TicketDetailUrl,
+		Reviewers:       info.Reviewers,
+	}
+}
+
+func ConvertToPbReqInfo(reqInfo model.ReqInfo) *pb.ReqInfo {
+	return &pb.ReqInfo{
+		Method: reqInfo.Method,
+		Url:    reqInfo.URL,
+	}
+}
+
+func ConvertToPbTicketState(state *model.TicketState) *pb.TicketState {
+
+	return &pb.TicketState{
+		State:     pbTicketMap[state.State],
+		Processor: state.Processor,
+	}
+}
+
+var pbTicketMap = map[string]pb.TicketState_State{
+	model.TicketOpen:     pb.TicketState_Open,
+	model.TicketApproved: pb.TicketState_Approved,
+	model.TicketRejected: pb.TicketState_Rejected,
+	model.TicketClosed:   pb.TicketState_Closed,
+}
