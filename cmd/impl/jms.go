@@ -230,3 +230,30 @@ func (j *JMServer) CancelTicket(ctx context.Context, req *pb.TicketRequest) (*pb
 	}
 	return &pb.StatusResponse{Status: &status}, nil
 }
+
+func (j *JMServer) CheckOrCreateAssetLoginTicket(ctx context.Context,
+	req *pb.AssetLoginTicketRequest) (*pb.AssetLoginTicketResponse, error) {
+	var (
+		status pb.Status
+	)
+
+	userId := req.GetUserId()
+	assetId := req.GetAssetId()
+	systemUserId := req.GetSystemUserId()
+	sysUsername := req.GetSystemUserUsername()
+	res, err := j.apiClient.CheckIfNeedAssetLoginConfirm(userId, assetId, systemUserId, sysUsername)
+	if err != nil {
+		logger.Errorf("Check or create asset login ticket req %+v err: %s", req, err)
+		status.Ok = false
+		status.Err = err.Error()
+		return &pb.AssetLoginTicketResponse{
+			Status: &status}, nil
+	}
+	status.Ok = true
+
+	return &pb.AssetLoginTicketResponse{
+		NeedConfirm: res.NeedConfirm,
+		TicketId:    res.TicketId,
+		TicketInfo:  ConvertToPbTicketInfo(&res.TicketInfo),
+		Status:      &status}, nil
+}

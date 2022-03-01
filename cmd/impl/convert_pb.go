@@ -152,7 +152,7 @@ var pbLoginFrom = map[string]pb.Session_LoginFrom{
 
 func ConvertToPbTicketInfo(info *model.TicketInfo) *pb.TicketInfo {
 	return &pb.TicketInfo{
-		ConfirmReq:      ConvertToPbReqInfo(info.CheckReq),
+		CheckReq:        ConvertToPbReqInfo(info.CheckReq),
 		CancelReq:       ConvertToPbReqInfo(info.CloseReq),
 		TicketDetailUrl: info.TicketDetailUrl,
 		Reviewers:       info.Reviewers,

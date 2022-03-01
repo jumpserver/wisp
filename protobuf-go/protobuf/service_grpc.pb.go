@@ -30,6 +30,7 @@ type ServiceClient interface {
 	DispatchTask(ctx context.Context, opts ...grpc.CallOption) (Service_DispatchTaskClient, error)
 	ScanRemainReplays(ctx context.Context, in *RemainReplayRequest, opts ...grpc.CallOption) (*RemainReplayResponse, error)
 	CreateCommandTicket(ctx context.Context, in *CommandConfirmRequest, opts ...grpc.CallOption) (*CommandConfirmResponse, error)
+	CheckOrCreateAssetLoginTicket(ctx context.Context, in *AssetLoginTicketRequest, opts ...grpc.CallOption) (*AssetLoginTicketResponse, error)
 	CheckTicketState(ctx context.Context, in *TicketRequest, opts ...grpc.CallOption) (*TicketStateResponse, error)
 	CancelTicket(ctx context.Context, in *TicketRequest, opts ...grpc.CallOption) (*StatusResponse, error)
 }
@@ -136,6 +137,15 @@ func (c *serviceClient) CreateCommandTicket(ctx context.Context, in *CommandConf
 	return out, nil
 }
 
+func (c *serviceClient) CheckOrCreateAssetLoginTicket(ctx context.Context, in *AssetLoginTicketRequest, opts ...grpc.CallOption) (*AssetLoginTicketResponse, error) {
+	out := new(AssetLoginTicketResponse)
+	err := c.cc.Invoke(ctx, "/message.Service/CheckOrCreateAssetLoginTicket", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *serviceClient) CheckTicketState(ctx context.Context, in *TicketRequest, opts ...grpc.CallOption) (*TicketStateResponse, error) {
 	out := new(TicketStateResponse)
 	err := c.cc.Invoke(ctx, "/message.Service/CheckTicketState", in, out, opts...)
@@ -166,6 +176,7 @@ type ServiceServer interface {
 	DispatchTask(Service_DispatchTaskServer) error
 	ScanRemainReplays(context.Context, *RemainReplayRequest) (*RemainReplayResponse, error)
 	CreateCommandTicket(context.Context, *CommandConfirmRequest) (*CommandConfirmResponse, error)
+	CheckOrCreateAssetLoginTicket(context.Context, *AssetLoginTicketRequest) (*AssetLoginTicketResponse, error)
 	CheckTicketState(context.Context, *TicketRequest) (*TicketStateResponse, error)
 	CancelTicket(context.Context, *TicketRequest) (*StatusResponse, error)
 	mustEmbedUnimplementedServiceServer()
@@ -198,6 +209,9 @@ func (UnimplementedServiceServer) ScanRemainReplays(context.Context, *RemainRepl
 }
 func (UnimplementedServiceServer) CreateCommandTicket(context.Context, *CommandConfirmRequest) (*CommandConfirmResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateCommandTicket not implemented")
+}
+func (UnimplementedServiceServer) CheckOrCreateAssetLoginTicket(context.Context, *AssetLoginTicketRequest) (*AssetLoginTicketResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CheckOrCreateAssetLoginTicket not implemented")
 }
 func (UnimplementedServiceServer) CheckTicketState(context.Context, *TicketRequest) (*TicketStateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckTicketState not implemented")
@@ -370,6 +384,24 @@ func _Service_CreateCommandTicket_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Service_CheckOrCreateAssetLoginTicket_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AssetLoginTicketRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).CheckOrCreateAssetLoginTicket(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/message.Service/CheckOrCreateAssetLoginTicket",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).CheckOrCreateAssetLoginTicket(ctx, req.(*AssetLoginTicketRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Service_CheckTicketState_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(TicketRequest)
 	if err := dec(in); err != nil {
@@ -440,6 +472,10 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateCommandTicket",
 			Handler:    _Service_CreateCommandTicket_Handler,
+		},
+		{
+			MethodName: "CheckOrCreateAssetLoginTicket",
+			Handler:    _Service_CheckOrCreateAssetLoginTicket_Handler,
 		},
 		{
 			MethodName: "CheckTicketState",
