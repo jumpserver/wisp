@@ -31,12 +31,13 @@ type JMServer struct {
 
 func (j *JMServer) GetDBTokenAuthInfo(ctx context.Context, req *pb.DBTokenRequest) (*pb.DBTokenResponse, error) {
 	var status pb.Status
-	tokenAuthInfo, err := j.apiClient.GetConnectTokenAuth(req.Token)
+	tokenResp, err := j.apiClient.GetConnectTokenAuth(req.Token)
 	if err != nil {
 		status.Err = err.Error()
 		logger.Errorf("Get Connect token auth failed: %s", err)
 		return &pb.DBTokenResponse{Status: &status}, nil
 	}
+	tokenAuthInfo := tokenResp.Info
 	if tokenAuthInfo.TypeName != model.ConnectApplication {
 		msg := fmt.Sprintf("Bad request: token %s connect type not %s", req.Token,
 			model.ConnectApplication)
@@ -49,6 +50,7 @@ func (j *JMServer) GetDBTokenAuthInfo(ctx context.Context, req *pb.DBTokenReques
 		SecreteId:   tokenAuthInfo.Secret,
 		Application: ConvertToProtobufApplication(tokenAuthInfo.Application),
 		User:        ConvertToProtobufUser(tokenAuthInfo.User),
+		FilterRules: ConvertToProtobufFilterRules(tokenAuthInfo.CmdFilterRules),
 		SystemUser:  ConvertToProtobufSystemUser(tokenAuthInfo.SystemUserAuthInfo),
 		Permission:  ConvertToProtobufPermission(model.Permission{Actions: tokenAuthInfo.Actions}),
 		ExpireInfo:  ConvertToProtobufExpireInfo(model.ExpireInfo{ExpireAt: tokenAuthInfo.ExpiredAt}),
