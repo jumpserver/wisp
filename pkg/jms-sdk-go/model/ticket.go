@@ -11,7 +11,7 @@ type ReqInfo struct {
 
 type TicketState struct {
 	ID        string `json:"id"`
-	Processor string `json:"processor;omitempty"`
+	Processor string `json:"processor,omitempty"`
 	State     string `json:"state"`
 	Status    string `json:"status"`
 }
