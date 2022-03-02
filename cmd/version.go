@@ -21,9 +21,9 @@ var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "Print the version of wisp",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("Wisp version: %s\n", Version)
-		fmt.Printf("Go version: %s\n", GoVersion)
-		fmt.Printf("Git commit: %s\n", GitCommit)
-		fmt.Printf("Built on: %s\n", BuildTime)
+		fmt.Printf("Wisp Version: %s\n", Version)
+		fmt.Printf("Go Version: %s\n", GoVersion)
+		fmt.Printf("Git Commit: %s\n", GitCommit)
+		fmt.Printf("Build UTC Time: %s\n", BuildTime)
 	},
 }
