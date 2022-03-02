@@ -93,7 +93,7 @@ func NewReplayBackend(apiClient *service.JMService, cfg *model.ReplayConfig) Rep
 			AccessKey: accessKey,
 			SecretKey: secretKey,
 		}
-	case "s3", "swift":
+	case "s3", "swift", "cos":
 		var (
 			region    string
 			endpoint  string
