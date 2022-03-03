@@ -1,8 +1,10 @@
 package cmd
 
 import (
+	"context"
 	"net"
 	"path/filepath"
+	"time"
 
 	"github.com/spf13/cobra"
 
@@ -10,6 +12,7 @@ import (
 	"github.com/jumpserver/wisp/cmd/impl"
 	"github.com/jumpserver/wisp/pkg/config"
 	"github.com/jumpserver/wisp/pkg/logger"
+	"github.com/jumpserver/wisp/pkg/process"
 )
 
 var (
@@ -53,17 +56,38 @@ var rootCmd = &cobra.Command{
 		{
 			go beat.KeepHeartBeat()
 		}
+		ctx := common.GetSignalCtx()
 		grpcImplSrv := impl.NewJMServer(apiClient, uploader, beat)
+		srv := NewServer(addr, grpcImplSrv)
 		{
-			srv := NewServer(addr, grpcImplSrv)
-			ctx := common.GetSignalCtx()
-			Run(ctx, srv)
+			go RunServer(ctx, srv)
+			time.Sleep(time.Second)
 		}
-
+		{
+			//  子进程启动
+			if conf.ExecuteProgram != "" {
+				subProcess := process.New(conf.RootPath, conf.ExecuteProgram)
+				logger.Infof("start subprocess: %s", conf.ExecuteProgram)
+				startProcess(ctx, subProcess)
+				// 子进程突出，srv 结束
+				srv.Stop()
+			}
+		}
+		srv.Wait()
 	}}
 
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
+		logger.Fatal(err)
+	}
+}
+
+func startProcess(ctx context.Context, subProcess *process.Process) {
+	go func() {
+		<-ctx.Done()
+		subProcess.Stop()
+	}()
+	if err := subProcess.Start(); err != nil {
 		logger.Fatal(err)
 	}
 }

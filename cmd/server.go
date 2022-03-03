@@ -3,6 +3,7 @@ package cmd
 import (
 	"context"
 	"net"
+	"sync"
 
 	"google.golang.org/grpc"
 
@@ -17,6 +18,7 @@ func NewServer(addr string, imp pb.ServiceServer) *Server {
 		addr:       addr,
 		impService: imp,
 		grpcSrv:    grpcSrv,
+		done:       make(chan struct{}),
 	}
 }
 
@@ -26,6 +28,9 @@ type Server struct {
 	grpcSrv    *grpc.Server
 
 	ln net.Listener
+
+	once sync.Once
+	done chan struct{}
 }
 
 func (s *Server) Run() (err error) {
@@ -39,21 +44,33 @@ func (s *Server) Run() (err error) {
 }
 
 func (s *Server) Stop() {
-	if s.grpcSrv != nil {
-		s.grpcSrv.GracefulStop()
+	select {
+	case <-s.done:
+		logger.Info("Server already stop")
+	default:
+		s.once.Do(func() {
+			if s.grpcSrv != nil {
+				s.grpcSrv.GracefulStop()
+			}
+			if s.ln != nil {
+				_ = s.ln.Close()
+			}
+			close(s.done)
+		})
+		logger.Info("Server stop")
 	}
-	if s.ln != nil {
-		_ = s.ln.Close()
-	}
-	logger.Info("Server stop")
 }
 
-func Run(ctx context.Context, srv *Server) {
+func (s *Server) Wait() {
+	<-s.done
+}
+
+func RunServer(ctx context.Context, srv *Server) {
 	go func() {
 		<-ctx.Done()
 		srv.Stop()
 	}()
 	if err := srv.Run(); err != nil {
-		logger.Fatal(err)
+		logger.Fatalf("Server err: %s", err)
 	}
 }

@@ -20,7 +20,7 @@ var fakeCmd = &cobra.Command{
 		addr := net.JoinHostPort(conf.BindHost, conf.BindPort)
 		implServer := impl.NewFakeServer(testFile)
 		srv := NewServer(addr, implServer)
-		Run(ctx, srv)
+		RunServer(ctx, srv)
 	},
 }
 

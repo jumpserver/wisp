@@ -1,6 +1,13 @@
+# 组件名称 必填项
 # COMPONENT_NAME:  # required, this is a component name defined by JumpServer
 # CORE_HOST: http://127.0.0.1:8080
 # BOOTSTRAP_TOKEN: abcd
 # BIND_HOST: 0.0.0.0
 # BIND_PORT: 9090
 # LOG_LEVEL: INFO
+
+# 默认是启动程序的当前目录
+# WORK_DIR:
+
+# 执行的子命令
+# EXECUTE_PROGRAM:

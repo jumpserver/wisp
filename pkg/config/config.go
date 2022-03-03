@@ -20,6 +20,7 @@ type Config struct {
 	BindPort       string `mapstructure:"BIND_PORT"`
 	LogLevel       string `mapstructure:"LOG_LEVEL"`
 	RootPath       string `mapstructure:"WORK_DIR"`
+	ExecuteProgram string `mapstructure:"EXECUTE_PROGRAM"`
 
 	DataFolderPath    string
 	LogFolderPath     string
