@@ -17,6 +17,7 @@ func New(workDir, commandStr string) *Process {
 		programName: commands[0],
 		args:        commands[1:],
 		cmd:         cmd,
+		done:        make(chan struct{}),
 	}
 }
 
