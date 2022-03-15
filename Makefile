@@ -65,25 +65,27 @@ clean:
 proto_path=./protos/
 proto_files=./protos/*.proto
 
-protobuf_go_dir=./protobuf-go/protobuf
+proto_go_dir=./protobuf-go
 protobuf_py_dir=./protobuf-py/protobuf
 
 .PHONY: proto
-proto: proto-go proto-py
+proto: proto-go
 
 .PHONY: proto-go
 proto-go:
-	@mkdir -p ${protobuf_go_dir}
-	rm -rf  ${protobuf_go_dir}/*
-	protoc --proto_path=${proto_path} --go_out=./protobuf-go/  \
-	--go-grpc_out=./protobuf-go/ \
+	@mkdir -p ${proto_go_dir}/protobuf
+	rm -rf  ${proto_go_dir}/protobuf/*
+	protoc --proto_path=${proto_path} --go_out=${proto_go_dir}  \
+	--go-grpc_out=${proto_go_dir} \
 	--go_opt=paths=import \
 	${proto_files}
 
+
+
 .PHONY: proto-py
 proto-py:
-	@mkdir -p ${protobuf_py_dir}
-	rm -rf ${protobuf_py_dir}/*
-	python -m grpc_tools.protoc --proto_path=${proto_path} --python_out=${protobuf_py_dir} \
-	--grpc_python_out=${protobuf_py_dir} \
+	@mkdir -p ./protobuf-py/protobuf
+	rm -rf ./protobuf-py/protobuf/*
+	python -m grpc_tools.protoc --proto_path=${proto_path} --python_out=./protobuf-py/protobuf \
+	--grpc_python_out=./protobuf-py/protobuf \
 	${proto_files}

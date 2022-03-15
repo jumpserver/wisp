@@ -69,7 +69,7 @@ var rootCmd = &cobra.Command{
 				subProcess := process.New(conf.RootPath, conf.ExecuteProgram)
 				logger.Infof("start subprocess: %s", conf.ExecuteProgram)
 				startProcess(ctx, subProcess)
-				// 子进程突出，srv 结束
+				// 子进程退出，srv 结束
 				srv.Stop()
 			}
 		}

@@ -49,7 +49,7 @@ func (r *RemainReplay) GetGzFilename() string {
 	return r.Id + suffixGz
 }
 
-func ParseReoplaySessionID(filename string) (string, bool) {
+func ParseReplaySessionID(filename string) (string, bool) {
 	if len(filename) == 36 && modelCommon.IsUUID(filename) {
 		return filename, true
 	}
