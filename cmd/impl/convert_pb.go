@@ -79,7 +79,7 @@ var ruleActionMap = map[model.RuleAction]pb.FilterRule_Action{
 
 func ConvertToProtobufFilterRule(rule model.FilterRule) *pb.FilterRule {
 	action, ok := ruleActionMap[rule.Action]
-	if ok {
+	if !ok {
 		action = pb.FilterRule_Unknown
 	}
 	return &pb.FilterRule{
