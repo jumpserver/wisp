@@ -175,6 +175,7 @@ func (j *JMServer) sendStreamTask(ctx context.Context, stream pb.Service_Dispatc
 		}
 	}
 }
+
 func (j *JMServer) handleTerminalTask(req *pb.FinishedTaskRequest) {
 	if err := j.beat.FinishTask(req.TaskId); err != nil {
 		logger.Errorf("Handle task id %s failed: %s", req.TaskId, err)

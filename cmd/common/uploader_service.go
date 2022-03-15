@@ -232,7 +232,7 @@ func scanRemainReplays(apiClient *service.JMService, replayDir string) map[strin
 			version    model.ReplayVersion
 			ok         bool
 		)
-		if sid, ok = ParseReoplaySessionID(info.Name()); !ok {
+		if sid, ok = ParseReplaySessionID(info.Name()); !ok {
 			return nil
 		}
 		if version, ok = ParseReplayVersion(info.Name()); !ok {
