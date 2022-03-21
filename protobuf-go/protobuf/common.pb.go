@@ -1074,6 +1074,7 @@ type DBTokenAuthInfo struct {
 	ExpireInfo  *ExpireInfo         `protobuf:"bytes,7,opt,name=expire_info,json=expireInfo,proto3" json:"expire_info,omitempty"`
 	FilterRules []*FilterRule       `protobuf:"bytes,8,rep,name=filter_rules,json=filterRules,proto3" json:"filter_rules,omitempty"`
 	Gateways    []*Gateway          `protobuf:"bytes,9,rep,name=gateways,proto3" json:"gateways,omitempty"`
+	Setting     *ComponentSetting   `protobuf:"bytes,10,opt,name=setting,proto3" json:"setting,omitempty"`
 }
 
 func (x *DBTokenAuthInfo) Reset() {
@@ -1171,6 +1172,123 @@ func (x *DBTokenAuthInfo) GetGateways() []*Gateway {
 	return nil
 }
 
+func (x *DBTokenAuthInfo) GetSetting() *ComponentSetting {
+	if x != nil {
+		return x.Setting
+	}
+	return nil
+}
+
+type ComponentSetting struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	MaxIdleTime int32 `protobuf:"varint,1,opt,name=max_idle_time,json=maxIdleTime,proto3" json:"max_idle_time,omitempty"`
+}
+
+func (x *ComponentSetting) Reset() {
+	*x = ComponentSetting{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_common_proto_msgTypes[10]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ComponentSetting) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ComponentSetting) ProtoMessage() {}
+
+func (x *ComponentSetting) ProtoReflect() protoreflect.Message {
+	mi := &file_common_proto_msgTypes[10]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ComponentSetting.ProtoReflect.Descriptor instead.
+func (*ComponentSetting) Descriptor() ([]byte, []int) {
+	return file_common_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *ComponentSetting) GetMaxIdleTime() int32 {
+	if x != nil {
+		return x.MaxIdleTime
+	}
+	return 0
+}
+
+type Forward struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id   string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Host string `protobuf:"bytes,2,opt,name=Host,proto3" json:"Host,omitempty"`
+	Port int32  `protobuf:"varint,3,opt,name=port,proto3" json:"port,omitempty"`
+}
+
+func (x *Forward) Reset() {
+	*x = Forward{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_common_proto_msgTypes[11]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Forward) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Forward) ProtoMessage() {}
+
+func (x *Forward) ProtoReflect() protoreflect.Message {
+	mi := &file_common_proto_msgTypes[11]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Forward.ProtoReflect.Descriptor instead.
+func (*Forward) Descriptor() ([]byte, []int) {
+	return file_common_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *Forward) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *Forward) GetHost() string {
+	if x != nil {
+		return x.Host
+	}
+	return ""
+}
+
+func (x *Forward) GetPort() int32 {
+	if x != nil {
+		return x.Port
+	}
+	return 0
+}
+
 type Application_Attrs struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1184,7 +1302,7 @@ type Application_Attrs struct {
 func (x *Application_Attrs) Reset() {
 	*x = Application_Attrs{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_common_proto_msgTypes[10]
+		mi := &file_common_proto_msgTypes[12]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1197,7 +1315,7 @@ func (x *Application_Attrs) String() string {
 func (*Application_Attrs) ProtoMessage() {}
 
 func (x *Application_Attrs) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[10]
+	mi := &file_common_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1365,7 +1483,7 @@ var file_common_proto_rawDesc = []byte{
 	0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x73, 0x65, 0x73, 0x73, 0x69,
 	0x6f, 0x6e, 0x49, 0x64, 0x12, 0x23, 0x0a, 0x0d, 0x74, 0x65, 0x72, 0x6d, 0x69, 0x6e, 0x61, 0x74,
 	0x65, 0x64, 0x5f, 0x62, 0x79, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x74, 0x65, 0x72,
-	0x6d, 0x69, 0x6e, 0x61, 0x74, 0x65, 0x64, 0x42, 0x79, 0x22, 0xb1, 0x03, 0x0a, 0x0f, 0x44, 0x42,
+	0x6d, 0x69, 0x6e, 0x61, 0x74, 0x65, 0x64, 0x42, 0x79, 0x22, 0xe6, 0x03, 0x0a, 0x0f, 0x44, 0x42,
 	0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x41, 0x75, 0x74, 0x68, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x15, 0x0a,
 	0x06, 0x6b, 0x65, 0x79, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x6b,
 	0x65, 0x79, 0x49, 0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x73, 0x65, 0x63, 0x72, 0x65, 0x74, 0x65, 0x5f,
@@ -1392,7 +1510,18 @@ var file_common_proto_rawDesc = []byte{
 	0x6c, 0x65, 0x52, 0x0b, 0x66, 0x69, 0x6c, 0x74, 0x65, 0x72, 0x52, 0x75, 0x6c, 0x65, 0x73, 0x12,
 	0x2c, 0x0a, 0x08, 0x67, 0x61, 0x74, 0x65, 0x77, 0x61, 0x79, 0x73, 0x18, 0x09, 0x20, 0x03, 0x28,
 	0x0b, 0x32, 0x10, 0x2e, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x2e, 0x47, 0x61, 0x74, 0x65,
-	0x77, 0x61, 0x79, 0x52, 0x08, 0x67, 0x61, 0x74, 0x65, 0x77, 0x61, 0x79, 0x73, 0x2a, 0x1d, 0x0a,
+	0x77, 0x61, 0x79, 0x52, 0x08, 0x67, 0x61, 0x74, 0x65, 0x77, 0x61, 0x79, 0x73, 0x12, 0x33, 0x0a,
+	0x07, 0x73, 0x65, 0x74, 0x74, 0x69, 0x6e, 0x67, 0x18, 0x0a, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x19,
+	0x2e, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x2e, 0x43, 0x6f, 0x6d, 0x70, 0x6f, 0x6e, 0x65,
+	0x6e, 0x74, 0x53, 0x65, 0x74, 0x74, 0x69, 0x6e, 0x67, 0x52, 0x07, 0x73, 0x65, 0x74, 0x74, 0x69,
+	0x6e, 0x67, 0x22, 0x36, 0x0a, 0x10, 0x43, 0x6f, 0x6d, 0x70, 0x6f, 0x6e, 0x65, 0x6e, 0x74, 0x53,
+	0x65, 0x74, 0x74, 0x69, 0x6e, 0x67, 0x12, 0x22, 0x0a, 0x0d, 0x6d, 0x61, 0x78, 0x5f, 0x69, 0x64,
+	0x6c, 0x65, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x0b, 0x6d,
+	0x61, 0x78, 0x49, 0x64, 0x6c, 0x65, 0x54, 0x69, 0x6d, 0x65, 0x22, 0x41, 0x0a, 0x07, 0x46, 0x6f,
+	0x72, 0x77, 0x61, 0x72, 0x64, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x48, 0x6f, 0x73, 0x74, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x04, 0x48, 0x6f, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x70, 0x6f, 0x72,
+	0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x05, 0x52, 0x04, 0x70, 0x6f, 0x72, 0x74, 0x2a, 0x1d, 0x0a,
 	0x0a, 0x54, 0x61, 0x73, 0x6b, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x0f, 0x0a, 0x0b, 0x4b,
 	0x69, 0x6c, 0x6c, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x10, 0x00, 0x2a, 0x23, 0x0a, 0x09,
 	0x52, 0x69, 0x73, 0x6b, 0x4c, 0x65, 0x76, 0x65, 0x6c, 0x12, 0x0a, 0x0a, 0x06, 0x4e, 0x6f, 0x72,
@@ -1414,7 +1543,7 @@ func file_common_proto_rawDescGZIP() []byte {
 }
 
 var file_common_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_common_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_common_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_common_proto_goTypes = []interface{}{
 	(TaskAction)(0),            // 0: message.TaskAction
 	(RiskLevel)(0),             // 1: message.RiskLevel
@@ -1430,10 +1559,12 @@ var file_common_proto_goTypes = []interface{}{
 	(*Session)(nil),            // 11: message.Session
 	(*TerminalTask)(nil),       // 12: message.TerminalTask
 	(*DBTokenAuthInfo)(nil),    // 13: message.DBTokenAuthInfo
-	(*Application_Attrs)(nil),  // 14: message.Application.Attrs
+	(*ComponentSetting)(nil),   // 14: message.ComponentSetting
+	(*Forward)(nil),            // 15: message.Forward
+	(*Application_Attrs)(nil),  // 16: message.Application.Attrs
 }
 var file_common_proto_depIdxs = []int32{
-	14, // 0: message.Application.attrs:type_name -> message.Application.Attrs
+	16, // 0: message.Application.attrs:type_name -> message.Application.Attrs
 	2,  // 1: message.FilterRule.action:type_name -> message.FilterRule.Action
 	3,  // 2: message.Session.login_from:type_name -> message.Session.LoginFrom
 	0,  // 3: message.TerminalTask.action:type_name -> message.TaskAction
@@ -1444,11 +1575,12 @@ var file_common_proto_depIdxs = []int32{
 	10, // 8: message.DBTokenAuthInfo.expire_info:type_name -> message.ExpireInfo
 	9,  // 9: message.DBTokenAuthInfo.filter_rules:type_name -> message.FilterRule
 	7,  // 10: message.DBTokenAuthInfo.gateways:type_name -> message.Gateway
-	11, // [11:11] is the sub-list for method output_type
-	11, // [11:11] is the sub-list for method input_type
-	11, // [11:11] is the sub-list for extension type_name
-	11, // [11:11] is the sub-list for extension extendee
-	0,  // [0:11] is the sub-list for field type_name
+	14, // 11: message.DBTokenAuthInfo.setting:type_name -> message.ComponentSetting
+	12, // [12:12] is the sub-list for method output_type
+	12, // [12:12] is the sub-list for method input_type
+	12, // [12:12] is the sub-list for extension type_name
+	12, // [12:12] is the sub-list for extension extendee
+	0,  // [0:12] is the sub-list for field type_name
 }
 
 func init() { file_common_proto_init() }
@@ -1578,6 +1710,30 @@ func file_common_proto_init() {
 			}
 		}
 		file_common_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ComponentSetting); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_common_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Forward); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_common_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Application_Attrs); i {
 			case 0:
 				return &v.state
@@ -1596,7 +1752,7 @@ func file_common_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_common_proto_rawDesc,
 			NumEnums:      4,
-			NumMessages:   11,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

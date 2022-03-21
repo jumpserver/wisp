@@ -33,6 +33,8 @@ type ServiceClient interface {
 	CheckOrCreateAssetLoginTicket(ctx context.Context, in *AssetLoginTicketRequest, opts ...grpc.CallOption) (*AssetLoginTicketResponse, error)
 	CheckTicketState(ctx context.Context, in *TicketRequest, opts ...grpc.CallOption) (*TicketStateResponse, error)
 	CancelTicket(ctx context.Context, in *TicketRequest, opts ...grpc.CallOption) (*StatusResponse, error)
+	CreateForward(ctx context.Context, in *ForwardRequest, opts ...grpc.CallOption) (*ForwardResponse, error)
+	DeleteForward(ctx context.Context, in *ForwardDeleteRequest, opts ...grpc.CallOption) (*StatusResponse, error)
 }
 
 type serviceClient struct {
@@ -164,6 +166,24 @@ func (c *serviceClient) CancelTicket(ctx context.Context, in *TicketRequest, opt
 	return out, nil
 }
 
+func (c *serviceClient) CreateForward(ctx context.Context, in *ForwardRequest, opts ...grpc.CallOption) (*ForwardResponse, error) {
+	out := new(ForwardResponse)
+	err := c.cc.Invoke(ctx, "/message.Service/CreateForward", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *serviceClient) DeleteForward(ctx context.Context, in *ForwardDeleteRequest, opts ...grpc.CallOption) (*StatusResponse, error) {
+	out := new(StatusResponse)
+	err := c.cc.Invoke(ctx, "/message.Service/DeleteForward", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ServiceServer is the server API for Service service.
 // All implementations must embed UnimplementedServiceServer
 // for forward compatibility
@@ -179,6 +199,8 @@ type ServiceServer interface {
 	CheckOrCreateAssetLoginTicket(context.Context, *AssetLoginTicketRequest) (*AssetLoginTicketResponse, error)
 	CheckTicketState(context.Context, *TicketRequest) (*TicketStateResponse, error)
 	CancelTicket(context.Context, *TicketRequest) (*StatusResponse, error)
+	CreateForward(context.Context, *ForwardRequest) (*ForwardResponse, error)
+	DeleteForward(context.Context, *ForwardDeleteRequest) (*StatusResponse, error)
 	mustEmbedUnimplementedServiceServer()
 }
 
@@ -218,6 +240,12 @@ func (UnimplementedServiceServer) CheckTicketState(context.Context, *TicketReque
 }
 func (UnimplementedServiceServer) CancelTicket(context.Context, *TicketRequest) (*StatusResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CancelTicket not implemented")
+}
+func (UnimplementedServiceServer) CreateForward(context.Context, *ForwardRequest) (*ForwardResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateForward not implemented")
+}
+func (UnimplementedServiceServer) DeleteForward(context.Context, *ForwardDeleteRequest) (*StatusResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteForward not implemented")
 }
 func (UnimplementedServiceServer) mustEmbedUnimplementedServiceServer() {}
 
@@ -438,6 +466,42 @@ func _Service_CancelTicket_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Service_CreateForward_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ForwardRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).CreateForward(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/message.Service/CreateForward",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).CreateForward(ctx, req.(*ForwardRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Service_DeleteForward_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ForwardDeleteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).DeleteForward(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/message.Service/DeleteForward",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).DeleteForward(ctx, req.(*ForwardDeleteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Service_ServiceDesc is the grpc.ServiceDesc for Service service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -484,6 +548,14 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CancelTicket",
 			Handler:    _Service_CancelTicket_Handler,
+		},
+		{
+			MethodName: "CreateForward",
+			Handler:    _Service_CreateForward_Handler,
+		},
+		{
+			MethodName: "DeleteForward",
+			Handler:    _Service_DeleteForward_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
