@@ -180,3 +180,7 @@ var pbTicketMap = map[string]pb.TicketState_State{
 	model.TicketRejected: pb.TicketState_Rejected,
 	model.TicketClosed:   pb.TicketState_Closed,
 }
+
+func ConvertToPbSetting(setting *model.TerminalConfig) *pb.ComponentSetting {
+	return &pb.ComponentSetting{MaxIdleTime: int32(setting.MaxIdleTime)}
+}

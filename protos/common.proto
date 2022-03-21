@@ -127,4 +127,15 @@ message DBTokenAuthInfo {
   ExpireInfo expire_info = 7;
   repeated FilterRule filter_rules = 8;
   repeated Gateway gateways = 9;
+  ComponentSetting setting = 10;
+}
+
+message ComponentSetting {
+  int32 max_idle_time = 1;
+}
+
+message Forward {
+  string id = 1;
+  string Host = 2;
+  int32 port = 3;
 }

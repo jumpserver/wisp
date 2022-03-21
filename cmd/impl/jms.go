@@ -4,8 +4,12 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"net"
+	"strconv"
 
 	"github.com/jumpserver/wisp/cmd/common"
+	"github.com/jumpserver/wisp/pkg/forward"
+	modelCommon "github.com/jumpserver/wisp/pkg/jms-sdk-go/common"
 	"github.com/jumpserver/wisp/pkg/jms-sdk-go/model"
 	"github.com/jumpserver/wisp/pkg/jms-sdk-go/service"
 	"github.com/jumpserver/wisp/pkg/logger"
@@ -15,9 +19,10 @@ import (
 func NewJMServer(apiClient *service.JMService, uploader *common.UploaderService,
 	beat *common.BeatService) *JMServer {
 	return &JMServer{
-		apiClient: apiClient,
-		uploader:  uploader,
-		beat:      beat,
+		apiClient:    apiClient,
+		uploader:     uploader,
+		beat:         beat,
+		forwardStore: common.NewForwardCache(),
 	}
 }
 
@@ -27,6 +32,8 @@ type JMServer struct {
 
 	uploader *common.UploaderService
 	beat     *common.BeatService
+
+	forwardStore *common.ForwardCache
 }
 
 func (j *JMServer) GetDBTokenAuthInfo(ctx context.Context, req *pb.DBTokenRequest) (*pb.DBTokenResponse, error) {
@@ -45,6 +52,7 @@ func (j *JMServer) GetDBTokenAuthInfo(ctx context.Context, req *pb.DBTokenReques
 		logger.Error(msg)
 		return &pb.DBTokenResponse{Status: &status}, nil
 	}
+	setting := j.uploader.GetTerminalSetting()
 	dbTokenInfo := pb.DBTokenAuthInfo{
 		KeyId:       tokenAuthInfo.Id,
 		SecreteId:   tokenAuthInfo.Secret,
@@ -54,7 +62,8 @@ func (j *JMServer) GetDBTokenAuthInfo(ctx context.Context, req *pb.DBTokenReques
 		SystemUser:  ConvertToProtobufSystemUser(tokenAuthInfo.SystemUserAuthInfo),
 		Permission:  ConvertToProtobufPermission(model.Permission{Actions: tokenAuthInfo.Actions}),
 		ExpireInfo:  ConvertToProtobufExpireInfo(model.ExpireInfo{ExpireAt: tokenAuthInfo.ExpiredAt}),
-		Gateways:    ConvertToProtobufGateWays([]model.Gateway{tokenAuthInfo.Gateway}),
+		Gateways:    ConvertToProtobufGateWays(tokenAuthInfo.Domain.Gateways),
+		Setting:     ConvertToPbSetting(&setting),
 	}
 	status.Ok = true
 	logger.Debugf("Get database auth info success by token: %s", req.Token)
@@ -259,4 +268,62 @@ func (j *JMServer) CheckOrCreateAssetLoginTicket(ctx context.Context,
 		TicketId:    res.TicketId,
 		TicketInfo:  ConvertToPbTicketInfo(&res.TicketInfo),
 		Status:      &status}, nil
+}
+
+func (j *JMServer) CreateForward(ctx context.Context, req *pb.ForwardRequest) (*pb.ForwardResponse, error) {
+	var (
+		status pb.Status
+	)
+	host := req.GetHost()
+	port := strconv.FormatInt(int64(req.GetPort()), 10)
+	dstAddr := net.JoinHostPort(host, port)
+	gateways := req.GetGateways()
+	client, err := common.FindAvailableGateway(gateways)
+	if err != nil {
+		status.Err = err.Error()
+		return &pb.ForwardResponse{
+			Status: &status,
+		}, nil
+	}
+	forwardProxy := forward.SSHForward{
+		Client:  client,
+		DstAddr: dstAddr,
+	}
+	if err = forwardProxy.Start(); err != nil {
+		status.Err = err.Error()
+		_ = client.Close()
+		logger.Errorf("Start forward proxy failed: %s", err)
+		return &pb.ForwardResponse{
+			Status: &status,
+		}, nil
+	}
+	id := modelCommon.UUID()
+	j.forwardStore.Add(id, &forwardProxy)
+	lnAddr := forwardProxy.GetTCPAddr()
+	status.Ok = true
+	logger.Infof("Start forward proxy: id %s on %s", id, lnAddr.String())
+	ret := &pb.ForwardResponse{
+		Status: &status,
+		Id:     id,
+		Host:   lnAddr.IP.String(),
+		Port:   int32(lnAddr.Port),
+	}
+	return ret, nil
+}
+
+func (j *JMServer) DeleteForward(ctx context.Context, req *pb.ForwardDeleteRequest) (*pb.StatusResponse, error) {
+	var (
+		status pb.Status
+	)
+	id := req.GetId()
+	if forwardProxy := j.forwardStore.Get(id); forwardProxy != nil {
+		forwardProxy.Stop()
+		status.Ok = true
+		j.forwardStore.Remove(id)
+		logger.Infof("Forward remove id %s", id)
+		return &pb.StatusResponse{Status: &status}, nil
+	}
+	status.Err = fmt.Sprintf("not found forward %s", id)
+	logger.Errorf("Forward not found id %s", id)
+	return &pb.StatusResponse{Status: &status}, nil
 }

@@ -48,6 +48,7 @@ type TokenAuthInfo struct {
 	Asset       *model.Asset      `json:"asset,omitempty"`
 	ExpiredAt   int64             `json:"expired_at"`
 	Gateway     model.Gateway     `json:"gateway,omitempty"`
+	Domain      model.Domain      `json:"domain"`
 
 	CmdFilterRules []model.FilterRule `json:"cmd_filter_rules,omitempty"`
 

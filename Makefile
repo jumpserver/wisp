@@ -74,7 +74,6 @@ proto: proto-go
 .PHONY: proto-go
 proto-go:
 	@mkdir -p ${proto_go_dir}/protobuf
-	rm -rf  ${proto_go_dir}/protobuf/*
 	protoc --proto_path=${proto_path} --go_out=${proto_go_dir}  \
 	--go-grpc_out=${proto_go_dir} \
 	--go_opt=paths=import \
@@ -85,7 +84,6 @@ proto-go:
 .PHONY: proto-py
 proto-py:
 	@mkdir -p ./protobuf-py/protobuf
-	rm -rf ./protobuf-py/protobuf/*
 	python -m grpc_tools.protoc --proto_path=${proto_path} --python_out=./protobuf-py/protobuf \
 	--grpc_python_out=./protobuf-py/protobuf \
 	${proto_files}

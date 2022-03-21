@@ -19,6 +19,8 @@ service Service {
       returns (AssetLoginTicketResponse) {};
   rpc CheckTicketState(TicketRequest) returns (TicketStateResponse) {};
   rpc CancelTicket(TicketRequest) returns (StatusResponse) {};
+  rpc CreateForward(ForwardRequest) returns (ForwardResponse) {};
+  rpc DeleteForward(ForwardDeleteRequest) returns (StatusResponse) {};
 }
 
 message AssetLoginTicketRequest {
@@ -155,4 +157,21 @@ message TicketState {
   }
   State state = 1;
   string processor = 2;
+}
+
+message ForwardRequest {
+  string host = 1;
+  int32 port = 2;
+  repeated Gateway gateways = 3;
+}
+
+message ForwardDeleteRequest {
+  string id = 1;
+}
+
+message ForwardResponse {
+  Status status = 1;
+  string id = 2;
+  string host = 3;
+  int32 port = 4;
 }

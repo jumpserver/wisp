@@ -34,6 +34,8 @@ type UploaderService struct {
 	commandCfg atomic.Value // model.CommandConfig
 	replayCfg  atomic.Value // model.ReplayConfig
 
+	terminalCfg atomic.Value // *model.TerminalConfig
+
 	wg sync.WaitGroup
 }
 
@@ -66,6 +68,7 @@ func (u *UploaderService) watchConfig() {
 func (u *UploaderService) updateBackendCfg(termCfg *model.TerminalConfig) {
 	u.commandCfg.Store(termCfg.CommandStorage)
 	u.replayCfg.Store(termCfg.ReplayStorage)
+	u.terminalCfg.Store(termCfg)
 }
 
 func (u *UploaderService) getCommandBackend() CommandStorage {
@@ -76,6 +79,11 @@ func (u *UploaderService) getCommandBackend() CommandStorage {
 func (u *UploaderService) getReplayBackend() ReplayStorage {
 	cfg := u.replayCfg.Load().(model.ReplayConfig)
 	return NewReplayBackend(u.apiClient, &cfg)
+}
+
+func (u *UploaderService) GetTerminalSetting() model.TerminalConfig {
+	cfg := u.terminalCfg.Load().(*model.TerminalConfig)
+	return *cfg
 }
 
 func (u *UploaderService) run() {
