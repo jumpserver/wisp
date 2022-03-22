@@ -122,6 +122,9 @@ func (u *UploaderService) run() {
 		if err := commandBackend.BulkSave(cmdList); err != nil {
 			logger.Errorf("Uploader service command bulk save err: %s", err)
 			maxRetry++
+			if maxRetry > 5 {
+				cmdList = cmdList[1:]
+			}
 			continue
 		}
 		logger.Infof("Uploader service command backend %s upload %d commands",
