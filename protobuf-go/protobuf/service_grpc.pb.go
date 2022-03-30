@@ -22,7 +22,8 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ServiceClient interface {
-	GetDBTokenAuthInfo(ctx context.Context, in *DBTokenRequest, opts ...grpc.CallOption) (*DBTokenResponse, error)
+	GetDBTokenAuthInfo(ctx context.Context, in *TokenRequest, opts ...grpc.CallOption) (*DBTokenResponse, error)
+	RenewToken(ctx context.Context, in *TokenRequest, opts ...grpc.CallOption) (*StatusResponse, error)
 	CreateSession(ctx context.Context, in *SessionCreateRequest, opts ...grpc.CallOption) (*SessionCreateResponse, error)
 	FinishSession(ctx context.Context, in *SessionFinishRequest, opts ...grpc.CallOption) (*SessionFinishResp, error)
 	UploadReplayFile(ctx context.Context, in *ReplayRequest, opts ...grpc.CallOption) (*ReplayResponse, error)
@@ -45,9 +46,18 @@ func NewServiceClient(cc grpc.ClientConnInterface) ServiceClient {
 	return &serviceClient{cc}
 }
 
-func (c *serviceClient) GetDBTokenAuthInfo(ctx context.Context, in *DBTokenRequest, opts ...grpc.CallOption) (*DBTokenResponse, error) {
+func (c *serviceClient) GetDBTokenAuthInfo(ctx context.Context, in *TokenRequest, opts ...grpc.CallOption) (*DBTokenResponse, error) {
 	out := new(DBTokenResponse)
 	err := c.cc.Invoke(ctx, "/message.Service/GetDBTokenAuthInfo", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *serviceClient) RenewToken(ctx context.Context, in *TokenRequest, opts ...grpc.CallOption) (*StatusResponse, error) {
+	out := new(StatusResponse)
+	err := c.cc.Invoke(ctx, "/message.Service/RenewToken", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -188,7 +198,8 @@ func (c *serviceClient) DeleteForward(ctx context.Context, in *ForwardDeleteRequ
 // All implementations must embed UnimplementedServiceServer
 // for forward compatibility
 type ServiceServer interface {
-	GetDBTokenAuthInfo(context.Context, *DBTokenRequest) (*DBTokenResponse, error)
+	GetDBTokenAuthInfo(context.Context, *TokenRequest) (*DBTokenResponse, error)
+	RenewToken(context.Context, *TokenRequest) (*StatusResponse, error)
 	CreateSession(context.Context, *SessionCreateRequest) (*SessionCreateResponse, error)
 	FinishSession(context.Context, *SessionFinishRequest) (*SessionFinishResp, error)
 	UploadReplayFile(context.Context, *ReplayRequest) (*ReplayResponse, error)
@@ -208,8 +219,11 @@ type ServiceServer interface {
 type UnimplementedServiceServer struct {
 }
 
-func (UnimplementedServiceServer) GetDBTokenAuthInfo(context.Context, *DBTokenRequest) (*DBTokenResponse, error) {
+func (UnimplementedServiceServer) GetDBTokenAuthInfo(context.Context, *TokenRequest) (*DBTokenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetDBTokenAuthInfo not implemented")
+}
+func (UnimplementedServiceServer) RenewToken(context.Context, *TokenRequest) (*StatusResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RenewToken not implemented")
 }
 func (UnimplementedServiceServer) CreateSession(context.Context, *SessionCreateRequest) (*SessionCreateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateSession not implemented")
@@ -261,7 +275,7 @@ func RegisterServiceServer(s grpc.ServiceRegistrar, srv ServiceServer) {
 }
 
 func _Service_GetDBTokenAuthInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DBTokenRequest)
+	in := new(TokenRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -273,7 +287,25 @@ func _Service_GetDBTokenAuthInfo_Handler(srv interface{}, ctx context.Context, d
 		FullMethod: "/message.Service/GetDBTokenAuthInfo",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ServiceServer).GetDBTokenAuthInfo(ctx, req.(*DBTokenRequest))
+		return srv.(ServiceServer).GetDBTokenAuthInfo(ctx, req.(*TokenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Service_RenewToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).RenewToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/message.Service/RenewToken",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).RenewToken(ctx, req.(*TokenRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -512,6 +544,10 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetDBTokenAuthInfo",
 			Handler:    _Service_GetDBTokenAuthInfo_Handler,
+		},
+		{
+			MethodName: "RenewToken",
+			Handler:    _Service_RenewToken_Handler,
 		},
 		{
 			MethodName: "CreateSession",

@@ -36,7 +36,7 @@ type JMServer struct {
 	forwardStore *common.ForwardCache
 }
 
-func (j *JMServer) GetDBTokenAuthInfo(ctx context.Context, req *pb.DBTokenRequest) (*pb.DBTokenResponse, error) {
+func (j *JMServer) GetDBTokenAuthInfo(ctx context.Context, req *pb.TokenRequest) (*pb.DBTokenResponse, error) {
 	var status pb.Status
 	tokenResp, err := j.apiClient.GetConnectTokenAuth(req.Token)
 	if err != nil {
@@ -53,7 +53,7 @@ func (j *JMServer) GetDBTokenAuthInfo(ctx context.Context, req *pb.DBTokenReques
 		return &pb.DBTokenResponse{Status: &status}, nil
 	}
 	setting := j.uploader.GetTerminalSetting()
-	dbTokenInfo := pb.DBTokenAuthInfo{
+	dbTokenInfo := pb.TokenAuthInfo{
 		KeyId:       tokenAuthInfo.Id,
 		SecreteId:   tokenAuthInfo.Secret,
 		Application: ConvertToProtobufApplication(tokenAuthInfo.Application),
@@ -68,6 +68,26 @@ func (j *JMServer) GetDBTokenAuthInfo(ctx context.Context, req *pb.DBTokenReques
 	status.Ok = true
 	logger.Debugf("Get database auth info success by token: %s", req.Token)
 	return &pb.DBTokenResponse{Status: &status, Data: &dbTokenInfo}, nil
+}
+
+func (j *JMServer) RenewToken(ctx context.Context, req *pb.TokenRequest) (*pb.StatusResponse, error) {
+	var status pb.Status
+	res, err := j.apiClient.RenewalToken(req.Token)
+	if err != nil {
+		status.Err = err.Error()
+		if res.Msg != "" {
+			status.Err = res.Msg
+		}
+		logger.Errorf("Renew token %s failed: %s", req.Token, err)
+		return &pb.StatusResponse{Status: &status}, nil
+	}
+	logger.Debugf("Renew token %s: %+v", req.Token, res)
+	status.Ok = res.Ok
+	if !res.Ok {
+		status.Err = res.Msg
+		logger.Infof("Renew token %s failed: %s", req.Token, res.Msg)
+	}
+	return &pb.StatusResponse{Status: &status}, nil
 }
 
 func (j *JMServer) CreateSession(ctx context.Context, req *pb.SessionCreateRequest) (*pb.SessionCreateResponse, error) {

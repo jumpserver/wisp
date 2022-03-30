@@ -117,7 +117,7 @@ enum RiskLevel {
   Danger = 1;
 }
 
-message DBTokenAuthInfo {
+message TokenAuthInfo {
   string key_id = 1;
   string secrete_id = 2;
   Application application = 3;

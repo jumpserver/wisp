@@ -16,6 +16,7 @@ const (
 	AuthMFASelectURL = "/api/v1/authentication/mfa/select/" // 选择 MFA
 
 	TokenAuthInfoURL = "/api/v1/authentication/connection-token/secret-info/detail/"
+	TokenRenewalURL  = "/api/v1/authentication/connection-token/renewal/"
 )
 
 // Session相关API

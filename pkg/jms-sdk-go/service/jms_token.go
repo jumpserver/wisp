@@ -22,6 +22,19 @@ func (s *JMService) GetConnectTokenAuth(token string) (resp TokenAuthInfoRespons
 	return
 }
 
+func (s *JMService) RenewalToken(token string) (resp TokenRenewalResponse, err error) {
+	data := map[string]string{
+		"token": token,
+	}
+	_, err = s.authClient.Patch(TokenRenewalURL, data, &resp)
+	return
+}
+
+type TokenRenewalResponse struct {
+	Ok  bool   `json:"ok"`
+	Msg string `json:"msg"`
+}
+
 type TokenAuthInfoResponse struct {
 	Info TokenAuthInfo
 	Err  []string

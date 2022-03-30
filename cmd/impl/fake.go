@@ -27,7 +27,7 @@ type FakeServer struct {
 }
 
 func (f *FakeServer) GetDBTokenAuthInfo(ctx context.Context,
-	req *pb.DBTokenRequest) (*pb.DBTokenResponse, error) {
+	req *pb.TokenRequest) (*pb.DBTokenResponse, error) {
 	logger.Infof("Get DB Token AuthInfo req: %+v", req)
 	var status pb.Status
 	if f.testData.ID != req.Token {
@@ -36,7 +36,7 @@ func (f *FakeServer) GetDBTokenAuthInfo(ctx context.Context,
 	}
 	status.Ok = true
 	data := f.testData
-	dbTokenInfo := pb.DBTokenAuthInfo{
+	dbTokenInfo := pb.TokenAuthInfo{
 		KeyId:       data.ID,
 		SecreteId:   data.Secrete,
 		Application: ConvertToProtobufApplication(data.Application),
