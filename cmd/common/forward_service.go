@@ -86,6 +86,7 @@ func FindAvailableGateway(gateways []*pb.Gateway) (*ssh.Client, error) {
 		opts = append(opts, sshclient.WithTimeout(15))
 		proxyClient, err := sshclient.New(opts...)
 		if err == nil {
+			logger.Infof("Use gateway %s", gateway.Name)
 			return proxyClient, nil
 		}
 	}
