@@ -22,6 +22,7 @@ service Service {
   rpc CancelTicket(TicketRequest) returns (StatusResponse) {};
   rpc CreateForward(ForwardRequest) returns (ForwardResponse) {};
   rpc DeleteForward(ForwardDeleteRequest) returns (StatusResponse) {};
+  rpc GetPublicSetting(Empty) returns (PublicSettingResponse) {};
 }
 
 message AssetLoginTicketRequest {
@@ -176,3 +177,10 @@ message ForwardResponse {
   string host = 3;
   int32 port = 4;
 }
+
+message PublicSettingResponse {
+  Status status = 1;
+  PublicSetting data = 2;
+}
+
+message Empty {}

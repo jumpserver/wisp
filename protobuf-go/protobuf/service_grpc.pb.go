@@ -36,6 +36,7 @@ type ServiceClient interface {
 	CancelTicket(ctx context.Context, in *TicketRequest, opts ...grpc.CallOption) (*StatusResponse, error)
 	CreateForward(ctx context.Context, in *ForwardRequest, opts ...grpc.CallOption) (*ForwardResponse, error)
 	DeleteForward(ctx context.Context, in *ForwardDeleteRequest, opts ...grpc.CallOption) (*StatusResponse, error)
+	GetPublicSetting(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*PublicSettingResponse, error)
 }
 
 type serviceClient struct {
@@ -194,6 +195,15 @@ func (c *serviceClient) DeleteForward(ctx context.Context, in *ForwardDeleteRequ
 	return out, nil
 }
 
+func (c *serviceClient) GetPublicSetting(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*PublicSettingResponse, error) {
+	out := new(PublicSettingResponse)
+	err := c.cc.Invoke(ctx, "/message.Service/GetPublicSetting", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ServiceServer is the server API for Service service.
 // All implementations must embed UnimplementedServiceServer
 // for forward compatibility
@@ -212,6 +222,7 @@ type ServiceServer interface {
 	CancelTicket(context.Context, *TicketRequest) (*StatusResponse, error)
 	CreateForward(context.Context, *ForwardRequest) (*ForwardResponse, error)
 	DeleteForward(context.Context, *ForwardDeleteRequest) (*StatusResponse, error)
+	GetPublicSetting(context.Context, *Empty) (*PublicSettingResponse, error)
 	mustEmbedUnimplementedServiceServer()
 }
 
@@ -260,6 +271,9 @@ func (UnimplementedServiceServer) CreateForward(context.Context, *ForwardRequest
 }
 func (UnimplementedServiceServer) DeleteForward(context.Context, *ForwardDeleteRequest) (*StatusResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteForward not implemented")
+}
+func (UnimplementedServiceServer) GetPublicSetting(context.Context, *Empty) (*PublicSettingResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPublicSetting not implemented")
 }
 func (UnimplementedServiceServer) mustEmbedUnimplementedServiceServer() {}
 
@@ -534,6 +548,24 @@ func _Service_DeleteForward_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Service_GetPublicSetting_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).GetPublicSetting(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/message.Service/GetPublicSetting",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).GetPublicSetting(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Service_ServiceDesc is the grpc.ServiceDesc for Service service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -592,6 +624,10 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteForward",
 			Handler:    _Service_DeleteForward_Handler,
+		},
+		{
+			MethodName: "GetPublicSetting",
+			Handler:    _Service_GetPublicSetting_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
