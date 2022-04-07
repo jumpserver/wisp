@@ -347,3 +347,21 @@ func (j *JMServer) DeleteForward(ctx context.Context, req *pb.ForwardDeleteReque
 	logger.Errorf("Forward not found id %s", id)
 	return &pb.StatusResponse{Status: &status}, nil
 }
+
+func (j *JMServer) GetPublicSetting(ctx context.Context, empty *pb.Empty) (*pb.PublicSettingResponse, error) {
+	var (
+		status pb.Status
+	)
+	data, err := j.apiClient.GetPublicSetting()
+	if err != nil {
+		logger.Errorf("Get public setting err: %s", err)
+		status.Err = err.Error()
+		return &pb.PublicSettingResponse{Status: &status}, nil
+	}
+	status.Ok = true
+	pbSetting := pb.PublicSetting{
+		XpackEnabled: data.XpackEnabled,
+		ValidLicense: data.ValidLicense,
+	}
+	return &pb.PublicSettingResponse{Status: &status, Data: &pbSetting}, nil
+}
