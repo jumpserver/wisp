@@ -29,6 +29,9 @@ type Config struct {
 }
 
 func (c *Config) ensureFolders() {
+	if c.Name == "" {
+		c.Name = getDefaultNameByComponent(c.ComponentName)
+	}
 	if c.RootPath == "" {
 		c.RootPath = getPwdDirPath()
 	}
@@ -75,9 +78,7 @@ func Setup(configPath string) {
 }
 
 func getDefaultConfig() Config {
-	defaultName := getDefaultName()
 	return Config{
-		Name:           defaultName,
 		CoreHost:       "http://localhost:8080",
 		BootstrapToken: "",
 		BindHost:       "0.0.0.0",
@@ -93,12 +94,13 @@ const (
 	defaultNameMaxLen = 128
 )
 
-func getDefaultName() string {
+func getDefaultNameByComponent(component string) string {
 	hostname, _ := os.Hostname()
 	if serverHostname, ok := os.LookupEnv(hostEnvKey); ok {
 		hostname = fmt.Sprintf("%s-%s", serverHostname, hostname)
 	}
-	hostRune := []rune(hostname)
+	prefixName := fmt.Sprintf("[%s]-", strings.Title(component))
+	hostRune := []rune(prefixName + hostname)
 	if len(hostRune) <= defaultNameMaxLen {
 		return string(hostRune)
 	}
