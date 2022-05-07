@@ -26,7 +26,7 @@ func (s *JMService) RenewalToken(token string) (resp TokenRenewalResponse, err e
 	data := map[string]string{
 		"token": token,
 	}
-	_, err = s.authClient.Patch(TokenRenewalURL, data, &resp)
+	_, err = s.authClient.Patch(SuperTokenRenewalURL, data, &resp)
 	return
 }
 
