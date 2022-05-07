@@ -13,10 +13,10 @@ const (
 	TokenAssetURL      = "/api/v1/authentication/connection-token/?token=%s" // Token name
 	UserTokenAuthURL   = "/api/v1/authentication/tokens/"                    // 用户登录验证
 	UserConfirmAuthURL = "/api/v1/authentication/login-confirm-ticket/status/"
-	AuthMFASelectURL = "/api/v1/authentication/mfa/select/" // 选择 MFA
+	AuthMFASelectURL   = "/api/v1/authentication/mfa/select/" // 选择 MFA
 
-	TokenAuthInfoURL = "/api/v1/authentication/connection-token/secret-info/detail/"
-	TokenRenewalURL  = "/api/v1/authentication/connection-token/renewal/"
+	TokenAuthInfoURL     = "/api/v1/authentication/connection-token/secret-info/detail/"
+	SuperTokenRenewalURL = "/api/v1/authentication/super-connection-token/renewal/"
 )
 
 // Session相关API
