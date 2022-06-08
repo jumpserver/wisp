@@ -50,6 +50,13 @@ linux-arm64:
 	cd $(BUILDDIR) && tar -czvf $(NAME)-$(VERSION)-$@.tar.gz $(NAME)-$(VERSION)-$@
 	rm -rf $(BUILDDIR)/$(NAME)-$(VERSION)-$@ $(BUILDDIR)/$(NAME)-$@
 
+linux-loong64:
+	GOARCH=loong64 GOOS=linux $(WISPBUILD) -o $(BUILDDIR)/$(NAME)-$@
+	mkdir -p $(BUILDDIR)/$(NAME)-$(VERSION)-$@
+	cp $(BUILDDIR)/$(NAME)-$@ $(BUILDDIR)/$(NAME)-$(VERSION)-$@/$(NAME)
+	cd $(BUILDDIR) && tar -czvf $(NAME)-$(VERSION)-$@.tar.gz $(NAME)-$(VERSION)-$@
+	rm -rf $(BUILDDIR)/$(NAME)-$(VERSION)-$@ $(BUILDDIR)/$(NAME)-$@
+
 windows-amd64:
 	GOARCH=amd64 GOOS=windows $(WISPBUILD) -o $(BUILDDIR)/$(NAME)-$@.exe
 	mkdir -p $(BUILDDIR)/$(NAME)-$(VERSION)-$@
