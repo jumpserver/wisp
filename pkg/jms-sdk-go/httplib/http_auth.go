@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/jumpserver/wisp/pkg/jms-sdk-go/httpsig"
+	"github.com/LeeEirc/httpsig"
 )
 
 var (
