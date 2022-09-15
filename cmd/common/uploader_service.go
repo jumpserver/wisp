@@ -119,18 +119,19 @@ func (u *UploaderService) run() {
 			}
 		}
 		commandBackend := u.getCommandBackend()
-		if err := commandBackend.BulkSave(cmdList); err != nil && commandBackend.TypeName() != "server" {
+		err := commandBackend.BulkSave(cmdList)
+		if err != nil && commandBackend.TypeName() != "server" {
 			logger.Warnf("Uploader service command backend %s error %s. Switch default save.",
 				commandBackend.TypeName(), err)
 			err = u.apiClient.PushSessionCommand(cmdList)
-			if err != nil {
-				logger.Errorf("Uploader service command bulk save err: %s", err)
-				maxRetry++
-				if maxRetry > 5 {
-					cmdList = cmdList[1:]
-				}
-				continue
+		}
+		if err != nil {
+			logger.Errorf("Uploader service command bulk save err: %s", err)
+			if maxRetry > 5 {
+				cmdList = cmdList[1:]
 			}
+			maxRetry++
+			continue
 		}
 		logger.Infof("Uploader service command backend %s upload %d commands",
 			commandBackend.TypeName(), len(cmdList))
