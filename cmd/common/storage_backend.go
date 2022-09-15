@@ -22,6 +22,10 @@ type CommandStorage interface {
 	StorageType
 }
 
+func GetDefaultCommandStorage(jmsService *service.JMService) CommandStorage {
+	return storage.ServerStorage{StorageType: "server", JmsService: jmsService}
+}
+
 func NewCommandBackend(apiClient *service.JMService, cfg *model.CommandConfig) CommandStorage {
 	switch cfg.TypeName {
 	case "es", "elasticsearch":
@@ -47,7 +51,7 @@ func NewCommandBackend(apiClient *service.JMService, cfg *model.CommandConfig) C
 	case "null":
 		return storage.NewNullStorage()
 	default:
-		return storage.ServerStorage{StorageType: "server", JmsService: apiClient}
+		return GetDefaultCommandStorage(apiClient)
 	}
 }
 
