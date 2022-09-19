@@ -30,6 +30,10 @@ message Application {
     string host = 1;
     int32 Port = 2;
     string Database = 3;
+    bool UseSSL = 4;
+    string CaCert = 5;
+    string ClientCert = 6;
+    string CertKey = 7;
   }
 
   string id = 1;
