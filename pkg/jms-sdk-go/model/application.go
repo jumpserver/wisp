@@ -7,9 +7,13 @@ type k8sAttrs struct {
 }
 
 type dbAttrs struct {
-	Host     string `json:"host"`
-	Port     int    `json:"port"`
-	Database string `json:"database"`
+	Host         string `json:"host"`
+	Port         int    `json:"port"`
+	Database     string `json:"database"`
+	UseSSL       bool   `json:"use_ssl"`
+	CaCert       string `json:"ca_cert"`
+	ClientCert   string `json:"client_cert"`
+	CertKey      string `json:"cert_key"`
 }
 
 const (

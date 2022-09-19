@@ -25,9 +25,13 @@ func ConvertToProtobufApplication(app model.Application) *pb.Application {
 		Domain:   app.Domain,
 		OrgId:    app.OrgID,
 		Attrs: &pb.Application_Attrs{
-			Host:     app.Attrs.Host,
-			Port:     int32(app.Attrs.Port),
-			Database: app.Attrs.Database,
+			Host:       app.Attrs.Host,
+			Port:       int32(app.Attrs.Port),
+			Database:   app.Attrs.Database,
+			UseSSL:     app.Attrs.UseSSL,
+			CaCert:     app.Attrs.CaCert,
+			ClientCert: app.Attrs.ClientCert,
+			CertKey:    app.Attrs.CertKey,
 		},
 	}
 }
