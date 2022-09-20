@@ -95,8 +95,12 @@ const (
 
 const (
 	PublicSettingURL = "/api/v1/settings/public/"
+
+	TicketSessionURL = "/api/v1/tickets/ticket-session-relation/"
 )
 
+// 数据库端口映射相关API
 const (
-	TicketSessionURL = "/api/v1/tickets/ticket-session-relation/"
+	DBListenPortsURL = "/api/v1/applications/db-listen-ports/"
+	DBPortInfoURL    = "/api/v1/applications/db-listen-ports/db-info/"
 )

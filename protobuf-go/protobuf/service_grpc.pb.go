@@ -37,6 +37,9 @@ type ServiceClient interface {
 	CreateForward(ctx context.Context, in *ForwardRequest, opts ...grpc.CallOption) (*ForwardResponse, error)
 	DeleteForward(ctx context.Context, in *ForwardDeleteRequest, opts ...grpc.CallOption) (*StatusResponse, error)
 	GetPublicSetting(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*PublicSettingResponse, error)
+	GetListenPorts(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListenPortResponse, error)
+	GetPortInfo(ctx context.Context, in *PortInfoRequest, opts ...grpc.CallOption) (*PortInfoResponse, error)
+	HandlePortFailure(ctx context.Context, in *PortFailureRequest, opts ...grpc.CallOption) (*StatusResponse, error)
 }
 
 type serviceClient struct {
@@ -204,6 +207,33 @@ func (c *serviceClient) GetPublicSetting(ctx context.Context, in *Empty, opts ..
 	return out, nil
 }
 
+func (c *serviceClient) GetListenPorts(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListenPortResponse, error) {
+	out := new(ListenPortResponse)
+	err := c.cc.Invoke(ctx, "/message.Service/GetListenPorts", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *serviceClient) GetPortInfo(ctx context.Context, in *PortInfoRequest, opts ...grpc.CallOption) (*PortInfoResponse, error) {
+	out := new(PortInfoResponse)
+	err := c.cc.Invoke(ctx, "/message.Service/GetPortInfo", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *serviceClient) HandlePortFailure(ctx context.Context, in *PortFailureRequest, opts ...grpc.CallOption) (*StatusResponse, error) {
+	out := new(StatusResponse)
+	err := c.cc.Invoke(ctx, "/message.Service/HandlePortFailure", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ServiceServer is the server API for Service service.
 // All implementations must embed UnimplementedServiceServer
 // for forward compatibility
@@ -223,6 +253,9 @@ type ServiceServer interface {
 	CreateForward(context.Context, *ForwardRequest) (*ForwardResponse, error)
 	DeleteForward(context.Context, *ForwardDeleteRequest) (*StatusResponse, error)
 	GetPublicSetting(context.Context, *Empty) (*PublicSettingResponse, error)
+	GetListenPorts(context.Context, *Empty) (*ListenPortResponse, error)
+	GetPortInfo(context.Context, *PortInfoRequest) (*PortInfoResponse, error)
+	HandlePortFailure(context.Context, *PortFailureRequest) (*StatusResponse, error)
 	mustEmbedUnimplementedServiceServer()
 }
 
@@ -274,6 +307,15 @@ func (UnimplementedServiceServer) DeleteForward(context.Context, *ForwardDeleteR
 }
 func (UnimplementedServiceServer) GetPublicSetting(context.Context, *Empty) (*PublicSettingResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPublicSetting not implemented")
+}
+func (UnimplementedServiceServer) GetListenPorts(context.Context, *Empty) (*ListenPortResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetListenPorts not implemented")
+}
+func (UnimplementedServiceServer) GetPortInfo(context.Context, *PortInfoRequest) (*PortInfoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPortInfo not implemented")
+}
+func (UnimplementedServiceServer) HandlePortFailure(context.Context, *PortFailureRequest) (*StatusResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method HandlePortFailure not implemented")
 }
 func (UnimplementedServiceServer) mustEmbedUnimplementedServiceServer() {}
 
@@ -566,6 +608,60 @@ func _Service_GetPublicSetting_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Service_GetListenPorts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).GetListenPorts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/message.Service/GetListenPorts",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).GetListenPorts(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Service_GetPortInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PortInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).GetPortInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/message.Service/GetPortInfo",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).GetPortInfo(ctx, req.(*PortInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Service_HandlePortFailure_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PortFailureRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).HandlePortFailure(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/message.Service/HandlePortFailure",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).HandlePortFailure(ctx, req.(*PortFailureRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Service_ServiceDesc is the grpc.ServiceDesc for Service service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -628,6 +724,18 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetPublicSetting",
 			Handler:    _Service_GetPublicSetting_Handler,
+		},
+		{
+			MethodName: "GetListenPorts",
+			Handler:    _Service_GetListenPorts_Handler,
+		},
+		{
+			MethodName: "GetPortInfo",
+			Handler:    _Service_GetPortInfo_Handler,
+		},
+		{
+			MethodName: "HandlePortFailure",
+			Handler:    _Service_HandlePortFailure_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
