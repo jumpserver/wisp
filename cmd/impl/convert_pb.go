@@ -36,7 +36,7 @@ func ConvertToProtobufApplication(app model.Application) *pb.Application {
 	}
 }
 
-func ConvertToProtobufGateWay(gateway model.Gateway) *pb.Gateway {
+func ConvertToProtobufGateway(gateway model.Gateway) *pb.Gateway {
 	return &pb.Gateway{
 		Id:         gateway.ID,
 		Name:       gateway.Name,
@@ -104,13 +104,13 @@ func ConvertToProtobufExpireInfo(info model.ExpireInfo) *pb.ExpireInfo {
 	}
 }
 
-func ConvertToProtobufGateWays(gateways []model.Gateway) []*pb.Gateway {
+func ConvertToProtobufGateways(gateways []model.Gateway) []*pb.Gateway {
 	if len(gateways) == 0 {
 		return nil
 	}
 	pbGateways := make([]*pb.Gateway, len(gateways))
 	for i := range gateways {
-		pbGateways[i] = ConvertToProtobufGateWay(gateways[i])
+		pbGateways[i] = ConvertToProtobufGateway(gateways[i])
 	}
 	return pbGateways
 }

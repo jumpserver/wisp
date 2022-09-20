@@ -44,7 +44,7 @@ func (f *FakeServer) GetDBTokenAuthInfo(ctx context.Context,
 		SystemUser:  ConvertToProtobufSystemUser(data.SystemUserAuthInfo),
 		Permission:  ConvertToProtobufPermission(data.Permission),
 		ExpireInfo:  ConvertToProtobufExpireInfo(data.ExpireInfo),
-		Gateways:    ConvertToProtobufGateWays(data.Gateways),
+		Gateways:    ConvertToProtobufGateways(data.Gateways),
 		FilterRules: ConvertToProtobufFilterRules(data.FilterRules),
 	}
 

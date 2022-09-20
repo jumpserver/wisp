@@ -23,6 +23,9 @@ service Service {
   rpc CreateForward(ForwardRequest) returns (ForwardResponse) {};
   rpc DeleteForward(ForwardDeleteRequest) returns (StatusResponse) {};
   rpc GetPublicSetting(Empty) returns (PublicSettingResponse) {};
+  rpc GetListenPorts(Empty) returns (ListenPortResponse) {};
+  rpc GetPortInfo(PortInfoRequest) returns (PortInfoResponse) {};
+  rpc HandlePortFailure(PortFailureRequest) returns (StatusResponse) {};
 }
 
 message AssetLoginTicketRequest {
@@ -53,9 +56,7 @@ message DBTokenResponse {
   TokenAuthInfo data = 2;
 }
 
-message SessionCreateRequest {
-  Session data = 1;
-}
+message SessionCreateRequest { Session data = 1; }
 
 message SessionCreateResponse {
   Status status = 1;
@@ -102,9 +103,7 @@ message FinishedTaskRequest {
   string task_id = 1;
 }
 
-message TaskResponse {
-  TerminalTask task = 1;
-}
+message TaskResponse { TerminalTask task = 1; }
 
 message RemainReplayRequest {
   string replay_dir = 1;
@@ -116,6 +115,7 @@ message RemainReplayResponse {
   repeated string failure_files = 3;
   repeated string failure_errs = 4;
 }
+
 message StatusResponse {
   Status status = 1;
 }
@@ -129,6 +129,7 @@ message ReqInfo {
   string method = 1;
   string url = 2;
 }
+
 message CommandConfirmResponse {
   Status status = 1;
   TicketInfo info = 2;
@@ -184,3 +185,31 @@ message PublicSettingResponse {
 }
 
 message Empty {}
+
+message ListenPortResponse {
+  Status status = 1;
+  repeated int32 ports = 2;
+}
+
+message PortInfoRequest { 
+  int32 port = 1;
+}
+
+message PortInfoResponse {
+  Status status = 1;
+  PortInfo data = 2;
+}
+
+message PortInfo {
+  Application application = 1;
+  repeated Gateway gateways = 2;
+}
+
+message PortFailure {
+  int32 port = 1;
+  string reason = 2;
+}
+
+message PortFailureRequest {
+  repeated PortFailure data = 1;
+}
