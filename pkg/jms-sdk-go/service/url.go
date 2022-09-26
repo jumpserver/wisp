@@ -101,6 +101,6 @@ const (
 
 // 数据库端口映射相关API
 const (
-	DBListenPortsURL = "/api/v1/applications/db-listen-ports/"
-	DBPortInfoURL    = "/api/v1/applications/db-listen-ports/db-info/"
+	DBListenPortsURL = "/api/v1/terminal/db-listen-ports/"
+	DBPortInfoURL    = "/api/v1/terminal/db-listen-ports/db-info/"
 )
