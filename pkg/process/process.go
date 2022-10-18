@@ -11,6 +11,11 @@ func New(workDir, commandStr string) *Process {
 	commands := ParseCommandLine(commandStr)
 	cmd := exec.Command(commands[0], commands[1:]...)
 	cmd.Dir = workDir
+	if os.Getenv("WISP_TRACE_PROCESS") == "1" {
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		cmd.Stdin = os.Stdin
+	}
 	return &Process{
 		WorkDir:     workDir,
 		CommandLine: commandStr,
