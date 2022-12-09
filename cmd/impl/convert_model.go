@@ -19,18 +19,17 @@ func ConvertModelLoginFrom(lf pb.Session_LoginFrom) string {
 
 func ConvertToSession(sees *pb.Session) model.Session {
 	return model.Session{
-		ID:           sees.Id,
-		User:         sees.User,
-		Asset:        sees.Asset,
-		SystemUser:   sees.SystemUser,
-		LoginFrom:    ConvertModelLoginFrom(sees.LoginFrom),
-		RemoteAddr:   sees.RemoteAddr,
-		Protocol:     sees.Protocol,
-		DateStart:    common.ParseUnixTime(sees.DateStart),
-		OrgID:        sees.OrgId,
-		UserID:       sees.UserId,
-		AssetID:      sees.AssetId,
-		SystemUserID: sees.SystemUserId,
+		ID:         sees.Id,
+		User:       sees.User,
+		Asset:      sees.Asset,
+		Account:    sees.Account,
+		LoginFrom:  ConvertModelLoginFrom(sees.LoginFrom),
+		RemoteAddr: sees.RemoteAddr,
+		Protocol:   sees.Protocol,
+		DateStart:  common.ParseUnixTime(sees.DateStart),
+		OrgID:      sees.OrgId,
+		UserID:     sees.UserId,
+		AssetID:    sees.AssetId,
 	}
 }
 
@@ -72,4 +71,3 @@ func ConvertToReqInfo(req *pb.ReqInfo) model.ReqInfo {
 		URL:    req.GetUrl(),
 	}
 }
-

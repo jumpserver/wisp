@@ -6,7 +6,7 @@ package message;
 option go_package = "/protobuf";
 
 service Service {
-  rpc GetDBTokenAuthInfo(TokenRequest) returns (DBTokenResponse) {};
+  rpc GetTokenAuthInfo(TokenRequest) returns (TokenResponse) {};
   rpc RenewToken(TokenRequest) returns (StatusResponse) {};
   rpc CreateSession(SessionCreateRequest) returns (SessionCreateResponse) {};
   rpc FinishSession(SessionFinishRequest) returns (SessionFinishResp) {};
@@ -51,7 +51,7 @@ message TokenRequest {
   string token = 1;
 }
 
-message DBTokenResponse {
+message TokenResponse {
   Status status = 1;
   TokenAuthInfo data = 2;
 }

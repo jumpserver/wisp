@@ -15,8 +15,6 @@ const (
 	UserConfirmAuthURL = "/api/v1/authentication/login-confirm-ticket/status/"
 	AuthMFASelectURL   = "/api/v1/authentication/mfa/select/" // 选择 MFA
 
-	TokenAuthInfoURL     = "/api/v1/authentication/connection-token/secret-info/detail/"
-	SuperTokenRenewalURL = "/api/v1/authentication/super-connection-token/renewal/"
 )
 
 // Session相关API
@@ -32,7 +30,6 @@ const (
 
 // 授权相关API
 const (
-	UserPermsAssetsURL                 = "/api/v1/perms/users/%s/assets/"
 	UserPermsNodesListURL              = "/api/v1/perms/users/%s/nodes/"
 	UserPermsNodeAssetsListURL         = "/api/v1/perms/users/%s/nodes/%s/assets/"
 	UserPermsNodeTreeWithAssetURL      = "/api/v1/perms/users/%s/nodes/children-with-assets/tree/" // 资产树
@@ -77,10 +74,6 @@ const (
 	RemoteAPPURL = "/api/v1/applications/remote-apps/%s/connection-info/"
 )
 
-const (
-	AssetLoginConfirmURL = "/api/v1/acls/login-asset/check/"
-)
-
 // 命令复核
 
 const (
@@ -103,4 +96,17 @@ const (
 const (
 	DBListenPortsURL = "/api/v1/terminal/db-listen-ports/"
 	DBPortInfoURL    = "/api/v1/terminal/db-listen-ports/db-info/"
+)
+
+const (
+	SuperConnectTokenSecretURL = "/api/v1/authentication/super-connection-token/secret/"
+	SuperConnectTokenInfoURL   = "/api/v1/authentication/super-connection-token/"
+	SuperTokenRenewalURL       = "/api/v1/authentication/super-connection-token/renewal/"
+
+	UserPermsAssetAccountsURL = "/api/v1/perms/users/%s/assets/%s/accounts/"
+	AccountSecretURL          = "/api/v1/assets/account-secrets/%s/"
+	UserPermsAssetsURL        = "/api/v1/perms/users/%s/assets/"
+
+	AssetLoginConfirmURL = "/api/v1/acls/login-asset/check/"
+	AclCommandReviewURL  = "/api/v1/acls/command-filter-acls/command-review/"
 )

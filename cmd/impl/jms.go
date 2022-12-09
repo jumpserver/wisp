@@ -36,38 +36,30 @@ type JMServer struct {
 	forwardStore *common.ForwardCache
 }
 
-func (j *JMServer) GetDBTokenAuthInfo(ctx context.Context, req *pb.TokenRequest) (*pb.DBTokenResponse, error) {
+func (j *JMServer) GetDBTokenAuthInfo(ctx context.Context, req *pb.TokenRequest) (*pb.TokenResponse, error) {
 	var status pb.Status
-	tokenResp, err := j.apiClient.GetConnectTokenAuth(req.Token)
+	tokenAuthInfo, err := j.apiClient.GetConnectTokenInfo(req.Token)
 	if err != nil {
 		status.Err = err.Error()
 		logger.Errorf("Get Connect token auth failed: %s", err)
-		return &pb.DBTokenResponse{Status: &status}, nil
-	}
-	tokenAuthInfo := tokenResp.Info
-	if tokenAuthInfo.TypeName != model.ConnectApplication {
-		msg := fmt.Sprintf("Bad request: token %s connect type not %s", req.Token,
-			model.ConnectApplication)
-		status.Err = msg
-		logger.Error(msg)
-		return &pb.DBTokenResponse{Status: &status}, nil
+		return &pb.TokenResponse{Status: &status}, nil
 	}
 	setting := j.uploader.GetTerminalSetting()
 	dbTokenInfo := pb.TokenAuthInfo{
 		KeyId:       tokenAuthInfo.Id,
-		SecreteId:   tokenAuthInfo.Secret,
-		Application: ConvertToProtobufApplication(tokenAuthInfo.Application),
+		SecreteId:   tokenAuthInfo.Value,
+		Asset:       ConvertToProtobufAsset(tokenAuthInfo.Asset),
 		User:        ConvertToProtobufUser(tokenAuthInfo.User),
-		FilterRules: ConvertToProtobufFilterRules(tokenAuthInfo.CmdFilterRules),
-		SystemUser:  ConvertToProtobufSystemUser(tokenAuthInfo.SystemUserAuthInfo),
-		Permission:  ConvertToProtobufPermission(model.Permission{Actions: tokenAuthInfo.Actions}),
-		ExpireInfo:  ConvertToProtobufExpireInfo(model.ExpireInfo{ExpireAt: tokenAuthInfo.ExpiredAt}),
+		FilterRules: ConvertToProtobufFilterRules(tokenAuthInfo.CommandFilterACLs),
+		Account:     ConvertToProtobufAccount(tokenAuthInfo.Account),
+		Permission:  ConvertToProtobufPermission(tokenAuthInfo.Actions),
+		ExpireInfo:  ConvertToProtobufExpireInfo(tokenAuthInfo.ExpireAt),
 		Gateways:    ConvertToProtobufGateways(tokenAuthInfo.Domain.Gateways),
 		Setting:     ConvertToPbSetting(&setting),
 	}
 	status.Ok = true
 	logger.Debugf("Get database auth info success by token: %s", req.Token)
-	return &pb.DBTokenResponse{Status: &status, Data: &dbTokenInfo}, nil
+	return &pb.TokenResponse{Status: &status, Data: &dbTokenInfo}, nil
 }
 
 func (j *JMServer) RenewToken(ctx context.Context, req *pb.TokenRequest) (*pb.StatusResponse, error) {
