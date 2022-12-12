@@ -201,7 +201,7 @@ message PortInfoResponse {
 }
 
 message PortInfo {
-  Application application = 1;
+  Asset asset = 1;
   repeated Gateway gateways = 2;
 }
 

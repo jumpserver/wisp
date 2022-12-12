@@ -16,34 +16,57 @@ func ConvertToProtobufUser(user model.User) *pb.User {
 	}
 }
 
-func ConvertToProtobufApplication(app model.Application) *pb.Application {
-	return &pb.Application{
-		Id:       app.ID,
-		Name:     app.Name,
-		Category: app.Category,
-		TypeName: app.TypeName,
-		Domain:   app.Domain,
-		OrgId:    app.OrgID,
-		Attrs: &pb.Application_Attrs{
-			Host:       app.Attrs.Host,
-			Port:       int32(app.Attrs.Port),
-			Database:   app.Attrs.Database,
-			UseSSL:     app.Attrs.UseSSL,
-			CaCert:     app.Attrs.CaCert,
-			ClientCert: app.Attrs.ClientCert,
-			CertKey:    app.Attrs.CertKey,
-		},
+func ConvertToProtobufProtocols(protocol []model.Protocol) []*pb.Protocol {
+	if len(protocol) == 0 {
+		return nil
+	}
+	pbProtocols := make([]*pb.Protocol, len(protocol))
+	for i := range protocol {
+		pbProtocols[i] = ConvertToProtobufProtocol(&protocol[i])
+	}
+	return pbProtocols
+}
+
+func ConvertToProtobufProtocol(protocol *model.Protocol) *pb.Protocol {
+	return &pb.Protocol{
+		Id:   int32(protocol.Id),
+		Name: protocol.Name,
+		Port: int32(protocol.Port),
 	}
 }
 
 func ConvertToProtobufAsset(asset model.Asset) *pb.Asset {
-
-	return nil
+	specific := asset.Specific
+	protocols := asset.Protocols
+	return &pb.Asset{
+		Id:        asset.ID,
+		Name:      asset.Name,
+		Address:   asset.Address,
+		OrgId:     asset.OrgID,
+		Protocols: ConvertToProtobufProtocols(protocols),
+		Specific: &pb.Asset_Specific{
+			DbName:           specific.DBName,
+			UseSsl:           specific.UseSSL,
+			CaCert:           specific.CaCert,
+			ClientCert:       specific.ClientCert,
+			CertKey:          specific.CertKey,
+			AllowInvalidCert: specific.AllowInvalidCert,
+			AutoFill:         specific.AutoFill,
+			UsernameSelector: specific.UsernameSelector,
+			PasswordSelector: specific.PasswordSelector,
+			SubmitSelector:   specific.SubmitSelector,
+			Script:           specific.Script,
+		},
+	}
 }
 
-func ConvertToProtobufAccount(asset model.Account) *pb.Account {
-
-	return nil
+func ConvertToProtobufAccount(account model.Account) *pb.Account {
+	return &pb.Account{
+		Name:       account.Name,
+		Username:   account.Username,
+		Secret:     account.Secret,
+		SecretType: account.SecretType,
+	}
 }
 
 func ConvertToProtobufGateway(gateway model.Gateway) *pb.Gateway {
@@ -100,7 +123,7 @@ func ConvertToProtobufCommandGroup(groups []model.CommandGroup) []*pb.CommandGro
 			Name:       group.Name,
 			Type:       group.Type,
 			IgnoreCase: group.IgnoreCase,
-			Pattern:    group.RePattern,
+			Pattern:    group.Pattern,
 			Content:    group.Content})
 	}
 	return pbRules
@@ -178,7 +201,6 @@ func ConvertToPbReqInfo(reqInfo model.ReqInfo) *pb.ReqInfo {
 }
 
 func ConvertToPbTicketState(state *model.TicketState) *pb.TicketState {
-
 	return &pb.TicketState{
 		State:     pbTicketMap[state.State],
 		Processor: state.Processor,

@@ -11,7 +11,7 @@ func (s *JMService) GetListenPorts() (ports []int32, err error) {
 	return
 }
 
-func (s *JMService) GetApplicationByPort(port int32) (app model.Application, err error) {
+func (s *JMService) GetAssetByPort(port int32) (app model.Asset, err error) {
 	data := map[string]string{
 		"port": strconv.Itoa(int(port)),
 	}

@@ -57,10 +57,6 @@ const (
 	SystemUserDetailURL  = "/api/v1/assets/system-users/%s/"
 	ApplicationDetailURL = "/api/v1/applications/applications/%s/"
 
-	SystemUserCmdFilterRulesListURL = "/api/v1/assets/system-users/%s/cmd-filter-rules/" // 过滤规则url
-
-	CommandFilterRulesListURL = "/api/v1/assets/cmd-filter-rules/"
-
 	DomainDetailWithGateways = "/api/v1/assets/domains/%s/?gateway=1"
 )
 
@@ -70,8 +66,6 @@ const (
 
 const (
 	PermissionURL = "/api/v1/perms/asset-permissions/user/actions/"
-
-	RemoteAPPURL = "/api/v1/applications/remote-apps/%s/connection-info/"
 )
 
 // 命令复核
@@ -96,9 +90,7 @@ const (
 const (
 	DBListenPortsURL = "/api/v1/terminal/db-listen-ports/"
 	DBPortInfoURL    = "/api/v1/terminal/db-listen-ports/db-info/"
-)
 
-const (
 	SuperConnectTokenSecretURL = "/api/v1/authentication/super-connection-token/secret/"
 	SuperConnectTokenInfoURL   = "/api/v1/authentication/super-connection-token/"
 	SuperTokenRenewalURL       = "/api/v1/authentication/super-connection-token/renewal/"

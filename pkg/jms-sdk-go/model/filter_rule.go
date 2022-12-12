@@ -42,7 +42,7 @@ type CommandACL struct {
 	Reviewers     []interface{}  `json:"reviewers"`
 }
 
-func (cf *CommandGroup) Pattern() *regexp.Regexp {
+func (cf *CommandGroup) CompilePattern() *regexp.Regexp {
 	if cf.compiled {
 		return cf.pattern
 	}
@@ -50,7 +50,7 @@ func (cf *CommandGroup) Pattern() *regexp.Regexp {
 	if cf.IgnoreCase {
 		syntaxFlag = syntax.Perl | syntax.FoldCase
 	}
-	syntaxReg, err := syntax.Parse(cf.RePattern, syntaxFlag)
+	syntaxReg, err := syntax.Parse(cf.Pattern, syntaxFlag)
 	if err != nil {
 		return nil
 	}
@@ -65,7 +65,7 @@ func (cf *CommandGroup) Pattern() *regexp.Regexp {
 func (sf *CommandACL) Match(cmd string) (CommandGroup, CommandAction, string) {
 	for i := range sf.CommandGroups {
 		item := sf.CommandGroups[i]
-		pattern := item.Pattern()
+		pattern := item.CompilePattern()
 		if pattern == nil {
 			continue
 		}
@@ -84,7 +84,7 @@ type CommandGroup struct {
 	IgnoreCase bool   `json:"ignore_case"`
 	Name       string `json:"name"`
 	Type       string `json:"type"`
-	RePattern  string `json:"pattern"`
+	Pattern    string `json:"pattern"`
 
 	pattern  *regexp.Regexp
 	compiled bool
