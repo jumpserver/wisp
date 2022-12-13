@@ -65,7 +65,7 @@ func ConvertToProtobufAccount(account model.Account) *pb.Account {
 		Name:       account.Name,
 		Username:   account.Username,
 		Secret:     account.Secret,
-		SecretType: account.SecretType,
+		SecretType: account.SecretType.Value,
 	}
 }
 
