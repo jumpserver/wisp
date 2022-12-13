@@ -54,7 +54,7 @@ func (j *JMServer) GetDBTokenAuthInfo(ctx context.Context, req *pb.TokenRequest)
 		Account:     ConvertToProtobufAccount(tokenAuthInfo.Account),
 		Permission:  ConvertToProtobufPermission(tokenAuthInfo.Actions),
 		ExpireInfo:  ConvertToProtobufExpireInfo(tokenAuthInfo.ExpireAt),
-		Gateways:    ConvertToProtobufGateways(tokenAuthInfo.Domain.Gateways),
+		Gateways:    ConvertToProtobufGateways([]model.Gateway{*tokenAuthInfo.Gateway}),
 		Setting:     ConvertToPbSetting(&setting),
 	}
 	status.Ok = true

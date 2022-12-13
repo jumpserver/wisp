@@ -16,7 +16,12 @@ message Account {
   string name = 2;
   string username = 4;
   string secret = 5;
-  string secretType = 6;
+  LabelValue secretType = 6;
+}
+
+message LabelValue {
+  string label = 1;
+  string value = 2;
 }
 
 message Asset {

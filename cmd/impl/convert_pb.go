@@ -61,25 +61,33 @@ func ConvertToProtobufAsset(asset model.Asset) *pb.Asset {
 }
 
 func ConvertToProtobufAccount(account model.Account) *pb.Account {
+	secretType := account.SecretType
 	return &pb.Account{
-		Name:       account.Name,
-		Username:   account.Username,
-		Secret:     account.Secret,
-		SecretType: account.SecretType.Value,
+		Name:     account.Name,
+		Username: account.Username,
+		Secret:   account.Secret,
+		SecretType: &pb.LabelValue{Label: secretType.Label,
+			Value: secretType.Value},
 	}
 }
 
 func ConvertToProtobufGateway(gateway model.Gateway) *pb.Gateway {
-	return &pb.Gateway{
-		Id:         gateway.ID,
-		Name:       gateway.Name,
-		Ip:         gateway.Address,
-		Port:       int32(gateway.Protocols.GetProtocolPort("ssh")),
-		Protocol:   "ssh",
-		Username:   gateway.Account.Username,
-		Password:   gateway.Account.Secret,
-		PrivateKey: gateway.Account.Secret,
+	account := gateway.Account
+	pbGateway := &pb.Gateway{
+		Id:       gateway.ID,
+		Name:     gateway.Name,
+		Ip:       gateway.Address,
+		Port:     int32(gateway.Protocols.GetProtocolPort("ssh")),
+		Protocol: "ssh",
+		Username: account.Username,
 	}
+	if account.IsSSHKey() {
+		pbGateway.PrivateKey = account.Secret
+	} else {
+		pbGateway.Password = account.Secret
+	}
+
+	return pbGateway
 }
 
 func ConvertToProtobufPermission(perm model.Actions) *pb.Permission {
@@ -141,6 +149,9 @@ func ConvertToProtobufGateways(gateways []model.Gateway) []*pb.Gateway {
 	}
 	pbGateways := make([]*pb.Gateway, len(gateways))
 	for i := range gateways {
+		if gateways[i].Address == "" {
+			continue
+		}
 		pbGateways[i] = ConvertToProtobufGateway(gateways[i])
 	}
 	return pbGateways
