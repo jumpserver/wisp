@@ -24,13 +24,14 @@ type Specific struct {
 }
 
 type Asset struct {
-	ID        string       `json:"id"`
-	Address   string       `json:"address"`
-	Name      string       `json:"name"`
-	OrgID     string       `json:"org_id"`
-	Protocols []Protocol   `json:"protocols"`
-	Specific  Specific     `json:"specific"`
-	Platform  BasePlatform `json:"platform"`
+	ID        string     `json:"id"`
+	Address   string     `json:"address"`
+	Name      string     `json:"name"`
+	OrgID     string     `json:"org_id"`
+	Protocols []Protocol `json:"protocols"`
+	Specific  Specific   `json:"specific"`
+	Platform  NameIntID  `json:"platform"`
+	Domain    *NameStrID `json:"domain"`
 
 	Comment  string `json:"comment"`
 	OrgName  string `json:"org_name"`
@@ -38,12 +39,12 @@ type Asset struct {
 
 }
 
-type BaseDomain struct {
+type NameStrID struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`
 }
 
-type BasePlatform struct {
+type NameIntID struct {
 	Id   int    `json:"id"`
 	Name string `json:"name"`
 }

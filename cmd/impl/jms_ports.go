@@ -11,16 +11,14 @@ func (j *JMServer) GetListenPorts(ctx context.Context, req *pb.Empty) (*pb.Liste
 	var (
 		status pb.Status
 	)
-	status.Ok = true
 	ports, err := j.apiClient.GetListenPorts()
 	if err != nil {
-		status.Ok = false
 		status.Err = err.Error()
 		return &pb.ListenPortResponse{
 			Status: &status,
 		}, nil
 	}
-
+	status.Ok = true
 	return &pb.ListenPortResponse{
 		Status: &status,
 		Ports:  ports,
