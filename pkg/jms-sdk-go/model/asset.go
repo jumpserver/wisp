@@ -16,11 +16,11 @@ type Specific struct {
 	AllowInvalidCert bool   `json:"allow_invalid_cert"`
 
 	// web
-	AutoFill         string   `json:"autofill"`
-	UsernameSelector string   `json:"username_selector"`
-	PasswordSelector string   `json:"password_selector"`
-	SubmitSelector   string   `json:"submit_selector"`
-	Script           []string `json:"script"`
+	AutoFill         string `json:"autofill"`
+	UsernameSelector string `json:"username_selector"`
+	PasswordSelector string `json:"password_selector"`
+	SubmitSelector   string `json:"submit_selector"`
+	Script           string `json:"script"`
 }
 
 type Asset struct {

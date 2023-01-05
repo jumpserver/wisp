@@ -30,32 +30,18 @@ const (
 
 // 授权相关API
 const (
-	UserPermsNodesListURL              = "/api/v1/perms/users/%s/nodes/"
-	UserPermsNodeAssetsListURL         = "/api/v1/perms/users/%s/nodes/%s/assets/"
-	UserPermsNodeTreeWithAssetURL      = "/api/v1/perms/users/%s/nodes/children-with-assets/tree/" // 资产树
-	UserPermsApplicationsURL           = "/api/v1/perms/users/%s/applications/?type=%s"
-	UserPermsAssetSystemUsersURL       = "/api/v1/perms/users/%s/assets/%s/system-users/"
-	UserPermsApplicationSystemUsersURL = "/api/v1/perms/users/%s/applications/%s/system-users/"
-	ValidateUserAssetPermissionURL     = "/api/v1/perms/asset-permissions/user/validate/"
-	ValidateApplicationPermissionURL   = "/api/v1/perms/application-permissions/user/validate/"
-
-	UserPermsDatabaseURL = "/api/v1/perms/users/%s/applications/?type__in=mysql,mariadb,sqlserver,redis"
-)
-
-// 系统用户密码相关API
-const (
-	SystemUserAuthURL      = "/api/v1/assets/system-users/%s/auth-info/"
-	SystemUserAppAuthURL   = "/api/v1/assets/system-users/%s/applications/%s/auth-info/" // 该系统用户对某应用的授权
-	SystemUserAssetAuthURL = "/api/v1/assets/system-users/%s/assets/%s/auth-info/"       // 该系统用户对某资产的授权
+	UserPermsNodesListURL            = "/api/v1/perms/users/%s/nodes/"
+	UserPermsNodeAssetsListURL       = "/api/v1/perms/users/%s/nodes/%s/assets/"
+	UserPermsNodeTreeWithAssetURL    = "/api/v1/perms/users/%s/nodes/children-with-assets/tree/" // 资产树
+	ValidateUserAssetPermissionURL   = "/api/v1/perms/asset-permissions/user/validate/"
+	ValidateApplicationPermissionURL = "/api/v1/perms/application-permissions/user/validate/"
 )
 
 // 各资源详情相关API
 const (
-	UserDetailURL        = "/api/v1/users/users/%s/"
-	AssetDetailURL       = "/api/v1/assets/assets/%s/"
-	AssetPlatFormURL     = "/api/v1/assets/assets/%s/platform/"
-	SystemUserDetailURL  = "/api/v1/assets/system-users/%s/"
-	ApplicationDetailURL = "/api/v1/applications/applications/%s/"
+	UserDetailURL    = "/api/v1/users/users/%s/"
+	AssetDetailURL   = "/api/v1/assets/assets/%s/"
+	AssetPlatFormURL = "/api/v1/assets/assets/%s/platform/"
 
 	DomainDetailWithGateways = "/api/v1/assets/domains/%s/?gateway=1"
 )
