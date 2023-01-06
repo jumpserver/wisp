@@ -37,6 +37,7 @@ type Asset struct {
 	OrgName  string `json:"org_name"`
 	IsActive bool   `json:"is_active"` // 判断资产是否禁用
 
+	Gateway *Gateway `json:"gateway,omitempty"`
 }
 
 type NameStrID struct {

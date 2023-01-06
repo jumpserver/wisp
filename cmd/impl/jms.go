@@ -36,7 +36,7 @@ type JMServer struct {
 	forwardStore *common.ForwardCache
 }
 
-func (j *JMServer) GetDBTokenAuthInfo(ctx context.Context, req *pb.TokenRequest) (*pb.TokenResponse, error) {
+func (j *JMServer) GetTokenAuthInfo(ctx context.Context, req *pb.TokenRequest) (*pb.TokenResponse, error) {
 	var status pb.Status
 	tokenAuthInfo, err := j.apiClient.GetConnectTokenInfo(req.Token)
 	if err != nil {

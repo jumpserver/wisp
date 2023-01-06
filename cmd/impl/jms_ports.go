@@ -31,7 +31,6 @@ func (j *JMServer) GetPortInfo(ctx context.Context,
 		status   pb.Status
 		gateways []*pb.Gateway
 	)
-	// todo: 网域网关的情况
 	app, err := j.apiClient.GetAssetByPort(req.Port)
 	if err != nil {
 		status.Ok = false
@@ -41,6 +40,9 @@ func (j *JMServer) GetPortInfo(ctx context.Context,
 		}, nil
 	}
 	pbAsset := ConvertToProtobufAsset(app)
+	if app.Gateway != nil {
+		gateways = []*pb.Gateway{ConvertToProtobufGateway(*app.Gateway)}
+	}
 	status.Ok = true
 	info := pb.PortInfo{
 		Asset:    pbAsset,
