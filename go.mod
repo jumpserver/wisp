@@ -9,6 +9,7 @@ require (
 	github.com/aws/aws-sdk-go v1.42.44
 	github.com/elastic/go-elasticsearch/v7 v7.16.0
 	github.com/gofrs/uuid v4.2.0+incompatible
+	github.com/gorilla/websocket v1.5.0
 	github.com/huaweicloud/huaweicloud-sdk-go-obs v3.21.12+incompatible
 	github.com/shirou/gopsutil/v3 v3.22.10
 	github.com/sirupsen/logrus v1.8.1

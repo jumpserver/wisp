@@ -20,7 +20,7 @@ type Specific struct {
 	UsernameSelector string `json:"username_selector"`
 	PasswordSelector string `json:"password_selector"`
 	SubmitSelector   string `json:"submit_selector"`
-	Script           string `json:"script"`
+	Script           string `json:"script"` // list json string
 }
 
 type Asset struct {
