@@ -42,7 +42,7 @@ func ConvertToCommand(cmd *pb.CommandRequest) model.Command {
 		Output:      cmd.Output,
 		User:        cmd.User,
 		Server:      cmd.Asset,
-		SystemUser:  cmd.SystemUser,
+		Account:     cmd.Account,
 		Timestamp:   cmd.Timestamp,
 		RiskLevel:   convertRiskLevel(cmd.RiskLevel),
 		DateCreated: utc.UTC(),

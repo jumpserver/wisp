@@ -89,7 +89,7 @@ message CommandRequest {
   string output = 4;
   string user = 5;
   string asset = 6;
-  string system_user = 7;
+  string account = 7;
   int64 timestamp = 8;
   RiskLevel risk_level = 9;
 }

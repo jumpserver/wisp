@@ -54,12 +54,6 @@ const (
 	PermissionURL = "/api/v1/perms/asset-permissions/user/actions/"
 )
 
-// 命令复核
-
-const (
-	CommandConfirmURL = "/api/v1/assets/cmd-filters/command-confirm/"
-)
-
 const (
 	ShareCreateURL        = "/api/v1/terminal/session-sharings/"
 	ShareSessionJoinURL   = "/api/v1/terminal/session-join-records/"
@@ -81,9 +75,7 @@ const (
 	SuperConnectTokenInfoURL   = "/api/v1/authentication/super-connection-token/"
 	SuperTokenRenewalURL       = "/api/v1/authentication/super-connection-token/renewal/"
 
-	UserPermsAssetAccountsURL = "/api/v1/perms/users/%s/assets/%s/accounts/"
-	AccountSecretURL          = "/api/v1/assets/account-secrets/%s/"
-	UserPermsAssetsURL        = "/api/v1/perms/users/%s/assets/"
+	UserPermsAssetsURL = "/api/v1/perms/users/%s/assets/"
 
 	AssetLoginConfirmURL = "/api/v1/acls/login-asset/check/"
 	AclCommandReviewURL  = "/api/v1/acls/command-filter-acls/command-review/"
