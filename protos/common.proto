@@ -37,7 +37,7 @@ message Asset {
     string username_selector = 8;
     string password_selector = 9;
     string submit_selector = 10;
-    repeated string script = 11;
+    string script = 11;
   }
 
   string id = 1;

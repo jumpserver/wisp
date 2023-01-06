@@ -31,8 +31,7 @@ service Service {
 message AssetLoginTicketRequest {
   string user_id = 1;
   string asset_id = 2;
-  string system_user_id = 3;
-  string system_user_username = 4;
+  string account_username = 4;
 }
 
 message AssetLoginTicketResponse {
@@ -121,7 +120,7 @@ message StatusResponse {
 }
 message CommandConfirmRequest {
   string session_id = 1;
-  string rule_id = 2;
+  string cmd_acl_id = 2;
   string cmd = 3;
 }
 

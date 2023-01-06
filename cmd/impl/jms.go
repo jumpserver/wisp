@@ -208,9 +208,9 @@ func (j *JMServer) CreateCommandTicket(ctx context.Context, req *pb.CommandConfi
 		status pb.Status
 	)
 	sid := req.GetSessionId()
-	ruleId := req.GetRuleId()
+	aclId := req.GetCmdAclId()
 	cmd := req.GetCmd()
-	res, err := j.apiClient.SubmitCommandConfirm(sid, ruleId, cmd)
+	res, err := j.apiClient.SubmitCommandReview(sid, aclId, cmd)
 	if err != nil {
 		logger.Errorf("Create command ticket err: %s", err)
 		status.Err = err.Error()
@@ -263,9 +263,8 @@ func (j *JMServer) CheckOrCreateAssetLoginTicket(ctx context.Context,
 
 	userId := req.GetUserId()
 	assetId := req.GetAssetId()
-	systemUserId := req.GetSystemUserId()
-	sysUsername := req.GetSystemUserUsername()
-	res, err := j.apiClient.CheckIfNeedAssetLoginConfirm(userId, assetId, systemUserId, sysUsername)
+	username := req.GetAccountUsername()
+	res, err := j.apiClient.CheckIfNeedAssetLoginConfirm(userId, assetId, username)
 	if err != nil {
 		logger.Errorf("Check or create asset login ticket req %+v err: %s", req, err)
 		status.Ok = false

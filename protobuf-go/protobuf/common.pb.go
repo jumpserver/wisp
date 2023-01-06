@@ -1474,17 +1474,17 @@ type Asset_Specific struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	DbName           string   `protobuf:"bytes,1,opt,name=db_name,json=dbName,proto3" json:"db_name,omitempty"`
-	UseSsl           bool     `protobuf:"varint,2,opt,name=use_ssl,json=useSsl,proto3" json:"use_ssl,omitempty"`
-	CaCert           string   `protobuf:"bytes,3,opt,name=ca_cert,json=caCert,proto3" json:"ca_cert,omitempty"`
-	ClientCert       string   `protobuf:"bytes,4,opt,name=client_cert,json=clientCert,proto3" json:"client_cert,omitempty"`
-	CertKey          string   `protobuf:"bytes,5,opt,name=cert_key,json=certKey,proto3" json:"cert_key,omitempty"`
-	AllowInvalidCert bool     `protobuf:"varint,6,opt,name=allow_invalid_cert,json=allowInvalidCert,proto3" json:"allow_invalid_cert,omitempty"`
-	AutoFill         string   `protobuf:"bytes,7,opt,name=auto_fill,json=autoFill,proto3" json:"auto_fill,omitempty"`
-	UsernameSelector string   `protobuf:"bytes,8,opt,name=username_selector,json=usernameSelector,proto3" json:"username_selector,omitempty"`
-	PasswordSelector string   `protobuf:"bytes,9,opt,name=password_selector,json=passwordSelector,proto3" json:"password_selector,omitempty"`
-	SubmitSelector   string   `protobuf:"bytes,10,opt,name=submit_selector,json=submitSelector,proto3" json:"submit_selector,omitempty"`
-	Script           []string `protobuf:"bytes,11,rep,name=script,proto3" json:"script,omitempty"`
+	DbName           string `protobuf:"bytes,1,opt,name=db_name,json=dbName,proto3" json:"db_name,omitempty"`
+	UseSsl           bool   `protobuf:"varint,2,opt,name=use_ssl,json=useSsl,proto3" json:"use_ssl,omitempty"`
+	CaCert           string `protobuf:"bytes,3,opt,name=ca_cert,json=caCert,proto3" json:"ca_cert,omitempty"`
+	ClientCert       string `protobuf:"bytes,4,opt,name=client_cert,json=clientCert,proto3" json:"client_cert,omitempty"`
+	CertKey          string `protobuf:"bytes,5,opt,name=cert_key,json=certKey,proto3" json:"cert_key,omitempty"`
+	AllowInvalidCert bool   `protobuf:"varint,6,opt,name=allow_invalid_cert,json=allowInvalidCert,proto3" json:"allow_invalid_cert,omitempty"`
+	AutoFill         string `protobuf:"bytes,7,opt,name=auto_fill,json=autoFill,proto3" json:"auto_fill,omitempty"`
+	UsernameSelector string `protobuf:"bytes,8,opt,name=username_selector,json=usernameSelector,proto3" json:"username_selector,omitempty"`
+	PasswordSelector string `protobuf:"bytes,9,opt,name=password_selector,json=passwordSelector,proto3" json:"password_selector,omitempty"`
+	SubmitSelector   string `protobuf:"bytes,10,opt,name=submit_selector,json=submitSelector,proto3" json:"submit_selector,omitempty"`
+	Script           string `protobuf:"bytes,11,opt,name=script,proto3" json:"script,omitempty"`
 }
 
 func (x *Asset_Specific) Reset() {
@@ -1589,11 +1589,11 @@ func (x *Asset_Specific) GetSubmitSelector() string {
 	return ""
 }
 
-func (x *Asset_Specific) GetScript() []string {
+func (x *Asset_Specific) GetScript() string {
 	if x != nil {
 		return x.Script
 	}
-	return nil
+	return ""
 }
 
 var File_common_proto protoreflect.FileDescriptor
@@ -1658,7 +1658,7 @@ var file_common_proto_rawDesc = []byte{
 	0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x6f, 0x72, 0x12, 0x27, 0x0a, 0x0f, 0x73, 0x75, 0x62, 0x6d,
 	0x69, 0x74, 0x5f, 0x73, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x6f, 0x72, 0x18, 0x0a, 0x20, 0x01, 0x28,
 	0x09, 0x52, 0x0e, 0x73, 0x75, 0x62, 0x6d, 0x69, 0x74, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x6f,
-	0x72, 0x12, 0x16, 0x0a, 0x06, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x18, 0x0b, 0x20, 0x03, 0x28,
+	0x72, 0x12, 0x16, 0x0a, 0x06, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x18, 0x0b, 0x20, 0x01, 0x28,
 	0x09, 0x52, 0x06, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x22, 0x42, 0x0a, 0x08, 0x50, 0x72, 0x6f,
 	0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20,
 	0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18,
