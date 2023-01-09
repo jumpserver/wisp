@@ -38,11 +38,15 @@ type JMServer struct {
 
 func (j *JMServer) GetTokenAuthInfo(ctx context.Context, req *pb.TokenRequest) (*pb.TokenResponse, error) {
 	var status pb.Status
+	var gateways []model.Gateway
 	tokenAuthInfo, err := j.apiClient.GetConnectTokenInfo(req.Token)
 	if err != nil {
 		status.Err = err.Error()
 		logger.Errorf("Get Connect token auth failed: %s", err)
 		return &pb.TokenResponse{Status: &status}, nil
+	}
+	if tokenAuthInfo.Gateway != nil {
+		gateways = append(gateways, *tokenAuthInfo.Gateway)
 	}
 	setting := j.uploader.GetTerminalSetting()
 	dbTokenInfo := pb.TokenAuthInfo{
@@ -54,7 +58,7 @@ func (j *JMServer) GetTokenAuthInfo(ctx context.Context, req *pb.TokenRequest) (
 		Account:     ConvertToProtobufAccount(tokenAuthInfo.Account),
 		Permission:  ConvertToProtobufPermission(tokenAuthInfo.Actions),
 		ExpireInfo:  ConvertToProtobufExpireInfo(tokenAuthInfo.ExpireAt),
-		Gateways:    ConvertToProtobufGateways([]model.Gateway{*tokenAuthInfo.Gateway}),
+		Gateways:    ConvertToProtobufGateways(gateways),
 		Setting:     ConvertToPbSetting(&setting),
 	}
 	status.Ok = true

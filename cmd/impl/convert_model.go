@@ -6,14 +6,14 @@ import (
 	pb "github.com/jumpserver/wisp/protobuf-go/protobuf"
 )
 
-var modelLoginFrom = map[pb.Session_LoginFrom]string{
+var modelLoginFrom = map[pb.Session_LoginFrom]model.LabelFiled{
 	pb.Session_WT: model.LoginFromWT,
 	pb.Session_ST: model.LoginFromST,
 	pb.Session_RT: model.LoginFromRT,
 	pb.Session_DT: model.LoginFromDT,
 }
 
-func ConvertModelLoginFrom(lf pb.Session_LoginFrom) string {
+func ConvertModelLoginFrom(lf pb.Session_LoginFrom) model.LabelFiled {
 	return modelLoginFrom[lf]
 }
 
