@@ -184,11 +184,11 @@ func ConvertToProtobufSession(sess model.Session) *pb.Session {
 	}
 }
 
-func ConvertToPbLoginFrom(s string) pb.Session_LoginFrom {
+func ConvertToPbLoginFrom(s model.LabelFiled) pb.Session_LoginFrom {
 	return pbLoginFrom[s]
 }
 
-var pbLoginFrom = map[string]pb.Session_LoginFrom{
+var pbLoginFrom = map[model.LabelFiled]pb.Session_LoginFrom{
 	model.LoginFromWT: pb.Session_WT,
 	model.LoginFromST: pb.Session_ST,
 	model.LoginFromRT: pb.Session_RT,
