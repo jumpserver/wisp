@@ -1478,7 +1478,7 @@ type Asset_Specific struct {
 	UseSsl           bool   `protobuf:"varint,2,opt,name=use_ssl,json=useSsl,proto3" json:"use_ssl,omitempty"`
 	CaCert           string `protobuf:"bytes,3,opt,name=ca_cert,json=caCert,proto3" json:"ca_cert,omitempty"`
 	ClientCert       string `protobuf:"bytes,4,opt,name=client_cert,json=clientCert,proto3" json:"client_cert,omitempty"`
-	CertKey          string `protobuf:"bytes,5,opt,name=cert_key,json=certKey,proto3" json:"cert_key,omitempty"`
+	CertKey          string `protobuf:"bytes,5,opt,name=client_key,json=certKey,proto3" json:"cert_key,omitempty"`
 	AllowInvalidCert bool   `protobuf:"varint,6,opt,name=allow_invalid_cert,json=allowInvalidCert,proto3" json:"allow_invalid_cert,omitempty"`
 	AutoFill         string `protobuf:"bytes,7,opt,name=auto_fill,json=autoFill,proto3" json:"auto_fill,omitempty"`
 	UsernameSelector string `protobuf:"bytes,8,opt,name=username_selector,json=usernameSelector,proto3" json:"username_selector,omitempty"`

@@ -30,7 +30,7 @@ message Asset {
     bool use_ssl = 2;
     string ca_cert = 3;
     string client_cert = 4;
-    string cert_key = 5;
+    string client_key = 5;
     bool allow_invalid_cert = 6;
 
     string auto_fill = 7;
