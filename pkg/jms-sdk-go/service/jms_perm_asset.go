@@ -13,12 +13,6 @@ func (s *JMService) SearchPermAsset(userId, key string) (res model.AssetList, er
 	return
 }
 
-func (s *JMService) GetSystemUsersByUserIdAndAssetId(userId, assetId string) (sysUsers []model.SystemUser, err error) {
-	Url := fmt.Sprintf(UserPermsAssetSystemUsersURL, userId, assetId)
-	_, err = s.authClient.Get(Url, &sysUsers)
-	return
-}
-
 func (s *JMService) GetAllUserPermsAssets(userId string) ([]map[string]interface{}, error) {
 	var params model.PaginationParam
 	res, err := s.GetUserPermsAssets(userId, params)
@@ -54,7 +48,7 @@ func (s *JMService) GetUserAssetByID(userId, assetId string) (assets []model.Ass
 
 func (s *JMService) GetUserPermAssetsByIP(userId, assetIP string) (assets []model.Asset, err error) {
 	params := map[string]string{
-		"ip": assetIP,
+		"address": assetIP,
 	}
 	reqUrl := fmt.Sprintf(UserPermsAssetsURL, userId)
 	_, err = s.authClient.Get(reqUrl, &assets, params)

@@ -6,7 +6,7 @@ package message;
 option go_package = "/protobuf";
 
 service Service {
-  rpc GetDBTokenAuthInfo(TokenRequest) returns (DBTokenResponse) {};
+  rpc GetTokenAuthInfo(TokenRequest) returns (TokenResponse) {};
   rpc RenewToken(TokenRequest) returns (StatusResponse) {};
   rpc CreateSession(SessionCreateRequest) returns (SessionCreateResponse) {};
   rpc FinishSession(SessionFinishRequest) returns (SessionFinishResp) {};
@@ -31,8 +31,7 @@ service Service {
 message AssetLoginTicketRequest {
   string user_id = 1;
   string asset_id = 2;
-  string system_user_id = 3;
-  string system_user_username = 4;
+  string account_username = 4;
 }
 
 message AssetLoginTicketResponse {
@@ -51,7 +50,7 @@ message TokenRequest {
   string token = 1;
 }
 
-message DBTokenResponse {
+message TokenResponse {
   Status status = 1;
   TokenAuthInfo data = 2;
 }
@@ -90,7 +89,7 @@ message CommandRequest {
   string output = 4;
   string user = 5;
   string asset = 6;
-  string system_user = 7;
+  string account = 7;
   int64 timestamp = 8;
   RiskLevel risk_level = 9;
 }
@@ -121,7 +120,7 @@ message StatusResponse {
 }
 message CommandConfirmRequest {
   string session_id = 1;
-  string rule_id = 2;
+  string cmd_acl_id = 2;
   string cmd = 3;
 }
 
@@ -201,7 +200,7 @@ message PortInfoResponse {
 }
 
 message PortInfo {
-  Application application = 1;
+  Asset asset = 1;
   repeated Gateway gateways = 2;
 }
 

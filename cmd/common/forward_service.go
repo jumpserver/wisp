@@ -55,12 +55,11 @@ func FindAvailableDomainGateway(domain *model.Domain) (*ssh.Client, error) {
 	for i := range domain.Gateways {
 		gateway := domain.Gateways[i]
 		opts := make([]sshclient.Option, 0, 7)
-		opts = append(opts, sshclient.WithHost(gateway.IP))
-		opts = append(opts, sshclient.WithPort(gateway.Port))
-		opts = append(opts, sshclient.WithUsername(gateway.Username))
-		opts = append(opts, sshclient.WithPassword(gateway.Password))
-		opts = append(opts, sshclient.WithPrivateKey(gateway.PrivateKey))
-		opts = append(opts, sshclient.WithPassphrase(gateway.Password))
+		opts = append(opts, sshclient.WithHost(gateway.Address))
+		opts = append(opts, sshclient.WithPort(gateway.Protocols.GetProtocolPort("ssh")))
+		opts = append(opts, sshclient.WithUsername(gateway.Account.Username))
+		opts = append(opts, sshclient.WithPassword(gateway.Account.Secret))
+		opts = append(opts, sshclient.WithPrivateKey(gateway.Account.Secret))
 		opts = append(opts, sshclient.WithTimeout(15))
 		proxyClient, err := sshclient.New(opts...)
 		if err == nil {

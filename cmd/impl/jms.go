@@ -36,38 +36,34 @@ type JMServer struct {
 	forwardStore *common.ForwardCache
 }
 
-func (j *JMServer) GetDBTokenAuthInfo(ctx context.Context, req *pb.TokenRequest) (*pb.DBTokenResponse, error) {
+func (j *JMServer) GetTokenAuthInfo(ctx context.Context, req *pb.TokenRequest) (*pb.TokenResponse, error) {
 	var status pb.Status
-	tokenResp, err := j.apiClient.GetConnectTokenAuth(req.Token)
+	var gateways []model.Gateway
+	tokenAuthInfo, err := j.apiClient.GetConnectTokenInfo(req.Token)
 	if err != nil {
 		status.Err = err.Error()
 		logger.Errorf("Get Connect token auth failed: %s", err)
-		return &pb.DBTokenResponse{Status: &status}, nil
+		return &pb.TokenResponse{Status: &status}, nil
 	}
-	tokenAuthInfo := tokenResp.Info
-	if tokenAuthInfo.TypeName != model.ConnectApplication {
-		msg := fmt.Sprintf("Bad request: token %s connect type not %s", req.Token,
-			model.ConnectApplication)
-		status.Err = msg
-		logger.Error(msg)
-		return &pb.DBTokenResponse{Status: &status}, nil
+	if tokenAuthInfo.Gateway != nil {
+		gateways = append(gateways, *tokenAuthInfo.Gateway)
 	}
 	setting := j.uploader.GetTerminalSetting()
 	dbTokenInfo := pb.TokenAuthInfo{
 		KeyId:       tokenAuthInfo.Id,
-		SecreteId:   tokenAuthInfo.Secret,
-		Application: ConvertToProtobufApplication(tokenAuthInfo.Application),
+		SecreteId:   tokenAuthInfo.Value,
+		Asset:       ConvertToProtobufAsset(tokenAuthInfo.Asset),
 		User:        ConvertToProtobufUser(tokenAuthInfo.User),
-		FilterRules: ConvertToProtobufFilterRules(tokenAuthInfo.CmdFilterRules),
-		SystemUser:  ConvertToProtobufSystemUser(tokenAuthInfo.SystemUserAuthInfo),
-		Permission:  ConvertToProtobufPermission(model.Permission{Actions: tokenAuthInfo.Actions}),
-		ExpireInfo:  ConvertToProtobufExpireInfo(model.ExpireInfo{ExpireAt: tokenAuthInfo.ExpiredAt}),
-		Gateways:    ConvertToProtobufGateways(tokenAuthInfo.Domain.Gateways),
+		FilterRules: ConvertToProtobufFilterRules(tokenAuthInfo.CommandFilterACLs),
+		Account:     ConvertToProtobufAccount(tokenAuthInfo.Account),
+		Permission:  ConvertToProtobufPermission(tokenAuthInfo.Actions),
+		ExpireInfo:  ConvertToProtobufExpireInfo(tokenAuthInfo.ExpireAt),
+		Gateways:    ConvertToProtobufGateways(gateways),
 		Setting:     ConvertToPbSetting(&setting),
 	}
 	status.Ok = true
 	logger.Debugf("Get database auth info success by token: %s", req.Token)
-	return &pb.DBTokenResponse{Status: &status, Data: &dbTokenInfo}, nil
+	return &pb.TokenResponse{Status: &status, Data: &dbTokenInfo}, nil
 }
 
 func (j *JMServer) RenewToken(ctx context.Context, req *pb.TokenRequest) (*pb.StatusResponse, error) {
@@ -216,9 +212,9 @@ func (j *JMServer) CreateCommandTicket(ctx context.Context, req *pb.CommandConfi
 		status pb.Status
 	)
 	sid := req.GetSessionId()
-	ruleId := req.GetRuleId()
+	aclId := req.GetCmdAclId()
 	cmd := req.GetCmd()
-	res, err := j.apiClient.SubmitCommandConfirm(sid, ruleId, cmd)
+	res, err := j.apiClient.SubmitCommandReview(sid, aclId, cmd)
 	if err != nil {
 		logger.Errorf("Create command ticket err: %s", err)
 		status.Err = err.Error()
@@ -271,9 +267,8 @@ func (j *JMServer) CheckOrCreateAssetLoginTicket(ctx context.Context,
 
 	userId := req.GetUserId()
 	assetId := req.GetAssetId()
-	systemUserId := req.GetSystemUserId()
-	sysUsername := req.GetSystemUserUsername()
-	res, err := j.apiClient.CheckIfNeedAssetLoginConfirm(userId, assetId, systemUserId, sysUsername)
+	username := req.GetAccountUsername()
+	res, err := j.apiClient.CheckIfNeedAssetLoginConfirm(userId, assetId, username)
 	if err != nil {
 		logger.Errorf("Check or create asset login ticket req %+v err: %s", req, err)
 		status.Ok = false

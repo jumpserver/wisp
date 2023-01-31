@@ -11,16 +11,14 @@ func (j *JMServer) GetListenPorts(ctx context.Context, req *pb.Empty) (*pb.Liste
 	var (
 		status pb.Status
 	)
-	status.Ok = true
 	ports, err := j.apiClient.GetListenPorts()
 	if err != nil {
-		status.Ok = false
 		status.Err = err.Error()
 		return &pb.ListenPortResponse{
 			Status: &status,
 		}, nil
 	}
-
+	status.Ok = true
 	return &pb.ListenPortResponse{
 		Status: &status,
 		Ports:  ports,
@@ -33,7 +31,7 @@ func (j *JMServer) GetPortInfo(ctx context.Context,
 		status   pb.Status
 		gateways []*pb.Gateway
 	)
-	app, err := j.apiClient.GetApplicationByPort(req.Port)
+	app, err := j.apiClient.GetAssetByPort(req.Port)
 	if err != nil {
 		status.Ok = false
 		status.Err = err.Error()
@@ -41,22 +39,14 @@ func (j *JMServer) GetPortInfo(ctx context.Context,
 			Status: &status,
 		}, nil
 	}
-	pbApp := ConvertToProtobufApplication(app)
-	if app.Domain != "" {
-		domain, err := j.apiClient.GetDomainGateways(app.Domain)
-		if err != nil {
-			status.Ok = false
-			status.Err = err.Error()
-			return &pb.PortInfoResponse{
-				Status: &status,
-			}, nil
-		}
-		gateways = ConvertToProtobufGateways(domain.Gateways)
+	pbAsset := ConvertToProtobufAsset(app)
+	if app.Gateway != nil {
+		gateways = []*pb.Gateway{ConvertToProtobufGateway(*app.Gateway)}
 	}
 	status.Ok = true
 	info := pb.PortInfo{
-		Application: pbApp,
-		Gateways:    gateways,
+		Asset:    pbAsset,
+		Gateways: gateways,
 	}
 	return &pb.PortInfoResponse{Status: &status, Data: &info}, nil
 }

@@ -1,8 +1,6 @@
 package service
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
 
 	"github.com/jumpserver/wisp/pkg/jms-sdk-go/model"
@@ -14,17 +12,17 @@ func (s *JMService) GetTokenAsset(token string) (tokenUser model.TokenUser, err 
 	return
 }
 
-func (s *JMService) GetConnectTokenAuth(token string) (resp TokenAuthInfoResponse, err error) {
+func (s *JMService) GetConnectTokenInfo(tokenId string) (resp model.ConnectToken, err error) {
 	data := map[string]string{
-		"token": token,
+		"id": tokenId,
 	}
-	_, err = s.authClient.Post(TokenAuthInfoURL, data, &resp)
+	_, err = s.authClient.Post(SuperConnectTokenSecretURL, data, &resp)
 	return
 }
 
 func (s *JMService) RenewalToken(token string) (resp TokenRenewalResponse, err error) {
 	data := map[string]string{
-		"token": token,
+		"id": token,
 	}
 	_, err = s.authClient.Patch(SuperTokenRenewalURL, data, &resp)
 	return
@@ -33,37 +31,4 @@ func (s *JMService) RenewalToken(token string) (resp TokenRenewalResponse, err e
 type TokenRenewalResponse struct {
 	Ok  bool   `json:"ok"`
 	Msg string `json:"msg"`
-}
-
-type TokenAuthInfoResponse struct {
-	Info TokenAuthInfo
-	Err  []string
-}
-
-/*
-	接口返回可能是一个['Token not found']
-*/
-
-func (t *TokenAuthInfoResponse) UnmarshalJSON(p []byte) error {
-	if index := bytes.IndexByte(p, '['); index == 0 {
-		return json.Unmarshal(p, &t.Err)
-	}
-	return json.Unmarshal(p, &t.Info)
-}
-
-type TokenAuthInfo struct {
-	Id          string            `json:"id"`
-	Secret      string            `json:"secret"`
-	TypeName    model.ConnectType `json:"type"`
-	User        model.User        `json:"user"`
-	Actions     []string          `json:"actions,omitempty"`
-	Application model.Application `json:"application,omitempty"`
-	Asset       *model.Asset      `json:"asset,omitempty"`
-	ExpiredAt   int64             `json:"expired_at"`
-	Gateway     model.Gateway     `json:"gateway,omitempty"`
-	Domain      model.Domain      `json:"domain"`
-
-	CmdFilterRules []model.FilterRule `json:"cmd_filter_rules,omitempty"`
-
-	SystemUserAuthInfo model.SystemUserAuthInfo `json:"system_user"`
 }

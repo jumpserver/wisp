@@ -16,40 +16,80 @@ func ConvertToProtobufUser(user model.User) *pb.User {
 	}
 }
 
-func ConvertToProtobufApplication(app model.Application) *pb.Application {
-	return &pb.Application{
-		Id:       app.ID,
-		Name:     app.Name,
-		Category: app.Category,
-		TypeName: app.TypeName,
-		Domain:   app.Domain,
-		OrgId:    app.OrgID,
-		Attrs: &pb.Application_Attrs{
-			Host:       app.Attrs.Host,
-			Port:       int32(app.Attrs.Port),
-			Database:   app.Attrs.Database,
-			UseSSL:     app.Attrs.UseSSL,
-			CaCert:     app.Attrs.CaCert,
-			ClientCert: app.Attrs.ClientCert,
-			CertKey:    app.Attrs.CertKey,
+func ConvertToProtobufProtocols(protocol []model.Protocol) []*pb.Protocol {
+	if len(protocol) == 0 {
+		return nil
+	}
+	pbProtocols := make([]*pb.Protocol, len(protocol))
+	for i := range protocol {
+		pbProtocols[i] = ConvertToProtobufProtocol(&protocol[i])
+	}
+	return pbProtocols
+}
+
+func ConvertToProtobufProtocol(protocol *model.Protocol) *pb.Protocol {
+	return &pb.Protocol{
+		Id:   int32(protocol.Id),
+		Name: protocol.Name,
+		Port: int32(protocol.Port),
+	}
+}
+
+func ConvertToProtobufAsset(asset model.Asset) *pb.Asset {
+	specific := asset.Specific
+	protocols := asset.Protocols
+	return &pb.Asset{
+		Id:        asset.ID,
+		Name:      asset.Name,
+		Address:   asset.Address,
+		OrgId:     asset.OrgID,
+		Protocols: ConvertToProtobufProtocols(protocols),
+		Specific: &pb.Asset_Specific{
+			DbName:           specific.DBName,
+			UseSsl:           specific.UseSSL,
+			CaCert:           specific.CaCert,
+			ClientCert:       specific.ClientCert,
+			ClientKey:        specific.ClientKey,
+			AllowInvalidCert: specific.AllowInvalidCert,
+			AutoFill:         specific.AutoFill,
+			UsernameSelector: specific.UsernameSelector,
+			PasswordSelector: specific.PasswordSelector,
+			SubmitSelector:   specific.SubmitSelector,
 		},
 	}
 }
 
-func ConvertToProtobufGateway(gateway model.Gateway) *pb.Gateway {
-	return &pb.Gateway{
-		Id:         gateway.ID,
-		Name:       gateway.Name,
-		Ip:         gateway.IP,
-		Port:       int32(gateway.Port),
-		Protocol:   gateway.Protocol,
-		Username:   gateway.Username,
-		Password:   gateway.Password,
-		PrivateKey: gateway.PrivateKey,
+func ConvertToProtobufAccount(account model.Account) *pb.Account {
+	secretType := account.SecretType
+	return &pb.Account{
+		Name:     account.Name,
+		Username: account.Username,
+		Secret:   account.Secret,
+		SecretType: &pb.LabelValue{Label: secretType.Label,
+			Value: secretType.Value},
 	}
 }
 
-func ConvertToProtobufPermission(perm model.Permission) *pb.Permission {
+func ConvertToProtobufGateway(gateway model.Gateway) *pb.Gateway {
+	account := gateway.Account
+	pbGateway := &pb.Gateway{
+		Id:       gateway.ID,
+		Name:     gateway.Name,
+		Ip:       gateway.Address,
+		Port:     int32(gateway.Protocols.GetProtocolPort("ssh")),
+		Protocol: "ssh",
+		Username: account.Username,
+	}
+	if account.IsSSHKey() {
+		pbGateway.PrivateKey = account.Secret
+	} else {
+		pbGateway.Password = account.Secret
+	}
+
+	return pbGateway
+}
+
+func ConvertToProtobufPermission(perm model.Actions) *pb.Permission {
 	return &pb.Permission{
 		EnableConnect:  perm.EnableConnect(),
 		EnablePaste:    perm.EnablePaste(),
@@ -59,48 +99,46 @@ func ConvertToProtobufPermission(perm model.Permission) *pb.Permission {
 	}
 }
 
-func ConvertToProtobufSystemUser(systemUserAuthInfo model.SystemUserAuthInfo) *pb.SystemUserAuthInfo {
-	return &pb.SystemUserAuthInfo{
-		Id:         systemUserAuthInfo.ID,
-		Name:       systemUserAuthInfo.Name,
-		Protocol:   systemUserAuthInfo.Protocol,
-		Username:   systemUserAuthInfo.Username,
-		Password:   systemUserAuthInfo.Password,
-		PrivateKey: systemUserAuthInfo.PrivateKey,
-		Token:      systemUserAuthInfo.Token,
-		AdDomain:   systemUserAuthInfo.AdDomain,
-		OrgName:    systemUserAuthInfo.OrgName,
-		OrgId:      systemUserAuthInfo.OrgId,
-	}
+var ruleActionMap = map[model.CommandAction]pb.CommandACL_Action{
+	model.ActionUnknown: pb.CommandACL_Unknown,
+	model.ActionAccept:  pb.CommandACL_Accept,
+	model.ActionReview:  pb.CommandACL_Review,
+	model.ActionReject:  pb.CommandACL_Reject,
 }
 
-var ruleActionMap = map[model.RuleAction]pb.FilterRule_Action{
-	model.ActionUnknown: pb.FilterRule_Unknown,
-	model.ActionAllow:   pb.FilterRule_Allow,
-	model.ActionConfirm: pb.FilterRule_Confirm,
-	model.ActionDeny:    pb.FilterRule_Deny,
-}
-
-func ConvertToProtobufFilterRule(rule model.FilterRule) *pb.FilterRule {
+func ConvertToProtobufFilterRule(rule model.CommandACL) *pb.CommandACL {
 	action, ok := ruleActionMap[rule.Action]
 	if !ok {
-		action = pb.FilterRule_Unknown
+		action = pb.CommandACL_Unknown
 	}
-	return &pb.FilterRule{
-		Id:         rule.ID,
-		Priority:   int32(rule.Priority),
-		Type:       rule.Type,
-		Content:    rule.Content,
-		Action:     action,
-		OrgId:      rule.OrgId,
-		Pattern:    rule.RePattern,
-		IgnoreCase: rule.IgnoreCase,
+	return &pb.CommandACL{
+		Id:            rule.ID,
+		Name:          rule.Name,
+		Priority:      int32(rule.Priority),
+		Action:        action,
+		IsActive:      rule.IsActive,
+		CommandGroups: ConvertToProtobufCommandGroup(rule.CommandGroups),
 	}
+}
+
+func ConvertToProtobufCommandGroup(groups []model.CommandGroup) []*pb.CommandGroup {
+	pbRules := make([]*pb.CommandGroup, 0, len(groups))
+	for i := range groups {
+		group := groups[i]
+		pbRules = append(pbRules, &pb.CommandGroup{
+			Id:         group.ID,
+			Name:       group.Name,
+			Type:       group.Type,
+			IgnoreCase: group.IgnoreCase,
+			Pattern:    group.Pattern,
+			Content:    group.Content})
+	}
+	return pbRules
 }
 
 func ConvertToProtobufExpireInfo(info model.ExpireInfo) *pb.ExpireInfo {
 	return &pb.ExpireInfo{
-		ExpireAt: info.ExpireAt,
+		ExpireAt: int64(info),
 	}
 }
 
@@ -110,16 +148,19 @@ func ConvertToProtobufGateways(gateways []model.Gateway) []*pb.Gateway {
 	}
 	pbGateways := make([]*pb.Gateway, len(gateways))
 	for i := range gateways {
+		if gateways[i].Address == "" {
+			continue
+		}
 		pbGateways[i] = ConvertToProtobufGateway(gateways[i])
 	}
 	return pbGateways
 }
 
-func ConvertToProtobufFilterRules(rules []model.FilterRule) []*pb.FilterRule {
+func ConvertToProtobufFilterRules(rules []model.CommandACL) []*pb.CommandACL {
 	if len(rules) == 0 {
 		return nil
 	}
-	pbRules := make([]*pb.FilterRule, len(rules))
+	pbRules := make([]*pb.CommandACL, len(rules))
 	for i := range rules {
 		pbRules[i] = ConvertToProtobufFilterRule(rules[i])
 	}
@@ -128,26 +169,25 @@ func ConvertToProtobufFilterRules(rules []model.FilterRule) []*pb.FilterRule {
 
 func ConvertToProtobufSession(sess model.Session) *pb.Session {
 	return &pb.Session{
-		Id:           sess.ID,
-		User:         sess.User,
-		Asset:        sess.Asset,
-		SystemUser:   sess.SystemUser,
-		LoginFrom:    ConvertToPbLoginFrom(sess.LoginFrom),
-		RemoteAddr:   sess.RemoteAddr,
-		Protocol:     sess.Protocol,
-		DateStart:    sess.DateStart.Unix(),
-		OrgId:        sess.OrgID,
-		UserId:       sess.UserID,
-		AssetId:      sess.AssetID,
-		SystemUserId: sess.SystemUserID,
+		Id:         sess.ID,
+		User:       sess.User,
+		Asset:      sess.Asset,
+		Account:    sess.Account,
+		LoginFrom:  ConvertToPbLoginFrom(sess.LoginFrom),
+		RemoteAddr: sess.RemoteAddr,
+		Protocol:   sess.Protocol,
+		DateStart:  sess.DateStart.Unix(),
+		OrgId:      sess.OrgID,
+		UserId:     sess.UserID,
+		AssetId:    sess.AssetID,
 	}
 }
 
-func ConvertToPbLoginFrom(s string) pb.Session_LoginFrom {
+func ConvertToPbLoginFrom(s model.LabelFiled) pb.Session_LoginFrom {
 	return pbLoginFrom[s]
 }
 
-var pbLoginFrom = map[string]pb.Session_LoginFrom{
+var pbLoginFrom = map[model.LabelFiled]pb.Session_LoginFrom{
 	model.LoginFromWT: pb.Session_WT,
 	model.LoginFromST: pb.Session_ST,
 	model.LoginFromRT: pb.Session_RT,
@@ -171,7 +211,6 @@ func ConvertToPbReqInfo(reqInfo model.ReqInfo) *pb.ReqInfo {
 }
 
 func ConvertToPbTicketState(state *model.TicketState) *pb.TicketState {
-
 	return &pb.TicketState{
 		State:     pbTicketMap[state.State],
 		Processor: state.Processor,

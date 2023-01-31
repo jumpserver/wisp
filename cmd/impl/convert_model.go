@@ -6,31 +6,31 @@ import (
 	pb "github.com/jumpserver/wisp/protobuf-go/protobuf"
 )
 
-var modelLoginFrom = map[pb.Session_LoginFrom]string{
+var modelLoginFrom = map[pb.Session_LoginFrom]model.LabelFiled{
 	pb.Session_WT: model.LoginFromWT,
 	pb.Session_ST: model.LoginFromST,
 	pb.Session_RT: model.LoginFromRT,
 	pb.Session_DT: model.LoginFromDT,
 }
 
-func ConvertModelLoginFrom(lf pb.Session_LoginFrom) string {
+func ConvertModelLoginFrom(lf pb.Session_LoginFrom) model.LabelFiled {
 	return modelLoginFrom[lf]
 }
 
 func ConvertToSession(sees *pb.Session) model.Session {
 	return model.Session{
-		ID:           sees.Id,
-		User:         sees.User,
-		Asset:        sees.Asset,
-		SystemUser:   sees.SystemUser,
-		LoginFrom:    ConvertModelLoginFrom(sees.LoginFrom),
-		RemoteAddr:   sees.RemoteAddr,
-		Protocol:     sees.Protocol,
-		DateStart:    common.ParseUnixTime(sees.DateStart),
-		OrgID:        sees.OrgId,
-		UserID:       sees.UserId,
-		AssetID:      sees.AssetId,
-		SystemUserID: sees.SystemUserId,
+		ID:         sees.Id,
+		User:       sees.User,
+		Asset:      sees.Asset,
+		Account:    sees.Account,
+		LoginFrom:  ConvertModelLoginFrom(sees.LoginFrom),
+		RemoteAddr: sees.RemoteAddr,
+		Protocol:   sees.Protocol,
+		DateStart:  common.ParseUnixTime(sees.DateStart),
+		OrgID:      sees.OrgId,
+		UserID:     sees.UserId,
+		AssetID:    sees.AssetId,
+		Type:       model.NORMALType,
 	}
 }
 
@@ -43,7 +43,7 @@ func ConvertToCommand(cmd *pb.CommandRequest) model.Command {
 		Output:      cmd.Output,
 		User:        cmd.User,
 		Server:      cmd.Asset,
-		SystemUser:  cmd.SystemUser,
+		Account:     cmd.Account,
 		Timestamp:   cmd.Timestamp,
 		RiskLevel:   convertRiskLevel(cmd.RiskLevel),
 		DateCreated: utc.UTC(),
@@ -72,4 +72,3 @@ func ConvertToReqInfo(req *pb.ReqInfo) model.ReqInfo {
 		URL:    req.GetUrl(),
 	}
 }
-

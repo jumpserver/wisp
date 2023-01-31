@@ -12,38 +12,47 @@ message User {
   bool is_active = 6;
 }
 
-message SystemUserAuthInfo {
-  string id = 1;
+message Account {
   string name = 2;
-  string protocol = 3;
   string username = 4;
-  string password = 5;
-  string private_key = 6;
-  string token = 7;
-  string ad_domain = 8;
-  string org_name = 9;
-  string org_id = 10;
+  string secret = 5;
+  LabelValue secretType = 6;
 }
 
-message Application {
-  message Attrs {
-    string host = 1;
-    int32 Port = 2;
-    string Database = 3;
-    bool UseSSL = 4;
-    string CaCert = 5;
-    string ClientCert = 6;
-    string CertKey = 7;
+message LabelValue {
+  string label = 1;
+  string value = 2;
+}
+
+message Asset {
+  message Specific {
+    string db_name = 1;
+    bool use_ssl = 2;
+    string ca_cert = 3;
+    string client_cert = 4;
+    string client_key = 5;
+    bool allow_invalid_cert = 6;
+
+    string auto_fill = 7;
+    string username_selector = 8;
+    string password_selector = 9;
+    string submit_selector = 10;
+    string script = 11;
   }
 
   string id = 1;
   string name = 2;
-  string category = 3;
-  string type_name = 4;
-  string domain = 5;
-  string org_id = 6;
-  string org_name = 7;
-  Attrs attrs = 8;
+  string address = 3;
+  string org_id = 4;
+  string org_name = 5;
+  repeated Protocol protocols = 6;
+  Specific specific = 7;
+}
+
+message Protocol {
+  string name = 2;
+  int32 id = 1;
+  int32 port = 3;
 }
 
 message Gateway {
@@ -65,21 +74,28 @@ message Permission {
   bool enable_paste = 5;
 }
 
-message FilterRule {
+message CommandACL {
   enum Action {
-    Deny = 0;
-    Allow = 1;
-    Confirm = 2;
+    Reject = 0;
+    Accept = 1;
+    Review = 2;
     Unknown = 3;
   }
   string id = 1;
-  int32 priority = 2;
-  string type = 3;
-  string content = 4;
+  string name = 2;
+  int32 priority = 3;
   Action action = 5;
-  string org_id = 6;
-  string pattern = 7;
-  bool ignore_case = 8;
+  bool is_active = 6;
+  repeated CommandGroup command_groups = 7;
+}
+
+message CommandGroup {
+  string id = 1;
+  string name = 2;
+  string content = 3;
+  string Type = 4;
+  string pattern = 5;
+  bool ignore_case = 6;
 }
 
 message ExpireInfo {
@@ -96,7 +112,7 @@ message Session {
   string id = 1;
   string user = 2;
   string asset = 3;
-  string system_user = 4;
+  string account = 4;
   LoginFrom login_from = 5;
   string remote_addr = 6;
   string protocol = 7;
@@ -104,10 +120,9 @@ message Session {
   string org_id = 9;
   string user_id = 10;
   string asset_id = 11;
-  string system_user_id = 12;
 }
 
-enum TaskAction { KillSession = 0; }
+enum TaskAction {KillSession = 0;}
 
 message TerminalTask {
   string id = 1;
@@ -124,12 +139,12 @@ enum RiskLevel {
 message TokenAuthInfo {
   string key_id = 1;
   string secrete_id = 2;
-  Application application = 3;
+  Asset asset = 3;
   User user = 4;
-  SystemUserAuthInfo system_user = 5;
+  Account account = 5;
   Permission permission = 6;
   ExpireInfo expire_info = 7;
-  repeated FilterRule filter_rules = 8;
+  repeated CommandACL filter_rules = 8;
   repeated Gateway gateways = 9;
   ComponentSetting setting = 10;
 }
