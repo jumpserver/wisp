@@ -49,7 +49,7 @@ func ConvertToProtobufAsset(asset model.Asset) *pb.Asset {
 			UseSsl:           specific.UseSSL,
 			CaCert:           specific.CaCert,
 			ClientCert:       specific.ClientCert,
-			CertKey:          specific.CertKey,
+			ClientKey:        specific.ClientKey,
 			AllowInvalidCert: specific.AllowInvalidCert,
 			AutoFill:         specific.AutoFill,
 			UsernameSelector: specific.UsernameSelector,
