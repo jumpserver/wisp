@@ -36,7 +36,9 @@ func ConvertToProtobufProtocol(protocol *model.Protocol) *pb.Protocol {
 }
 
 func ConvertToProtobufAsset(asset model.Asset) *pb.Asset {
-	specific := asset.Specific
+	specific := asset.SpecInfo
+	secretInfo := asset.SecretInfo
+
 	protocols := asset.Protocols
 	return &pb.Asset{
 		Id:        asset.ID,
@@ -47,9 +49,9 @@ func ConvertToProtobufAsset(asset model.Asset) *pb.Asset {
 		Specific: &pb.Asset_Specific{
 			DbName:           specific.DBName,
 			UseSsl:           specific.UseSSL,
-			CaCert:           specific.CaCert,
-			ClientCert:       specific.ClientCert,
-			ClientKey:        specific.ClientKey,
+			CaCert:           secretInfo.CaCert,
+			ClientCert:       secretInfo.ClientCert,
+			ClientKey:        secretInfo.ClientKey,
 			AllowInvalidCert: specific.AllowInvalidCert,
 			AutoFill:         specific.AutoFill,
 			UsernameSelector: specific.UsernameSelector,
