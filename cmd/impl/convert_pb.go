@@ -213,8 +213,9 @@ func ConvertToPbReqInfo(reqInfo model.ReqInfo) *pb.ReqInfo {
 }
 
 func ConvertToPbTicketState(state *model.TicketState) *pb.TicketState {
+	stateKey := string(state.State)
 	return &pb.TicketState{
-		State:     pbTicketMap[state.State],
+		State:     pbTicketMap[stateKey],
 		Processor: state.Processor,
 	}
 }
