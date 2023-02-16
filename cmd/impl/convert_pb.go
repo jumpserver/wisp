@@ -64,6 +64,7 @@ func ConvertToProtobufAsset(asset model.Asset) *pb.Asset {
 func ConvertToProtobufAccount(account model.Account) *pb.Account {
 	secretType := account.SecretType
 	return &pb.Account{
+		Id:       account.ID,
 		Name:     account.Name,
 		Username: account.Username,
 		Secret:   account.Secret,
