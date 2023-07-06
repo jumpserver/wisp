@@ -94,5 +94,6 @@ proto-go:
 proto-py:
 	@mkdir -p ./protobuf-py/protobuf
 	python -m grpc_tools.protoc --proto_path=${proto_path} --python_out=./protobuf-py/protobuf \
+	--pyi_out=./protobuf-py/protobuf \
 	--grpc_python_out=./protobuf-py/protobuf \
 	${proto_files}

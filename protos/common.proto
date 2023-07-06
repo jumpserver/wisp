@@ -165,3 +165,8 @@ message PublicSetting {
   bool xpack_enabled = 1;
   bool valid_license = 2;
 }
+
+message Cookie {
+  string name = 1;
+  string value = 2;
+}

@@ -40,6 +40,7 @@ type ServiceClient interface {
 	GetListenPorts(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListenPortResponse, error)
 	GetPortInfo(ctx context.Context, in *PortInfoRequest, opts ...grpc.CallOption) (*PortInfoResponse, error)
 	HandlePortFailure(ctx context.Context, in *PortFailureRequest, opts ...grpc.CallOption) (*StatusResponse, error)
+	CheckUserByCookies(ctx context.Context, in *CookiesRequest, opts ...grpc.CallOption) (*UserResponse, error)
 }
 
 type serviceClient struct {
@@ -234,6 +235,15 @@ func (c *serviceClient) HandlePortFailure(ctx context.Context, in *PortFailureRe
 	return out, nil
 }
 
+func (c *serviceClient) CheckUserByCookies(ctx context.Context, in *CookiesRequest, opts ...grpc.CallOption) (*UserResponse, error) {
+	out := new(UserResponse)
+	err := c.cc.Invoke(ctx, "/message.Service/CheckUserByCookies", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ServiceServer is the server API for Service service.
 // All implementations must embed UnimplementedServiceServer
 // for forward compatibility
@@ -256,6 +266,7 @@ type ServiceServer interface {
 	GetListenPorts(context.Context, *Empty) (*ListenPortResponse, error)
 	GetPortInfo(context.Context, *PortInfoRequest) (*PortInfoResponse, error)
 	HandlePortFailure(context.Context, *PortFailureRequest) (*StatusResponse, error)
+	CheckUserByCookies(context.Context, *CookiesRequest) (*UserResponse, error)
 	mustEmbedUnimplementedServiceServer()
 }
 
@@ -316,6 +327,9 @@ func (UnimplementedServiceServer) GetPortInfo(context.Context, *PortInfoRequest)
 }
 func (UnimplementedServiceServer) HandlePortFailure(context.Context, *PortFailureRequest) (*StatusResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method HandlePortFailure not implemented")
+}
+func (UnimplementedServiceServer) CheckUserByCookies(context.Context, *CookiesRequest) (*UserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CheckUserByCookies not implemented")
 }
 func (UnimplementedServiceServer) mustEmbedUnimplementedServiceServer() {}
 
@@ -662,6 +676,24 @@ func _Service_HandlePortFailure_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Service_CheckUserByCookies_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CookiesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).CheckUserByCookies(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/message.Service/CheckUserByCookies",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).CheckUserByCookies(ctx, req.(*CookiesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Service_ServiceDesc is the grpc.ServiceDesc for Service service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -736,6 +768,10 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "HandlePortFailure",
 			Handler:    _Service_HandlePortFailure_Handler,
+		},
+		{
+			MethodName: "CheckUserByCookies",
+			Handler:    _Service_CheckUserByCookies_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

@@ -1485,6 +1485,61 @@ func (x *PublicSetting) GetValidLicense() bool {
 	return false
 }
 
+type Cookie struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Name  string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Value string `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
+}
+
+func (x *Cookie) Reset() {
+	*x = Cookie{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_common_proto_msgTypes[16]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Cookie) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Cookie) ProtoMessage() {}
+
+func (x *Cookie) ProtoReflect() protoreflect.Message {
+	mi := &file_common_proto_msgTypes[16]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Cookie.ProtoReflect.Descriptor instead.
+func (*Cookie) Descriptor() ([]byte, []int) {
+	return file_common_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *Cookie) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *Cookie) GetValue() string {
+	if x != nil {
+		return x.Value
+	}
+	return ""
+}
+
 type Asset_Specific struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1506,7 +1561,7 @@ type Asset_Specific struct {
 func (x *Asset_Specific) Reset() {
 	*x = Asset_Specific{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_common_proto_msgTypes[16]
+		mi := &file_common_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1519,7 +1574,7 @@ func (x *Asset_Specific) String() string {
 func (*Asset_Specific) ProtoMessage() {}
 
 func (x *Asset_Specific) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[16]
+	mi := &file_common_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1811,13 +1866,16 @@ var file_common_proto_rawDesc = []byte{
 	0x62, 0x6c, 0x65, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x0c, 0x78, 0x70, 0x61, 0x63,
 	0x6b, 0x45, 0x6e, 0x61, 0x62, 0x6c, 0x65, 0x64, 0x12, 0x23, 0x0a, 0x0d, 0x76, 0x61, 0x6c, 0x69,
 	0x64, 0x5f, 0x6c, 0x69, 0x63, 0x65, 0x6e, 0x73, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x08, 0x52,
-	0x0c, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x4c, 0x69, 0x63, 0x65, 0x6e, 0x73, 0x65, 0x2a, 0x1d, 0x0a,
-	0x0a, 0x54, 0x61, 0x73, 0x6b, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x0f, 0x0a, 0x0b, 0x4b,
-	0x69, 0x6c, 0x6c, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x10, 0x00, 0x2a, 0x23, 0x0a, 0x09,
-	0x52, 0x69, 0x73, 0x6b, 0x4c, 0x65, 0x76, 0x65, 0x6c, 0x12, 0x0a, 0x0a, 0x06, 0x4e, 0x6f, 0x72,
-	0x6d, 0x61, 0x6c, 0x10, 0x00, 0x12, 0x0a, 0x0a, 0x06, 0x44, 0x61, 0x6e, 0x67, 0x65, 0x72, 0x10,
-	0x01, 0x42, 0x0b, 0x5a, 0x09, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x62, 0x06,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x0c, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x4c, 0x69, 0x63, 0x65, 0x6e, 0x73, 0x65, 0x22, 0x32, 0x0a,
+	0x06, 0x43, 0x6f, 0x6f, 0x6b, 0x69, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x76,
+	0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75,
+	0x65, 0x2a, 0x1d, 0x0a, 0x0a, 0x54, 0x61, 0x73, 0x6b, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12,
+	0x0f, 0x0a, 0x0b, 0x4b, 0x69, 0x6c, 0x6c, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x10, 0x00,
+	0x2a, 0x23, 0x0a, 0x09, 0x52, 0x69, 0x73, 0x6b, 0x4c, 0x65, 0x76, 0x65, 0x6c, 0x12, 0x0a, 0x0a,
+	0x06, 0x4e, 0x6f, 0x72, 0x6d, 0x61, 0x6c, 0x10, 0x00, 0x12, 0x0a, 0x0a, 0x06, 0x44, 0x61, 0x6e,
+	0x67, 0x65, 0x72, 0x10, 0x01, 0x42, 0x0b, 0x5a, 0x09, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62,
+	0x75, 0x66, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1833,7 +1891,7 @@ func file_common_proto_rawDescGZIP() []byte {
 }
 
 var file_common_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_common_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
+var file_common_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
 var file_common_proto_goTypes = []interface{}{
 	(TaskAction)(0),          // 0: message.TaskAction
 	(RiskLevel)(0),           // 1: message.RiskLevel
@@ -1855,12 +1913,13 @@ var file_common_proto_goTypes = []interface{}{
 	(*ComponentSetting)(nil), // 17: message.ComponentSetting
 	(*Forward)(nil),          // 18: message.Forward
 	(*PublicSetting)(nil),    // 19: message.PublicSetting
-	(*Asset_Specific)(nil),   // 20: message.Asset.Specific
+	(*Cookie)(nil),           // 20: message.Cookie
+	(*Asset_Specific)(nil),   // 21: message.Asset.Specific
 }
 var file_common_proto_depIdxs = []int32{
 	6,  // 0: message.Account.secretType:type_name -> message.LabelValue
 	8,  // 1: message.Asset.protocols:type_name -> message.Protocol
-	20, // 2: message.Asset.specific:type_name -> message.Asset.Specific
+	21, // 2: message.Asset.specific:type_name -> message.Asset.Specific
 	2,  // 3: message.CommandACL.action:type_name -> message.CommandACL.Action
 	12, // 4: message.CommandACL.command_groups:type_name -> message.CommandGroup
 	3,  // 5: message.Session.login_from:type_name -> message.Session.LoginFrom
@@ -2079,6 +2138,18 @@ func file_common_proto_init() {
 			}
 		}
 		file_common_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Cookie); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_common_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Asset_Specific); i {
 			case 0:
 				return &v.state
@@ -2097,7 +2168,7 @@ func file_common_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_common_proto_rawDesc,
 			NumEnums:      4,
-			NumMessages:   17,
+			NumMessages:   18,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
