@@ -262,7 +262,7 @@ func (j *JMServer) CancelTicket(ctx context.Context, req *pb.TicketRequest) (*pb
 func (j *JMServer) CheckOrCreateAssetLoginTicket(ctx context.Context,
 	req *pb.AssetLoginTicketRequest) (*pb.AssetLoginTicketResponse, error) {
 	var (
-		status pb.Status
+		pbStatus pb.Status
 	)
 
 	userId := req.GetUserId()
@@ -271,18 +271,18 @@ func (j *JMServer) CheckOrCreateAssetLoginTicket(ctx context.Context,
 	res, err := j.apiClient.CheckIfNeedAssetLoginConfirm(userId, assetId, username)
 	if err != nil {
 		logger.Errorf("Check or create asset login ticket req %+v err: %s", req, err)
-		status.Ok = false
-		status.Err = err.Error()
+		pbStatus.Ok = false
+		pbStatus.Err = err.Error()
 		return &pb.AssetLoginTicketResponse{
-			Status: &status}, nil
+			Status: &pbStatus}, nil
 	}
-	status.Ok = true
+	pbStatus.Ok = true
 
 	return &pb.AssetLoginTicketResponse{
 		NeedConfirm: res.NeedConfirm,
 		TicketId:    res.TicketId,
 		TicketInfo:  ConvertToPbTicketInfo(&res.TicketInfo),
-		Status:      &status}, nil
+		Status:      &pbStatus}, nil
 }
 
 func (j *JMServer) CreateForward(ctx context.Context, req *pb.ForwardRequest) (*pb.ForwardResponse, error) {
@@ -359,4 +359,21 @@ func (j *JMServer) GetPublicSetting(ctx context.Context, empty *pb.Empty) (*pb.P
 		ValidLicense: data.ValidLicense,
 	}
 	return &pb.PublicSettingResponse{Status: &status, Data: &pbSetting}, nil
+}
+
+func (j *JMServer) CheckUserByCookies(ctx context.Context, cookiesReq *pb.CookiesRequest) (*pb.UserResponse, error) {
+	var pbStatus pb.Status
+	cookies := cookiesReq.GetCookies()
+	cookiesMap := make(map[string]string)
+	for _, cookie := range cookies {
+		cookiesMap[cookie.Name] = cookie.Value
+	}
+	user, err := j.apiClient.CheckUserCookie(cookiesMap)
+	if err != nil {
+		pbStatus.Err = err.Error()
+		return &pb.UserResponse{Status: &pbStatus}, nil
+	}
+	pbStatus.Ok = true
+	pbUser := ConvertToProtobufUser(*user)
+	return &pb.UserResponse{Status: &pbStatus, Data: pbUser}, nil
 }

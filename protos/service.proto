@@ -26,6 +26,7 @@ service Service {
   rpc GetListenPorts(Empty) returns (ListenPortResponse) {};
   rpc GetPortInfo(PortInfoRequest) returns (PortInfoResponse) {};
   rpc HandlePortFailure(PortFailureRequest) returns (StatusResponse) {};
+  rpc CheckUserByCookies(CookiesRequest) returns (UserResponse) {};
 }
 
 message AssetLoginTicketRequest {
@@ -211,4 +212,13 @@ message PortFailure {
 
 message PortFailureRequest {
   repeated PortFailure data = 1;
+}
+
+message CookiesRequest {
+  repeated Cookie cookies = 1;
+}
+
+message UserResponse {
+  Status status = 1;
+  User data = 2;
 }
