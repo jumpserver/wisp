@@ -135,7 +135,11 @@ message TerminalTask {
 
 enum RiskLevel {
   Normal = 0;
-  Danger = 1;
+  Warning = 1;
+  Reject = 2;
+  ReviewRejection = 3;
+  ReviewAccept = 4;
+  ReviewCancel = 5;
 }
 
 message TokenAuthInfo {

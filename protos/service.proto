@@ -56,7 +56,7 @@ message TokenResponse {
   TokenAuthInfo data = 2;
 }
 
-message SessionCreateRequest { Session data = 1; }
+message SessionCreateRequest {Session data = 1;}
 
 message SessionCreateResponse {
   Status status = 1;
@@ -93,6 +93,8 @@ message CommandRequest {
   string account = 7;
   int64 timestamp = 8;
   RiskLevel risk_level = 9;
+  string cmd_acl_id = 10;
+  string cmd_group_id = 11;
 }
 
 message CommandResponse {
@@ -103,7 +105,7 @@ message FinishedTaskRequest {
   string task_id = 1;
 }
 
-message TaskResponse { TerminalTask task = 1; }
+message TaskResponse {TerminalTask task = 1;}
 
 message RemainReplayRequest {
   string replay_dir = 1;
@@ -191,7 +193,7 @@ message ListenPortResponse {
   repeated int32 ports = 2;
 }
 
-message PortInfoRequest { 
+message PortInfoRequest {
   int32 port = 1;
 }
 

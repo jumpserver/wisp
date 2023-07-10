@@ -38,16 +38,18 @@ func ConvertToSession(sees *pb.Session) model.Session {
 func ConvertToCommand(cmd *pb.CommandRequest) model.Command {
 	utc := ConvertUTCTime(cmd.Timestamp)
 	return model.Command{
-		SessionID:   cmd.Sid,
-		OrgID:       cmd.OrgId,
-		Input:       cmd.Input,
-		Output:      cmd.Output,
-		User:        cmd.User,
-		Server:      cmd.Asset,
-		Account:     cmd.Account,
-		Timestamp:   cmd.Timestamp,
-		RiskLevel:   convertRiskLevel(cmd.RiskLevel),
-		DateCreated: utc.UTC(),
+		SessionID:      cmd.Sid,
+		OrgID:          cmd.OrgId,
+		Input:          cmd.Input,
+		Output:         cmd.Output,
+		User:           cmd.User,
+		Server:         cmd.Asset,
+		Account:        cmd.Account,
+		Timestamp:      cmd.Timestamp,
+		CmdFilterAclId: cmd.CmdAclId,
+		CmdGroupId:     cmd.CmdGroupId,
+		RiskLevel:      convertRiskLevel(cmd.RiskLevel),
+		DateCreated:    utc.UTC(),
 	}
 }
 
@@ -55,16 +57,20 @@ func ConvertUTCTime(t int64) common.UTCTime {
 	return common.ParseUnixTime(t)
 }
 
-func convertRiskLevel(lvl pb.RiskLevel) int64 {
-	switch lvl {
-	case pb.RiskLevel_Danger:
-		return model.DangerLevel
-	case pb.RiskLevel_Normal:
-		return model.NormalLevel
-	default:
-		return model.NormalLevel
+var riskLevelMap = map[pb.RiskLevel]int64{
+	pb.RiskLevel_Normal:          model.NormalLevel,
+	pb.RiskLevel_Warning:         model.WarningLevel,
+	pb.RiskLevel_Reject:          model.RejectLevel,
+	pb.RiskLevel_ReviewRejection: model.ReviewReject,
+	pb.RiskLevel_ReviewAccept:    model.ReviewAccept,
+	pb.RiskLevel_ReviewCancel:    model.ReviewCancel,
+}
 
+func convertRiskLevel(lvl pb.RiskLevel) int64 {
+	if v, ok := riskLevelMap[lvl]; ok {
+		return v
 	}
+	return model.NormalLevel
 }
 
 func ConvertToReqInfo(req *pb.ReqInfo) model.ReqInfo {
