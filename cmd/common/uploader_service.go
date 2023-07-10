@@ -99,7 +99,7 @@ func (u *UploaderService) run() {
 			logger.Info("Uploader service command task done")
 			return
 		case p := <-u.commandChan:
-			if p.RiskLevel == model.DangerLevel {
+			if p.RiskLevel >= model.WarningLevel && p.RiskLevel <= model.ReviewReject {
 				notificationList = append(notificationList, p)
 			}
 			cmdList = append(cmdList, p)
