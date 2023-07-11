@@ -1,11 +1,6 @@
 package model
 
-import "strings"
-
 type Platform struct {
-	BaseOs   string                 `json:"base"`
-	MetaData map[string]interface{} `json:"meta"`
-
 	ID   int    `json:"id"`
 	Name string `json:"name"`
 
@@ -21,28 +16,23 @@ type Platform struct {
 
 type PlatformProtocols []PlatformProtocol
 
-func (p PlatformProtocols) GetSftpPath(protocol string) string {
-	for i := range p {
-		if strings.ToLower(p[i].Name) == strings.ToLower(protocol) {
-			return p[i].Setting.SftpHome
-		}
-	}
-	return "/tmp"
-}
-
 type PlatformProtocol struct {
 	Protocol
-	Setting ProtocolSetting `json:"setting"`
+	Setting map[string]interface{} `json:"setting"` // 参考 ProtocolSetting 里的字段
 }
 
+// 这个字段会频繁变动，所以不定义结构体，这里只记录场景的需要的字段
+
 type ProtocolSetting struct {
-	Security         string `json:"security"`
-	SftpEnabled      bool   `json:"sftp_enabled"`
-	SftpHome         string `json:"sftp_home"`
-	AutoFill         bool   `json:"auto_fill"`
-	UsernameSelector string `json:"username_selector"`
-	PasswordSelector string `json:"password_selector"`
-	SubmitSelector   string `json:"submit_selector"`
+	Security string `json:"security"`
+
+	// chatgpt 专用
+	ApiMode string `json:"api_mode"`
+
+	//AutoFill         bool   `json:"auto_fill"`
+	//UsernameSelector string `json:"username_selector"`
+	//PasswordSelector string `json:"password_selector"`
+	//SubmitSelector   string `json:"submit_selector"`
 }
 
 type Protocol struct {
