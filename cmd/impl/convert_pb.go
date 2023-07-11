@@ -60,6 +60,7 @@ func ConvertToProtobufAsset(asset model.Asset) *pb.Asset {
 			UsernameSelector: specific.UsernameSelector,
 			PasswordSelector: specific.PasswordSelector,
 			SubmitSelector:   specific.SubmitSelector,
+			HttpProxy:        specific.HttpProxy,
 		},
 	}
 }
