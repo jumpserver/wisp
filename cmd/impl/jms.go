@@ -60,6 +60,7 @@ func (j *JMServer) GetTokenAuthInfo(ctx context.Context, req *pb.TokenRequest) (
 		ExpireInfo:  ConvertToProtobufExpireInfo(tokenAuthInfo.ExpireAt),
 		Gateways:    ConvertToProtobufGateways(gateways),
 		Setting:     ConvertToPbSetting(&setting),
+		Platform:    ConvertToPbPlatform(&tokenAuthInfo.Platform),
 	}
 	status.Ok = true
 	logger.Debugf("Get database auth info success by token: %s", req.Token)

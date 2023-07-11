@@ -1,6 +1,9 @@
 package impl
 
 import (
+	"fmt"
+	"strconv"
+
 	"github.com/jumpserver/wisp/pkg/jms-sdk-go/model"
 	pb "github.com/jumpserver/wisp/protobuf-go/protobuf"
 )
@@ -230,4 +233,43 @@ var pbTicketMap = map[string]pb.TicketState_State{
 
 func ConvertToPbSetting(setting *model.TerminalConfig) *pb.ComponentSetting {
 	return &pb.ComponentSetting{MaxIdleTime: int32(setting.MaxIdleTime)}
+}
+
+func ConvertToPbPlatform(platform *model.Platform) *pb.Platform {
+	return &pb.Platform{
+		Id:        int32(platform.ID),
+		Name:      platform.Name,
+		Category:  platform.Category.Value,
+		Charset:   platform.Charset.Value,
+		Type:      platform.Charset.Value,
+		Protocols: ConvertToPlatformProtobufProtocols(platform.Protocols),
+	}
+}
+
+func ConvertToPlatformProtobufProtocols(protocols []model.PlatformProtocol) []*pb.PlatformProtocol {
+	pbPlatformProtocols := make([]*pb.PlatformProtocol, 0, len(protocols))
+	for i := range protocols {
+		protocol := protocols[i]
+		pbSetting := make(map[string]string, len(protocol.Setting))
+		for k, v := range protocol.Setting {
+			switch v.(type) {
+			case int32, int64:
+				pbSetting[k] = strconv.Itoa(int(v.(int32)))
+			case string:
+				pbSetting[k] = v.(string)
+			case bool:
+				pbSetting[k] = strconv.FormatBool(v.(bool))
+			default:
+				pbSetting[k] = fmt.Sprintf("%v", v)
+			}
+		}
+		pbProtocol := &pb.PlatformProtocol{
+			Id:       int32(protocol.Id),
+			Name:     protocol.Name,
+			Port:     int32(protocol.Port),
+			Settings: pbSetting,
+		}
+		pbPlatformProtocols = append(pbPlatformProtocols, pbProtocol)
+	}
+	return pbPlatformProtocols
 }

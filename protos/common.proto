@@ -153,6 +153,23 @@ message TokenAuthInfo {
   repeated CommandACL filter_rules = 8;
   repeated Gateway gateways = 9;
   ComponentSetting setting = 10;
+  Platform platform = 11;
+}
+
+message Platform {
+  int32 id = 1;
+  string name =2;
+  string category = 3;
+  string charset = 4;
+  string type = 5;
+  repeated PlatformProtocol protocols = 6;
+}
+
+message PlatformProtocol {
+  int32 id = 1;
+  string name = 2;
+  int32 port = 3;
+  map<string,string> settings = 4;
 }
 
 message ComponentSetting {
