@@ -23,6 +23,7 @@ type SpecInfo struct {
 	UsernameSelector string `json:"username_selector"`
 	PasswordSelector string `json:"password_selector"`
 	SubmitSelector   string `json:"submit_selector"`
+	HttpProxy        string `json:"proxy"`
 }
 
 type Asset struct {
@@ -32,6 +33,7 @@ type Asset struct {
 	OrgID      string     `json:"org_id"`
 	Protocols  []Protocol `json:"protocols"`
 	SpecInfo   SpecInfo   `json:"spec_info"`
+	Info       SpecInfo   `json:"info"`
 	SecretInfo SecretInfo `json:"secret_info"`
 	Platform   NameIntID  `json:"platform"`
 	Domain     *NameStrID `json:"domain"`
