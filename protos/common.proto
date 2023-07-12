@@ -81,7 +81,8 @@ message CommandACL {
     Reject = 0;
     Accept = 1;
     Review = 2;
-    Unknown = 3;
+    Warning = 3;
+    Unknown = 4;
   }
   string id = 1;
   string name = 2;

@@ -96,6 +96,7 @@ const (
 	ActionReject  = "reject"
 	ActionAccept  = "accept"
 	ActionReview  = "review"
+	ActionWarning = "warning"
 	ActionUnknown = "Unknown"
 )
 
@@ -103,7 +104,8 @@ var (
 	actionPriorityMap = map[CommandAction]int{
 		ActionReject:  0,
 		ActionReview:  1,
-		ActionAccept:  2,
-		ActionUnknown: 2,
+		ActionWarning: 2,
+		ActionAccept:  3,
+		ActionUnknown: 4,
 	}
 )
