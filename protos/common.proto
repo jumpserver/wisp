@@ -139,7 +139,7 @@ enum RiskLevel {
   Normal = 0;
   Warning = 1;
   Reject = 2;
-  ReviewRejection = 3;
+  ReviewReject = 3;
   ReviewAccept = 4;
   ReviewCancel = 5;
 }
