@@ -58,12 +58,12 @@ func ConvertUTCTime(t int64) common.UTCTime {
 }
 
 var riskLevelMap = map[pb.RiskLevel]int64{
-	pb.RiskLevel_Normal:          model.NormalLevel,
-	pb.RiskLevel_Warning:         model.WarningLevel,
-	pb.RiskLevel_Reject:          model.RejectLevel,
-	pb.RiskLevel_ReviewRejection: model.ReviewReject,
-	pb.RiskLevel_ReviewAccept:    model.ReviewAccept,
-	pb.RiskLevel_ReviewCancel:    model.ReviewCancel,
+	pb.RiskLevel_Normal:       model.NormalLevel,
+	pb.RiskLevel_Warning:      model.WarningLevel,
+	pb.RiskLevel_Reject:       model.RejectLevel,
+	pb.RiskLevel_ReviewReject: model.ReviewReject,
+	pb.RiskLevel_ReviewAccept: model.ReviewAccept,
+	pb.RiskLevel_ReviewCancel: model.ReviewCancel,
 }
 
 func convertRiskLevel(lvl pb.RiskLevel) int64 {
