@@ -111,6 +111,7 @@ var ruleActionMap = map[model.CommandAction]pb.CommandACL_Action{
 	model.ActionAccept:  pb.CommandACL_Accept,
 	model.ActionReview:  pb.CommandACL_Review,
 	model.ActionReject:  pb.CommandACL_Reject,
+	model.ActionWarning: pb.CommandACL_Warning,
 }
 
 func ConvertToProtobufFilterRule(rule model.CommandACL) *pb.CommandACL {
