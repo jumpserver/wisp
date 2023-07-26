@@ -168,11 +168,18 @@ func (u *UploaderService) UploadReplay(sid, replayPath string) error {
 	gzFilename := filepath.Base(absGzFile)
 	target := strings.Join([]string{today, gzFilename}, "/")
 	err = replayBackend.Upload(absGzFile, target)
+	replayBackendName := replayBackend.TypeName()
+	if err != nil && replayBackendName != "server" {
+		logger.Errorf("Uploader service replay backend %s error %s", replayBackendName, err)
+		logger.Error("Switch default server to upload replay %s.", absGzFile)
+		replayBackendName = "server"
+		err = u.apiClient.Upload(sid, absGzFile)
+	}
 	if err != nil {
-		logger.Errorf("Uploader service replay file %s failed: %s", absGzFile, err)
+		logger.Errorf("Uploader service replay %s uploaded error: %s", absGzFile, err)
 		return err
 	}
-	logger.Infof("Uploader service replay file %s by %s", absGzFile, replayBackend.TypeName())
+	logger.Infof("Uploader service replay file %s upload to %s", absGzFile, replayBackendName)
 
 	if _, err = u.apiClient.FinishReply(sid); err != nil {
 		logger.Errorf("Finish %s replay api failed: %s", sid, err)
