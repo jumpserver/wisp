@@ -187,16 +187,25 @@ func (j *JMServer) sendStreamTask(ctx context.Context, stream pb.Service_Dispatc
 			return
 		case task := <-taskChan:
 			var pbTask pb.TerminalTask
+			pbTask.SessionId = task.Args
+			pbTask.Id = task.ID
+			pbTask.TerminatedBy = task.Kwargs.TerminatedBy
 			switch task.Name {
 			case model.TaskKillSession:
-				pbTask.SessionId = task.Args
-				pbTask.Id = task.ID
 				pbTask.Action = pb.TaskAction_KillSession
-				pbTask.TerminatedBy = task.Kwargs.TerminatedBy
-				logger.Infof("Send terminal task %s", task.ID)
-				if err := stream.Send(&pb.TaskResponse{Task: &pbTask}); err != nil {
-					logger.Errorf("Send terminal task stream err: %s", err.Error())
-				}
+			case model.TaskLockSession:
+				pbTask.CreatedBy = task.Kwargs.CreatedByUser
+				pbTask.Action = pb.TaskAction_LockSession
+			case model.TaskUnlockSession:
+				pbTask.Action = pb.TaskAction_UnlockSession
+				pbTask.CreatedBy = task.Kwargs.CreatedByUser
+			default:
+				logger.Errorf("Unknown task name %s", task.Name)
+				continue
+			}
+			logger.Infof("Send terminal task %s name: ", task.ID, task.Name)
+			if err := stream.Send(&pb.TaskResponse{Task: &pbTask}); err != nil {
+				logger.Errorf("Send terminal task stream err: %s", err.Error())
 			}
 		}
 	}
