@@ -203,7 +203,7 @@ func (j *JMServer) sendStreamTask(ctx context.Context, stream pb.Service_Dispatc
 				logger.Errorf("Unknown task name %s", task.Name)
 				continue
 			}
-			logger.Infof("Send terminal task %s name: ", task.ID, task.Name)
+			logger.Infof("Send terminal task %s name: %s", task.ID, task.Name)
 			if err := stream.Send(&pb.TaskResponse{Task: &pbTask}); err != nil {
 				logger.Errorf("Send terminal task stream err: %s", err.Error())
 			}
