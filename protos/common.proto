@@ -126,13 +126,18 @@ message Session {
   string account_id = 12;
 }
 
-enum TaskAction {KillSession = 0;}
+enum TaskAction {
+  KillSession = 0;
+  LockSession = 1;
+  UnlockSession = 2;
+}
 
 message TerminalTask {
   string id = 1;
   TaskAction action = 2;
   string session_id = 3;
   string terminated_by = 4;
+  string created_by = 5;
 }
 
 enum RiskLevel {
