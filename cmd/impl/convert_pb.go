@@ -234,7 +234,10 @@ var pbTicketMap = map[string]pb.TicketState_State{
 }
 
 func ConvertToPbSetting(setting *model.TerminalConfig) *pb.ComponentSetting {
-	return &pb.ComponentSetting{MaxIdleTime: int32(setting.MaxIdleTime)}
+	return &pb.ComponentSetting{
+		MaxIdleTime:    int32(setting.MaxIdleTime),
+		MaxSessionTime: int32(setting.MaxSessionTime),
+	}
 }
 
 func ConvertToPbPlatform(platform *model.Platform) *pb.Platform {
