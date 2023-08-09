@@ -181,6 +181,7 @@ message PlatformProtocol {
 
 message ComponentSetting {
   int32 max_idle_time = 1;
+  int32 max_session_time = 2;
 }
 
 message Forward {
