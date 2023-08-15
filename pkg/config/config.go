@@ -8,6 +8,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/gofrs/uuid"
 	"github.com/spf13/viper"
 )
 
@@ -96,6 +97,8 @@ const (
 
 func getDefaultNameByComponent(component string) string {
 	hostname, _ := os.Hostname()
+	uid, _ := uuid.NewV4()
+	hostname = fmt.Sprintf("%s-%s", hostname, uid.String())
 	if serverHostname, ok := os.LookupEnv(hostEnvKey); ok {
 		hostname = fmt.Sprintf("%s-%s", serverHostname, hostname)
 	}
