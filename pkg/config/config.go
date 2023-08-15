@@ -8,8 +8,9 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/gofrs/uuid"
 	"github.com/spf13/viper"
+
+	"github.com/jumpserver/wisp/pkg/common"
 )
 
 type Config struct {
@@ -97,8 +98,7 @@ const (
 
 func getDefaultNameByComponent(component string) string {
 	hostname, _ := os.Hostname()
-	uid, _ := uuid.NewV4()
-	hostname = fmt.Sprintf("%s-%s", hostname, uid.String())
+	hostname = fmt.Sprintf("%s-%s", hostname, common.RandomStr(7))
 	if serverHostname, ok := os.LookupEnv(hostEnvKey); ok {
 		hostname = fmt.Sprintf("%s-%s", serverHostname, hostname)
 	}
