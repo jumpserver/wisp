@@ -363,10 +363,15 @@ func (j *JMServer) GetPublicSetting(ctx context.Context, empty *pb.Empty) (*pb.P
 		status.Err = err.Error()
 		return &pb.PublicSettingResponse{Status: &status}, nil
 	}
+	setting := j.uploader.GetTerminalSetting()
 	status.Ok = true
 	pbSetting := pb.PublicSetting{
 		XpackEnabled: data.XpackEnabled,
 		ValidLicense: data.ValidLicense,
+		GptBaseUrl:   setting.GPTBaseURL,
+		GptApiKey:    setting.GPTApiKey,
+		GptProxy:     setting.GPTProxy,
+		GptModel:     setting.GPTModel,
 	}
 	return &pb.PublicSettingResponse{Status: &status, Data: &pbSetting}, nil
 }
