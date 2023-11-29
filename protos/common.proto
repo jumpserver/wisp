@@ -193,6 +193,10 @@ message Forward {
 message PublicSetting {
   bool xpack_enabled = 1;
   bool valid_license = 2;
+  string gpt_base_url = 3;
+  string gpt_api_key = 4;
+  string gpt_proxy = 5;
+  string gpt_model = 6;
 }
 
 message Cookie {

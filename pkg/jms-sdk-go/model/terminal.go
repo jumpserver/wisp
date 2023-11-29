@@ -15,6 +15,11 @@ type TerminalConfig struct {
 	HeartbeatDuration   int           `json:"TERMINAL_HEARTBEAT_INTERVAL"`
 	HostKey             string        `json:"TERMINAL_HOST_KEY"`
 	EnableSessionShare  bool          `json:"SECURITY_SESSION_SHARE"`
+
+	GPTBaseURL string `json:"GPT_BASE_URL"`
+	GPTApiKey  string `json:"GPT_API_KEY"`
+	GPTProxy   string `json:"GPT_PROXY"`
+	GPTModel   string `json:"GPT_MODEL"`
 }
 
 type Terminal struct {
