@@ -27,6 +27,7 @@ service Service {
   rpc GetPortInfo(PortInfoRequest) returns (PortInfoResponse) {};
   rpc HandlePortFailure(PortFailureRequest) returns (StatusResponse) {};
   rpc CheckUserByCookies(CookiesRequest) returns (UserResponse) {};
+  rpc RecordSessionLifecycleLog(SessionLifecycleLogRequest) returns (StatusResponse) {};
 }
 
 message AssetLoginTicketRequest {
@@ -223,4 +224,26 @@ message CookiesRequest {
 message UserResponse {
   Status status = 1;
   User data = 2;
+}
+
+message SessionLifecycleLogRequest {
+  enum EventType {
+    AssetConnectSuccess = 0;
+    AssetConnectFinished = 1;
+    CreateShareLink = 2;
+    UserJoinSession = 3;
+    UserLeaveSession = 4;
+    AdminJoinMonitor = 5;
+    AdminExitMonitor = 6;
+    ReplayConvertStart = 7;
+    ReplayConvertSuccess = 8;
+    ReplayConvertFailure = 9;
+    ReplayUploadStart = 10;
+    ReplayUploadSuccess = 11;
+    ReplayUploadFailure = 12;
+  }
+  string session_id = 1;
+  EventType event = 2;
+  string reason = 3;
+  string user = 4;
 }
