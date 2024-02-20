@@ -41,6 +41,7 @@ type ServiceClient interface {
 	GetPortInfo(ctx context.Context, in *PortInfoRequest, opts ...grpc.CallOption) (*PortInfoResponse, error)
 	HandlePortFailure(ctx context.Context, in *PortFailureRequest, opts ...grpc.CallOption) (*StatusResponse, error)
 	CheckUserByCookies(ctx context.Context, in *CookiesRequest, opts ...grpc.CallOption) (*UserResponse, error)
+	RecordSessionLifecycleLog(ctx context.Context, in *SessionLifecycleLogRequest, opts ...grpc.CallOption) (*StatusResponse, error)
 }
 
 type serviceClient struct {
@@ -244,6 +245,15 @@ func (c *serviceClient) CheckUserByCookies(ctx context.Context, in *CookiesReque
 	return out, nil
 }
 
+func (c *serviceClient) RecordSessionLifecycleLog(ctx context.Context, in *SessionLifecycleLogRequest, opts ...grpc.CallOption) (*StatusResponse, error) {
+	out := new(StatusResponse)
+	err := c.cc.Invoke(ctx, "/message.Service/RecordSessionLifecycleLog", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ServiceServer is the server API for Service service.
 // All implementations must embed UnimplementedServiceServer
 // for forward compatibility
@@ -267,6 +277,7 @@ type ServiceServer interface {
 	GetPortInfo(context.Context, *PortInfoRequest) (*PortInfoResponse, error)
 	HandlePortFailure(context.Context, *PortFailureRequest) (*StatusResponse, error)
 	CheckUserByCookies(context.Context, *CookiesRequest) (*UserResponse, error)
+	RecordSessionLifecycleLog(context.Context, *SessionLifecycleLogRequest) (*StatusResponse, error)
 	mustEmbedUnimplementedServiceServer()
 }
 
@@ -330,6 +341,9 @@ func (UnimplementedServiceServer) HandlePortFailure(context.Context, *PortFailur
 }
 func (UnimplementedServiceServer) CheckUserByCookies(context.Context, *CookiesRequest) (*UserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckUserByCookies not implemented")
+}
+func (UnimplementedServiceServer) RecordSessionLifecycleLog(context.Context, *SessionLifecycleLogRequest) (*StatusResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RecordSessionLifecycleLog not implemented")
 }
 func (UnimplementedServiceServer) mustEmbedUnimplementedServiceServer() {}
 
@@ -694,6 +708,24 @@ func _Service_CheckUserByCookies_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Service_RecordSessionLifecycleLog_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SessionLifecycleLogRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).RecordSessionLifecycleLog(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/message.Service/RecordSessionLifecycleLog",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).RecordSessionLifecycleLog(ctx, req.(*SessionLifecycleLogRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Service_ServiceDesc is the grpc.ServiceDesc for Service service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -772,6 +804,10 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CheckUserByCookies",
 			Handler:    _Service_CheckUserByCookies_Handler,
+		},
+		{
+			MethodName: "RecordSessionLifecycleLog",
+			Handler:    _Service_RecordSessionLifecycleLog_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

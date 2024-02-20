@@ -79,3 +79,19 @@ func ConvertToReqInfo(req *pb.ReqInfo) model.ReqInfo {
 		URL:    req.GetUrl(),
 	}
 }
+
+var LifecycleEventMap = map[pb.SessionLifecycleLogRequest_EventType]model.LifecycleEvent{
+	pb.SessionLifecycleLogRequest_AssetConnectSuccess:  model.AssetConnectSuccess,
+	pb.SessionLifecycleLogRequest_AssetConnectFinished: model.AssetConnectFinished,
+	pb.SessionLifecycleLogRequest_CreateShareLink:      model.CreateShareLink,
+	pb.SessionLifecycleLogRequest_UserJoinSession:      model.UserJoinSession,
+	pb.SessionLifecycleLogRequest_UserLeaveSession:     model.UserLeaveSession,
+	pb.SessionLifecycleLogRequest_AdminJoinMonitor:     model.AdminJoinMonitor,
+	pb.SessionLifecycleLogRequest_AdminExitMonitor:     model.AdminExitMonitor,
+	pb.SessionLifecycleLogRequest_ReplayConvertStart:   model.ReplayConvertStart,
+	pb.SessionLifecycleLogRequest_ReplayConvertSuccess: model.ReplayUploadStart,
+	pb.SessionLifecycleLogRequest_ReplayConvertFailure: model.ReplayConvertFailure,
+	pb.SessionLifecycleLogRequest_ReplayUploadStart:    model.ReplayConvertStart,
+	pb.SessionLifecycleLogRequest_ReplayUploadSuccess:  model.ReplayUploadSuccess,
+	pb.SessionLifecycleLogRequest_ReplayUploadFailure:  model.ReplayUploadFailure,
+}

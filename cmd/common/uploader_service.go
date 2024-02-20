@@ -155,6 +155,7 @@ func (u *UploaderService) UploadReplay(sid, replayPath string) error {
 		logger.Errorf("Retrieve session %s detail failed:  %s", sid, err)
 		return err
 	}
+	u.recordingSessionLifecycleReplay(sid, model.ReplayUploadStart, "")
 	today := sess.DateStart.UTC().Format(dateTimeFormat)
 	absGzFile := replayPath
 	if !isGzipFile(absGzFile) {
@@ -169,20 +170,29 @@ func (u *UploaderService) UploadReplay(sid, replayPath string) error {
 	replayBackend := u.getReplayBackend()
 	gzFilename := filepath.Base(absGzFile)
 	target := strings.Join([]string{today, gzFilename}, "/")
-	err = replayBackend.Upload(absGzFile, target)
 	replayBackendName := replayBackend.TypeName()
+	if replayBackendName == "null" {
+		reason := string(model.ReasonErrNullStorage)
+		u.recordingSessionLifecycleReplay(sid, model.ReplayUploadFailure, reason)
+		_ = os.Remove(absGzFile)
+		return nil
+	}
+
+	err = replayBackend.Upload(absGzFile, target)
 	if err != nil && replayBackendName != "server" {
+		u.recordingSessionLifecycleReplay(sid, model.ReplayUploadFailure, err.Error())
 		logger.Errorf("Uploader service replay backend %s error %s", replayBackendName, err)
 		logger.Error("Switch default server to upload replay %s.", absGzFile)
 		replayBackendName = "server"
+		u.recordingSessionLifecycleReplay(sid, model.ReplayUploadStart, "")
 		err = u.apiClient.Upload(sid, absGzFile)
 	}
 	if err != nil {
+		u.recordingSessionLifecycleReplay(sid, model.ReplayUploadFailure, err.Error())
 		logger.Errorf("Uploader service replay %s uploaded error: %s", absGzFile, err)
 		return err
 	}
 	logger.Infof("Uploader service replay file %s upload to %s", absGzFile, replayBackendName)
-
 	if _, err = u.apiClient.FinishReply(sid); err != nil {
 		logger.Errorf("Finish %s replay api failed: %s", sid, err)
 		return err
@@ -208,13 +218,16 @@ func (u *UploaderService) UploadRemainReplays(replayDir string) (ret RemainRepla
 	logger.Debugf("Upload Remain %d replay files", len(allRemainReplays))
 	for replayPath := range allRemainReplays {
 		remainReplay := allRemainReplays[replayPath]
+		u.recordingSessionLifecycleReplay(remainReplay.Id, model.ReplayUploadStart, "")
 		if err := u.uploadRemainReplay(&remainReplay); err != nil {
 			logger.Errorf("Uploader service clean remain replay %s failed: %s",
 				replayPath, err)
 			failureFiles = append(failureFiles, replayPath)
 			failureErrs = append(failureErrs, err.Error())
+			u.recordingSessionLifecycleReplay(remainReplay.Id, model.ReplayUploadFailure, err.Error())
 			continue
 		}
+		u.recordingSessionLifecycleReplay(remainReplay.Id, model.ReplayUploadSuccess, "")
 		successFiles = append(successFiles, replayPath)
 		// 上传完成 删除原录像文件
 		if err := os.Remove(replayPath); err != nil {
@@ -230,6 +243,13 @@ func (u *UploaderService) UploadRemainReplays(replayDir string) (ret RemainRepla
 	ret.FailureFiles = failureFiles
 	ret.SuccessFiles = successFiles
 	return
+}
+
+func (u *UploaderService) recordingSessionLifecycleReplay(sid string, event model.LifecycleEvent, msgErr string) {
+	logObj := model.SessionLifecycleLog{Reason: msgErr}
+	if err := u.apiClient.RecordSessionLifecycleLog(sid, event, logObj); err != nil {
+		logger.Errorf("Record session %s activity %s failed: %s", sid, event, err)
+	}
 }
 
 func (u *UploaderService) uploadRemainReplay(replay *RemainReplay) error {

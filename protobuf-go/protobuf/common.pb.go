@@ -234,6 +234,85 @@ func (Session_LoginFrom) EnumDescriptor() ([]byte, []int) {
 	return file_common_proto_rawDescGZIP(), []int{10, 0}
 }
 
+type LifecycleLogDataEventType int32
+
+const (
+	LifecycleLogData_AssetConnectSuccess  LifecycleLogDataEventType = 0
+	LifecycleLogData_AssetConnectFinished LifecycleLogDataEventType = 1
+	LifecycleLogData_CreateShareLink      LifecycleLogDataEventType = 2
+	LifecycleLogData_UserJoinSession      LifecycleLogDataEventType = 3
+	LifecycleLogData_UserLeaveSession     LifecycleLogDataEventType = 4
+	LifecycleLogData_AdminJoinMonitor     LifecycleLogDataEventType = 5
+	LifecycleLogData_AdminExitMonitor     LifecycleLogDataEventType = 6
+	LifecycleLogData_ReplayConvertStart   LifecycleLogDataEventType = 7
+	LifecycleLogData_ReplayConvertSuccess LifecycleLogDataEventType = 8
+	LifecycleLogData_ReplayConvertFailure LifecycleLogDataEventType = 9
+	LifecycleLogData_ReplayUploadStart    LifecycleLogDataEventType = 10
+	LifecycleLogData_ReplayUploadSuccess  LifecycleLogDataEventType = 11
+	LifecycleLogData_ReplayUploadFailure  LifecycleLogDataEventType = 12
+)
+
+// Enum value maps for LifecycleLogDataEventType.
+var (
+	LifecycleLogDataEventType_name = map[int32]string{
+		0:  "AssetConnectSuccess",
+		1:  "AssetConnectFinished",
+		2:  "CreateShareLink",
+		3:  "UserJoinSession",
+		4:  "UserLeaveSession",
+		5:  "AdminJoinMonitor",
+		6:  "AdminExitMonitor",
+		7:  "ReplayConvertStart",
+		8:  "ReplayConvertSuccess",
+		9:  "ReplayConvertFailure",
+		10: "ReplayUploadStart",
+		11: "ReplayUploadSuccess",
+		12: "ReplayUploadFailure",
+	}
+	LifecycleLogDataEventType_value = map[string]int32{
+		"AssetConnectSuccess":  0,
+		"AssetConnectFinished": 1,
+		"CreateShareLink":      2,
+		"UserJoinSession":      3,
+		"UserLeaveSession":     4,
+		"AdminJoinMonitor":     5,
+		"AdminExitMonitor":     6,
+		"ReplayConvertStart":   7,
+		"ReplayConvertSuccess": 8,
+		"ReplayConvertFailure": 9,
+		"ReplayUploadStart":    10,
+		"ReplayUploadSuccess":  11,
+		"ReplayUploadFailure":  12,
+	}
+)
+
+func (x LifecycleLogDataEventType) Enum() *LifecycleLogDataEventType {
+	p := new(LifecycleLogDataEventType)
+	*p = x
+	return p
+}
+
+func (x LifecycleLogDataEventType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (LifecycleLogDataEventType) Descriptor() protoreflect.EnumDescriptor {
+	return file_common_proto_enumTypes[4].Descriptor()
+}
+
+func (LifecycleLogDataEventType) Type() protoreflect.EnumType {
+	return &file_common_proto_enumTypes[4]
+}
+
+func (x LifecycleLogDataEventType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use LifecycleLogDataEventType.Descriptor instead.
+func (LifecycleLogDataEventType) EnumDescriptor() ([]byte, []int) {
+	return file_common_proto_rawDescGZIP(), []int{19, 0}
+}
+
 type User struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1775,6 +1854,69 @@ func (x *Cookie) GetValue() string {
 	return ""
 }
 
+type LifecycleLogData struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Event  LifecycleLogDataEventType `protobuf:"varint,1,opt,name=event,proto3,enum=message.LifecycleLogDataEventType" json:"event,omitempty"`
+	Reason string                    `protobuf:"bytes,2,opt,name=reason,proto3" json:"reason,omitempty"`
+	User   string                    `protobuf:"bytes,3,opt,name=user,proto3" json:"user,omitempty"`
+}
+
+func (x *LifecycleLogData) Reset() {
+	*x = LifecycleLogData{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_common_proto_msgTypes[19]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *LifecycleLogData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LifecycleLogData) ProtoMessage() {}
+
+func (x *LifecycleLogData) ProtoReflect() protoreflect.Message {
+	mi := &file_common_proto_msgTypes[19]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LifecycleLogData.ProtoReflect.Descriptor instead.
+func (*LifecycleLogData) Descriptor() ([]byte, []int) {
+	return file_common_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *LifecycleLogData) GetEvent() LifecycleLogDataEventType {
+	if x != nil {
+		return x.Event
+	}
+	return LifecycleLogData_AssetConnectSuccess
+}
+
+func (x *LifecycleLogData) GetReason() string {
+	if x != nil {
+		return x.Reason
+	}
+	return ""
+}
+
+func (x *LifecycleLogData) GetUser() string {
+	if x != nil {
+		return x.User
+	}
+	return ""
+}
+
 type Asset_Specific struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1797,7 +1939,7 @@ type Asset_Specific struct {
 func (x *Asset_Specific) Reset() {
 	*x = Asset_Specific{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_common_proto_msgTypes[19]
+		mi := &file_common_proto_msgTypes[20]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1810,7 +1952,7 @@ func (x *Asset_Specific) String() string {
 func (*Asset_Specific) ProtoMessage() {}
 
 func (x *Asset_Specific) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[19]
+	mi := &file_common_proto_msgTypes[20]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2155,7 +2297,35 @@ var file_common_proto_rawDesc = []byte{
 	0x6c, 0x22, 0x32, 0x0a, 0x06, 0x43, 0x6f, 0x6f, 0x6b, 0x69, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x6e,
 	0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12,
 	0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05,
-	0x76, 0x61, 0x6c, 0x75, 0x65, 0x2a, 0x41, 0x0a, 0x0a, 0x54, 0x61, 0x73, 0x6b, 0x41, 0x63, 0x74,
+	0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0xbd, 0x03, 0x0a, 0x10, 0x4c, 0x69, 0x66, 0x65, 0x63, 0x79,
+	0x63, 0x6c, 0x65, 0x4c, 0x6f, 0x67, 0x44, 0x61, 0x74, 0x61, 0x12, 0x3a, 0x0a, 0x05, 0x65, 0x76,
+	0x65, 0x6e, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x24, 0x2e, 0x6d, 0x65, 0x73, 0x73,
+	0x61, 0x67, 0x65, 0x2e, 0x4c, 0x69, 0x66, 0x65, 0x63, 0x79, 0x63, 0x6c, 0x65, 0x4c, 0x6f, 0x67,
+	0x44, 0x61, 0x74, 0x61, 0x2e, 0x65, 0x76, 0x65, 0x6e, 0x74, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x52,
+	0x05, 0x65, 0x76, 0x65, 0x6e, 0x74, 0x12, 0x16, 0x0a, 0x06, 0x72, 0x65, 0x61, 0x73, 0x6f, 0x6e,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x72, 0x65, 0x61, 0x73, 0x6f, 0x6e, 0x12, 0x12,
+	0x0a, 0x04, 0x75, 0x73, 0x65, 0x72, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x75, 0x73,
+	0x65, 0x72, 0x22, 0xc0, 0x02, 0x0a, 0x0a, 0x65, 0x76, 0x65, 0x6e, 0x74, 0x5f, 0x74, 0x79, 0x70,
+	0x65, 0x12, 0x17, 0x0a, 0x13, 0x41, 0x73, 0x73, 0x65, 0x74, 0x43, 0x6f, 0x6e, 0x6e, 0x65, 0x63,
+	0x74, 0x53, 0x75, 0x63, 0x63, 0x65, 0x73, 0x73, 0x10, 0x00, 0x12, 0x18, 0x0a, 0x14, 0x41, 0x73,
+	0x73, 0x65, 0x74, 0x43, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x46, 0x69, 0x6e, 0x69, 0x73, 0x68,
+	0x65, 0x64, 0x10, 0x01, 0x12, 0x13, 0x0a, 0x0f, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x53, 0x68,
+	0x61, 0x72, 0x65, 0x4c, 0x69, 0x6e, 0x6b, 0x10, 0x02, 0x12, 0x13, 0x0a, 0x0f, 0x55, 0x73, 0x65,
+	0x72, 0x4a, 0x6f, 0x69, 0x6e, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x10, 0x03, 0x12, 0x14,
+	0x0a, 0x10, 0x55, 0x73, 0x65, 0x72, 0x4c, 0x65, 0x61, 0x76, 0x65, 0x53, 0x65, 0x73, 0x73, 0x69,
+	0x6f, 0x6e, 0x10, 0x04, 0x12, 0x14, 0x0a, 0x10, 0x41, 0x64, 0x6d, 0x69, 0x6e, 0x4a, 0x6f, 0x69,
+	0x6e, 0x4d, 0x6f, 0x6e, 0x69, 0x74, 0x6f, 0x72, 0x10, 0x05, 0x12, 0x14, 0x0a, 0x10, 0x41, 0x64,
+	0x6d, 0x69, 0x6e, 0x45, 0x78, 0x69, 0x74, 0x4d, 0x6f, 0x6e, 0x69, 0x74, 0x6f, 0x72, 0x10, 0x06,
+	0x12, 0x16, 0x0a, 0x12, 0x52, 0x65, 0x70, 0x6c, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x76, 0x65, 0x72,
+	0x74, 0x53, 0x74, 0x61, 0x72, 0x74, 0x10, 0x07, 0x12, 0x18, 0x0a, 0x14, 0x52, 0x65, 0x70, 0x6c,
+	0x61, 0x79, 0x43, 0x6f, 0x6e, 0x76, 0x65, 0x72, 0x74, 0x53, 0x75, 0x63, 0x63, 0x65, 0x73, 0x73,
+	0x10, 0x08, 0x12, 0x18, 0x0a, 0x14, 0x52, 0x65, 0x70, 0x6c, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x76,
+	0x65, 0x72, 0x74, 0x46, 0x61, 0x69, 0x6c, 0x75, 0x72, 0x65, 0x10, 0x09, 0x12, 0x15, 0x0a, 0x11,
+	0x52, 0x65, 0x70, 0x6c, 0x61, 0x79, 0x55, 0x70, 0x6c, 0x6f, 0x61, 0x64, 0x53, 0x74, 0x61, 0x72,
+	0x74, 0x10, 0x0a, 0x12, 0x17, 0x0a, 0x13, 0x52, 0x65, 0x70, 0x6c, 0x61, 0x79, 0x55, 0x70, 0x6c,
+	0x6f, 0x61, 0x64, 0x53, 0x75, 0x63, 0x63, 0x65, 0x73, 0x73, 0x10, 0x0b, 0x12, 0x17, 0x0a, 0x13,
+	0x52, 0x65, 0x70, 0x6c, 0x61, 0x79, 0x55, 0x70, 0x6c, 0x6f, 0x61, 0x64, 0x46, 0x61, 0x69, 0x6c,
+	0x75, 0x72, 0x65, 0x10, 0x0c, 0x2a, 0x41, 0x0a, 0x0a, 0x54, 0x61, 0x73, 0x6b, 0x41, 0x63, 0x74,
 	0x69, 0x6f, 0x6e, 0x12, 0x0f, 0x0a, 0x0b, 0x4b, 0x69, 0x6c, 0x6c, 0x53, 0x65, 0x73, 0x73, 0x69,
 	0x6f, 0x6e, 0x10, 0x00, 0x12, 0x0f, 0x0a, 0x0b, 0x4c, 0x6f, 0x63, 0x6b, 0x53, 0x65, 0x73, 0x73,
 	0x69, 0x6f, 0x6e, 0x10, 0x01, 0x12, 0x11, 0x0a, 0x0d, 0x55, 0x6e, 0x6c, 0x6f, 0x63, 0x6b, 0x53,
@@ -2182,59 +2352,62 @@ func file_common_proto_rawDescGZIP() []byte {
 	return file_common_proto_rawDescData
 }
 
-var file_common_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_common_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
+var file_common_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
+var file_common_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
 var file_common_proto_goTypes = []interface{}{
-	(TaskAction)(0),          // 0: message.TaskAction
-	(RiskLevel)(0),           // 1: message.RiskLevel
-	(CommandACL_Action)(0),   // 2: message.CommandACL.Action
-	(Session_LoginFrom)(0),   // 3: message.Session.LoginFrom
-	(*User)(nil),             // 4: message.User
-	(*Account)(nil),          // 5: message.Account
-	(*LabelValue)(nil),       // 6: message.LabelValue
-	(*Asset)(nil),            // 7: message.Asset
-	(*Protocol)(nil),         // 8: message.Protocol
-	(*Gateway)(nil),          // 9: message.Gateway
-	(*Permission)(nil),       // 10: message.Permission
-	(*CommandACL)(nil),       // 11: message.CommandACL
-	(*CommandGroup)(nil),     // 12: message.CommandGroup
-	(*ExpireInfo)(nil),       // 13: message.ExpireInfo
-	(*Session)(nil),          // 14: message.Session
-	(*TerminalTask)(nil),     // 15: message.TerminalTask
-	(*TokenAuthInfo)(nil),    // 16: message.TokenAuthInfo
-	(*Platform)(nil),         // 17: message.Platform
-	(*PlatformProtocol)(nil), // 18: message.PlatformProtocol
-	(*ComponentSetting)(nil), // 19: message.ComponentSetting
-	(*Forward)(nil),          // 20: message.Forward
-	(*PublicSetting)(nil),    // 21: message.PublicSetting
-	(*Cookie)(nil),           // 22: message.Cookie
-	(*Asset_Specific)(nil),   // 23: message.Asset.Specific
-	nil,                      // 24: message.PlatformProtocol.SettingsEntry
+	(TaskAction)(0),                // 0: message.TaskAction
+	(RiskLevel)(0),                 // 1: message.RiskLevel
+	(CommandACL_Action)(0),         // 2: message.CommandACL.Action
+	(Session_LoginFrom)(0),         // 3: message.Session.LoginFrom
+	(LifecycleLogDataEventType)(0), // 4: message.LifecycleLogData.event_type
+	(*User)(nil),                   // 5: message.User
+	(*Account)(nil),                // 6: message.Account
+	(*LabelValue)(nil),             // 7: message.LabelValue
+	(*Asset)(nil),                  // 8: message.Asset
+	(*Protocol)(nil),               // 9: message.Protocol
+	(*Gateway)(nil),                // 10: message.Gateway
+	(*Permission)(nil),             // 11: message.Permission
+	(*CommandACL)(nil),             // 12: message.CommandACL
+	(*CommandGroup)(nil),           // 13: message.CommandGroup
+	(*ExpireInfo)(nil),             // 14: message.ExpireInfo
+	(*Session)(nil),                // 15: message.Session
+	(*TerminalTask)(nil),           // 16: message.TerminalTask
+	(*TokenAuthInfo)(nil),          // 17: message.TokenAuthInfo
+	(*Platform)(nil),               // 18: message.Platform
+	(*PlatformProtocol)(nil),       // 19: message.PlatformProtocol
+	(*ComponentSetting)(nil),       // 20: message.ComponentSetting
+	(*Forward)(nil),                // 21: message.Forward
+	(*PublicSetting)(nil),          // 22: message.PublicSetting
+	(*Cookie)(nil),                 // 23: message.Cookie
+	(*LifecycleLogData)(nil),       // 24: message.LifecycleLogData
+	(*Asset_Specific)(nil),         // 25: message.Asset.Specific
+	nil,                            // 26: message.PlatformProtocol.SettingsEntry
 }
 var file_common_proto_depIdxs = []int32{
-	6,  // 0: message.Account.secretType:type_name -> message.LabelValue
-	8,  // 1: message.Asset.protocols:type_name -> message.Protocol
-	23, // 2: message.Asset.specific:type_name -> message.Asset.Specific
+	7,  // 0: message.Account.secretType:type_name -> message.LabelValue
+	9,  // 1: message.Asset.protocols:type_name -> message.Protocol
+	25, // 2: message.Asset.specific:type_name -> message.Asset.Specific
 	2,  // 3: message.CommandACL.action:type_name -> message.CommandACL.Action
-	12, // 4: message.CommandACL.command_groups:type_name -> message.CommandGroup
+	13, // 4: message.CommandACL.command_groups:type_name -> message.CommandGroup
 	3,  // 5: message.Session.login_from:type_name -> message.Session.LoginFrom
 	0,  // 6: message.TerminalTask.action:type_name -> message.TaskAction
-	7,  // 7: message.TokenAuthInfo.asset:type_name -> message.Asset
-	4,  // 8: message.TokenAuthInfo.user:type_name -> message.User
-	5,  // 9: message.TokenAuthInfo.account:type_name -> message.Account
-	10, // 10: message.TokenAuthInfo.permission:type_name -> message.Permission
-	13, // 11: message.TokenAuthInfo.expire_info:type_name -> message.ExpireInfo
-	11, // 12: message.TokenAuthInfo.filter_rules:type_name -> message.CommandACL
-	9,  // 13: message.TokenAuthInfo.gateways:type_name -> message.Gateway
-	19, // 14: message.TokenAuthInfo.setting:type_name -> message.ComponentSetting
-	17, // 15: message.TokenAuthInfo.platform:type_name -> message.Platform
-	18, // 16: message.Platform.protocols:type_name -> message.PlatformProtocol
-	24, // 17: message.PlatformProtocol.settings:type_name -> message.PlatformProtocol.SettingsEntry
-	18, // [18:18] is the sub-list for method output_type
-	18, // [18:18] is the sub-list for method input_type
-	18, // [18:18] is the sub-list for extension type_name
-	18, // [18:18] is the sub-list for extension extendee
-	0,  // [0:18] is the sub-list for field type_name
+	8,  // 7: message.TokenAuthInfo.asset:type_name -> message.Asset
+	5,  // 8: message.TokenAuthInfo.user:type_name -> message.User
+	6,  // 9: message.TokenAuthInfo.account:type_name -> message.Account
+	11, // 10: message.TokenAuthInfo.permission:type_name -> message.Permission
+	14, // 11: message.TokenAuthInfo.expire_info:type_name -> message.ExpireInfo
+	12, // 12: message.TokenAuthInfo.filter_rules:type_name -> message.CommandACL
+	10, // 13: message.TokenAuthInfo.gateways:type_name -> message.Gateway
+	20, // 14: message.TokenAuthInfo.setting:type_name -> message.ComponentSetting
+	18, // 15: message.TokenAuthInfo.platform:type_name -> message.Platform
+	19, // 16: message.Platform.protocols:type_name -> message.PlatformProtocol
+	26, // 17: message.PlatformProtocol.settings:type_name -> message.PlatformProtocol.SettingsEntry
+	4,  // 18: message.LifecycleLogData.event:type_name -> message.LifecycleLogData.event_type
+	19, // [19:19] is the sub-list for method output_type
+	19, // [19:19] is the sub-list for method input_type
+	19, // [19:19] is the sub-list for extension type_name
+	19, // [19:19] is the sub-list for extension extendee
+	0,  // [0:19] is the sub-list for field type_name
 }
 
 func init() { file_common_proto_init() }
@@ -2472,6 +2645,18 @@ func file_common_proto_init() {
 			}
 		}
 		file_common_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*LifecycleLogData); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_common_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Asset_Specific); i {
 			case 0:
 				return &v.state
@@ -2489,8 +2674,8 @@ func file_common_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_common_proto_rawDesc,
-			NumEnums:      4,
-			NumMessages:   21,
+			NumEnums:      5,
+			NumMessages:   22,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
