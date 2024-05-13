@@ -192,6 +192,7 @@ func (u *UploaderService) UploadReplay(sid, replayPath string) error {
 		logger.Errorf("Uploader service replay %s uploaded error: %s", absGzFile, err)
 		return err
 	}
+	u.recordingSessionLifecycleReplay(sid, model.ReplayUploadSuccess, "")
 	logger.Infof("Uploader service replay file %s upload to %s", absGzFile, replayBackendName)
 	if _, err = u.apiClient.FinishReply(sid); err != nil {
 		logger.Errorf("Finish %s replay api failed: %s", sid, err)
