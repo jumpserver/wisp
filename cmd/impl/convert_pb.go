@@ -107,11 +107,12 @@ func ConvertToProtobufPermission(perm model.Actions) *pb.Permission {
 }
 
 var ruleActionMap = map[model.CommandAction]pb.CommandACL_Action{
-	model.ActionUnknown: pb.CommandACL_Unknown,
-	model.ActionAccept:  pb.CommandACL_Accept,
-	model.ActionReview:  pb.CommandACL_Review,
-	model.ActionReject:  pb.CommandACL_Reject,
-	model.ActionWarning: pb.CommandACL_Warning,
+	model.ActionUnknown:       pb.CommandACL_Unknown,
+	model.ActionAccept:        pb.CommandACL_Accept,
+	model.ActionReview:        pb.CommandACL_Review,
+	model.ActionReject:        pb.CommandACL_Reject,
+	model.ActionWarning:       pb.CommandACL_Warning,
+	model.ActionNotifyAndWarn: pb.CommandACL_NotifyWarning,
 }
 
 func ConvertToProtobufFilterRule(rule model.CommandACL) *pb.CommandACL {
