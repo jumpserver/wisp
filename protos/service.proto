@@ -4,6 +4,7 @@ import "common.proto";
 package message;
 
 option go_package = "/protobuf";
+option java_package = "org.jumpserver.wisp";
 
 service Service {
   rpc GetTokenAuthInfo(TokenRequest) returns (TokenResponse) {};
