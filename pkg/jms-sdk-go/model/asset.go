@@ -15,6 +15,8 @@ type SpecInfo struct {
 	// database
 	DBName string `json:"db_name"`
 
+	PgSSLMode string `json:"pg_ssl_mode"`
+
 	UseSSL           bool `json:"use_ssl"`
 	AllowInvalidCert bool `json:"allow_invalid_cert"`
 
@@ -126,4 +128,11 @@ const (
 	ProtocolTelnet = "telnet"
 	ProtocolK8S    = "k8s"
 	ProtocolMysql  = "mysql"
+)
+
+const (
+	PGSSLPrefer     = "prefer"
+	PGSSLRequire    = "require"
+	PGSSLVerifyCa   = "verify-ca"
+	PGSSLVerifyFull = "verify-full"
 )
