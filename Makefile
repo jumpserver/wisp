@@ -77,7 +77,7 @@ proto_go_dir=./protobuf-go
 protobuf_py_dir=./protobuf-py/protobuf
 
 .PHONY: proto
-proto: proto-go
+proto: proto-go proto-java
 
 .PHONY: proto-go
 proto-go:
@@ -95,4 +95,12 @@ proto-py:
 	python -m grpc_tools.protoc --proto_path=${proto_path} --python_out=./protobuf-py/protobuf \
 	--pyi_out=./protobuf-py/protobuf \
 	--grpc_python_out=./protobuf-py/protobuf \
+	${proto_files}
+
+.PHONY: proto-java
+proto-java:
+	@mkdir -p ./protobuf-java
+	protoc --proto_path=${proto_path} --java_out=./protobuf-java \
+	--grpc_out=./protobuf-java \
+	--plugin=protoc-gen-grpc=$(shell which protoc-gen-grpc-java) \
 	${proto_files}

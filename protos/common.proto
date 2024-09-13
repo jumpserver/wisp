@@ -41,6 +41,7 @@ message Asset {
     string submit_selector = 10;
     string script = 11;
     string http_proxy = 12;
+    string pg_ssl_mode = 13;
   }
 
   string id = 1;

@@ -51,6 +51,7 @@ func ConvertToProtobufAsset(asset model.Asset) *pb.Asset {
 		Protocols: ConvertToProtobufProtocols(protocols),
 		Specific: &pb.Asset_Specific{
 			DbName:           specific.DBName,
+			PgSslMode:        specific.PgSSLMode,
 			UseSsl:           specific.UseSSL,
 			CaCert:           secretInfo.CaCert,
 			ClientCert:       secretInfo.ClientCert,
