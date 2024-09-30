@@ -99,8 +99,12 @@ func (j *JMServer) CreateSession(ctx context.Context, req *pb.SessionCreateReque
 		return &pb.SessionCreateResponse{Status: &status}, nil
 	}
 	status.Ok = true
-	j.beat.StoreSessionId(apiResp.ID)
-	logger.Debugf("Creat session %s", apiResp.ID)
+	sessionToken := common.SessionToken{
+		Session: apiResp,
+		TokenId: req.Data.TokenId,
+	}
+	j.beat.StoreSessionId(&sessionToken)
+	logger.Debugf("Creat session %s", apiSess.ID)
 	return &pb.SessionCreateResponse{Status: &status,
 		Data: ConvertToProtobufSession(apiResp)}, nil
 }
@@ -199,6 +203,17 @@ func (j *JMServer) sendStreamTask(ctx context.Context, stream pb.Service_Dispatc
 			case model.TaskUnlockSession:
 				pbTask.Action = pb.TaskAction_UnlockSession
 				pbTask.CreatedBy = task.Kwargs.CreatedByUser
+			case model.TaskPermExpired:
+				pbTask.Action = pb.TaskAction_TokenPermExpired
+				pbTask.TokenStatus = &pb.TokenStatus{
+					Code:      "",
+					Detail:    "",
+					IsExpired: false,
+				}
+
+			case model.TaskPermValid:
+				pbTask.Action = pb.TaskAction_TokenPermValid
+
 			default:
 				logger.Errorf("Unknown task name %s", task.Name)
 				continue

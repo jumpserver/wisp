@@ -55,6 +55,7 @@ var rootCmd = &cobra.Command{
 		beat := common.NewBeatService(apiClient)
 		{
 			go beat.KeepHeartBeat()
+			go beat.KeepCheckTokens()
 		}
 		ctx := common.GetSignalCtx()
 		grpcImplSrv := impl.NewJMServer(apiClient, uploader, beat)

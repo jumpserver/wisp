@@ -50,6 +50,7 @@ type Session struct {
 	AssetID    string         `json:"asset_id"`
 	AccountID  string         `json:"account_id"`
 	Type       LabelFiled     `json:"type"`
+	TokenId    string         `json:"token_id"`
 }
 
 type ReplayVersion string
