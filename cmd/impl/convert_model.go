@@ -32,6 +32,7 @@ func ConvertToSession(sees *pb.Session) model.Session {
 		AssetID:    sees.AssetId,
 		AccountID:  sees.AccountId,
 		Type:       model.NORMALType,
+		TokenId:    sees.TokenId,
 	}
 }
 

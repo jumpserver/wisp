@@ -15,14 +15,20 @@ import (
 
 func NewBeatService(apiClient *service.JMService) *BeatService {
 	return &BeatService{
-		sessMap:   make(map[string]struct{}),
+		sessMap:   make(map[string]*SessionToken),
 		apiClient: apiClient,
 		taskChan:  make(chan *model.TerminalTask, 5),
 	}
 }
 
+type SessionToken struct {
+	model.Session
+	TokenId string
+	invalid bool
+}
+
 type BeatService struct {
-	sessMap map[string]struct{}
+	sessMap map[string]*SessionToken
 
 	apiClient *service.JMService
 
@@ -88,18 +94,14 @@ func (b *BeatService) receiveWsTask(ws *websocket.Conn, done chan struct{}) {
 		}
 		if len(tasks) != 0 {
 			for i := range tasks {
-				select {
-				case b.taskChan <- &tasks[i]:
-				default:
-					logger.Infof("Discard task %v", tasks[i])
-				}
+				b.sendTask(&tasks[i])
 			}
 		}
 	}
 }
 
 func (b *BeatService) GetStatusData() interface{} {
-	sessions := b.getSessions()
+	sessions := b.getSessionIds()
 	payload := model.HeartbeatData{
 		SessionOnlineIds: sessions,
 		CpuUsed:          common.CpuLoad1Usage(),
@@ -113,7 +115,7 @@ func (b *BeatService) GetStatusData() interface{} {
 	}
 }
 
-func (b *BeatService) getSessions() []string {
+func (b *BeatService) getSessionIds() []string {
 	b.Lock()
 	defer b.Unlock()
 	sids := make([]string, 0, len(b.sessMap))
@@ -123,12 +125,20 @@ func (b *BeatService) getSessions() []string {
 	return sids
 }
 
-var empty = struct{}{}
-
-func (b *BeatService) StoreSessionId(sid string) {
+func (b *BeatService) StoreSessionId(sess *SessionToken) {
 	b.Lock()
 	defer b.Unlock()
-	b.sessMap[sid] = empty
+	b.sessMap[sess.ID] = sess
+}
+
+func (b *BeatService) GetSessions() []*SessionToken {
+	b.Lock()
+	defer b.Unlock()
+	sids := make([]*SessionToken, 0, len(b.sessMap))
+	for sid := range b.sessMap {
+		sids = append(sids, b.sessMap[sid])
+	}
+	return sids
 }
 
 func (b *BeatService) RemoveSessionId(sid string) {
@@ -143,4 +153,58 @@ func (b *BeatService) GetTerminalTaskChan() <-chan *model.TerminalTask {
 
 func (b *BeatService) FinishTask(taskId string) error {
 	return b.apiClient.FinishTask(taskId)
+}
+
+func (b *BeatService) KeepCheckTokens() {
+	for {
+		time.Sleep(5 * time.Minute)
+		sessions := b.GetSessions()
+		tokens := make(map[string]model.TokenCheckStatus, len(sessions))
+		for _, s := range sessions {
+			ret, ok := tokens[s.TokenId]
+			if ok {
+				b.handleTokenCheck(s, &ret)
+				continue
+			}
+			ret, err := b.apiClient.CheckTokenStatus(s.TokenId)
+			if err != nil && ret.Code == "" {
+				logger.Errorf("Check token status failed: %s", err)
+				continue
+			}
+			tokens[s.TokenId] = ret
+			b.handleTokenCheck(s, &ret)
+		}
+	}
+}
+
+func (b *BeatService) sendTask(task *model.TerminalTask) {
+	select {
+	case b.taskChan <- task:
+	default:
+		logger.Errorf("Discard task %v", task)
+	}
+}
+
+func (b *BeatService) handleTokenCheck(session *SessionToken, tokenStatus *model.TokenCheckStatus) {
+	var action string
+	switch tokenStatus.Code {
+	case model.CodePermOk:
+		action = model.TaskPermValid
+		if !session.invalid {
+			return
+		}
+		session.invalid = false
+	default:
+		if session.invalid {
+			return
+		}
+		session.invalid = true
+		action = model.TaskPermExpired
+	}
+	task := model.TerminalTask{
+		Name:        action,
+		Args:        session.ID,
+		TokenStatus: *tokenStatus,
+	}
+	b.sendTask(&task)
 }

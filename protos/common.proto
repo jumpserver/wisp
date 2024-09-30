@@ -127,12 +127,21 @@ message Session {
   string user_id = 10;
   string asset_id = 11;
   string account_id = 12;
+  string token_id = 13;
 }
 
 enum TaskAction {
   KillSession = 0;
   LockSession = 1;
   UnlockSession = 2;
+  TokenPermExpired = 3;
+  TokenPermValid = 4;
+}
+
+message TokenStatus {
+  string code = 1;
+  string detail = 2;
+  bool is_expired = 3;
 }
 
 message TerminalTask {
@@ -141,6 +150,7 @@ message TerminalTask {
   string session_id = 3;
   string terminated_by = 4;
   string created_by = 5;
+  TokenStatus token_status = 6;
 }
 
 enum RiskLevel {

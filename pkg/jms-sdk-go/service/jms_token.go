@@ -32,3 +32,9 @@ type TokenRenewalResponse struct {
 	Ok  bool   `json:"ok"`
 	Msg string `json:"msg"`
 }
+
+func (s *JMService) CheckTokenStatus(tokenId string) (res model.TokenCheckStatus, err error) {
+	reqURL := fmt.Sprintf(SuperConnectTokenCheckURL, tokenId)
+	_, err = s.authClient.Get(reqURL, &res)
+	return
+}
