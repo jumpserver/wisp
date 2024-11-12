@@ -29,7 +29,20 @@ service Service {
   rpc HandlePortFailure(PortFailureRequest) returns (StatusResponse) {};
   rpc CheckUserByCookies(CookiesRequest) returns (UserResponse) {};
   rpc RecordSessionLifecycleLog(SessionLifecycleLogRequest) returns (StatusResponse) {};
+  rpc FaceRecognitionCallback(FaceRecognitionCallbackRequest) returns (FaceRecognitionCallbackResponse){};
 }
+
+message FaceRecognitionCallbackRequest{
+  string token = 1;
+  bool  success = 2;
+  string error_message = 3;
+  string face_code = 4;
+}
+
+message FaceRecognitionCallbackResponse{
+  Status status = 1;
+}
+
 
 message AssetLoginTicketRequest {
   string user_id = 1;
