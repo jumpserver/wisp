@@ -15,6 +15,8 @@ type TerminalConfig struct {
 	HeartbeatDuration   int           `json:"TERMINAL_HEARTBEAT_INTERVAL"`
 	HostKey             string        `json:"TERMINAL_HOST_KEY"`
 	EnableSessionShare  bool          `json:"SECURITY_SESSION_SHARE"`
+	LicenseContent      string        `json:"XPACK_LICENSE_CONTENT"`
+	LicenseIsValid      bool          `json:"XPACK_LICENSE_IS_VALID"`
 
 	GPTBaseURL string `json:"GPT_BASE_URL"`
 	GPTApiKey  string `json:"GPT_API_KEY"`

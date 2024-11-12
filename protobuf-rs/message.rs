@@ -370,6 +370,8 @@ pub struct PublicSetting {
     pub gpt_proxy: ::prost::alloc::string::String,
     #[prost(string, tag="6")]
     pub gpt_model: ::prost::alloc::string::String,
+    #[prost(string, tag="7")]
+    pub license_content: ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Cookie {
