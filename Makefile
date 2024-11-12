@@ -77,7 +77,7 @@ proto_go_dir=./protobuf-go
 protobuf_py_dir=./protobuf-py/protobuf
 
 .PHONY: proto
-proto: proto-go proto-java
+proto: proto-go proto-java proto-rust
 
 .PHONY: proto-go
 proto-go:
@@ -104,3 +104,13 @@ proto-java:
 	--grpc_out=./protobuf-java \
 	--plugin=protoc-gen-grpc=$(shell which protoc-gen-grpc-java) \
 	${proto_files}
+
+
+.PHONY: proto-rust
+proto-rust:
+	@mkdir -p ./protobuf-rs
+	protoc --proto_path=${proto_path} \
+	       --plugin=protoc-gen-tonic=$(shell which protoc-gen-tonic) \
+	       --prost_out=./protobuf-rs \
+	       --tonic_out=./protobuf-rs \
+	       ${proto_files}

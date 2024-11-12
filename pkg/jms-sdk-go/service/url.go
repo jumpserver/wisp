@@ -83,3 +83,7 @@ const (
 	AssetLoginConfirmURL = "/api/v1/acls/login-asset/check/"
 	AclCommandReviewURL  = "/api/v1/acls/command-filter-acls/command-review/"
 )
+
+const (
+	FaceRecognitionURL = "/api/v1/authentication/mfa/face/callback/"
+)
