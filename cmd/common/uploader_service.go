@@ -208,14 +208,13 @@ func (u *UploaderService) UploadCommand(cmd *model.Command) {
 	u.commandChan <- cmd
 }
 
-func (u *UploaderService) UploadRemainReplays(replayDir string) (ret RemainReplayResult) {
+func (u *UploaderService) UploadRemainReplays(replayDir string) {
 	allRemainReplays := scanRemainReplays(u.apiClient, replayDir)
 	if len(allRemainReplays) <= 0 {
 		return
 	}
-	successFiles := make([]string, 0, 10)
-	failureFiles := make([]string, 0, 10)
-	failureErrs := make([]string, 0, 10)
+	logger.Infof("Start to upload %d replay files 10 min later", len(allRemainReplays))
+	time.Sleep(10 * time.Minute)
 	logger.Debugf("Upload Remain %d replay files", len(allRemainReplays))
 	for replayPath := range allRemainReplays {
 		remainReplay := allRemainReplays[replayPath]
@@ -223,13 +222,11 @@ func (u *UploaderService) UploadRemainReplays(replayDir string) (ret RemainRepla
 		if err := u.uploadRemainReplay(&remainReplay); err != nil {
 			logger.Errorf("Uploader service clean remain replay %s failed: %s",
 				replayPath, err)
-			failureFiles = append(failureFiles, replayPath)
-			failureErrs = append(failureErrs, err.Error())
 			u.recordingSessionLifecycleReplay(remainReplay.Id, model.ReplayUploadFailure, err.Error())
 			continue
 		}
 		u.recordingSessionLifecycleReplay(remainReplay.Id, model.ReplayUploadSuccess, "")
-		successFiles = append(successFiles, replayPath)
+		logger.Infof("Uploader service upload replay %s success", replayPath)
 		// 上传完成 删除原录像文件
 		if err := os.Remove(replayPath); err != nil {
 			logger.Errorf("Uploader service clean remain replay %s failed: %s",
@@ -240,9 +237,7 @@ func (u *UploaderService) UploadRemainReplays(replayDir string) (ret RemainRepla
 				remainReplay.Id, err)
 		}
 	}
-	ret.FailureErrs = failureErrs
-	ret.FailureFiles = failureFiles
-	ret.SuccessFiles = successFiles
+	logger.Infof("Uploader service upload remain replay files done")
 	return
 }
 
