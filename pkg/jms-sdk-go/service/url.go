@@ -85,5 +85,5 @@ const (
 )
 
 const (
-	FaceRecognitionURL = "/api/v1/authentication/mfa/face/callback/"
+	FaceRecognitionURL = "/api/v1/authentication/face/callback/"
 )
