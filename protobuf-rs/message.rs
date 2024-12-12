@@ -313,6 +313,8 @@ pub struct TokenAuthInfo {
     pub setting: ::core::option::Option<ComponentSetting>,
     #[prost(message, optional, tag="11")]
     pub platform: ::core::option::Option<Platform>,
+    #[prost(string, tag="12")]
+    pub face_monitor_token: ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Platform {
@@ -523,6 +525,38 @@ impl RiskLevel {
             _ => None,
         }
     }
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct JoinFaceMonitorRequest {
+    #[prost(string, tag="1")]
+    pub face_monitor_token: ::prost::alloc::string::String,
+    #[prost(string, tag="2")]
+    pub session_id: ::prost::alloc::string::String,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct JoinFaceMonitorResponse {
+    #[prost(message, optional, tag="1")]
+    pub status: ::core::option::Option<Status>,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FaceMonitorCallbackRequest {
+    #[prost(string, tag="1")]
+    pub token: ::prost::alloc::string::String,
+    #[prost(bool, tag="2")]
+    pub success: bool,
+    #[prost(string, tag="3")]
+    pub error_message: ::prost::alloc::string::String,
+    #[prost(bool, tag="4")]
+    pub is_finished: bool,
+    #[prost(string, tag="5")]
+    pub action: ::prost::alloc::string::String,
+    #[prost(string, repeated, tag="6")]
+    pub face_codes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FaceMonitorCallbackResponse {
+    #[prost(message, optional, tag="1")]
+    pub status: ::core::option::Option<Status>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FaceRecognitionCallbackRequest {

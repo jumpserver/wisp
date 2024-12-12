@@ -30,6 +30,31 @@ service Service {
   rpc CheckUserByCookies(CookiesRequest) returns (UserResponse) {};
   rpc RecordSessionLifecycleLog(SessionLifecycleLogRequest) returns (StatusResponse) {};
   rpc FaceRecognitionCallback(FaceRecognitionCallbackRequest) returns (FaceRecognitionCallbackResponse){};
+  rpc FaceMonitorCallback(FaceMonitorCallbackRequest) returns(FaceMonitorCallbackResponse){};
+  rpc JoinFaceMonitor(JoinFaceMonitorRequest)returns(JoinFaceMonitorResponse){};
+}
+
+
+message JoinFaceMonitorRequest {
+  string face_monitor_token = 1;
+  string session_id = 2;
+}
+
+message JoinFaceMonitorResponse{
+  Status status = 1;
+}
+
+message FaceMonitorCallbackRequest{
+  string token = 1;
+  bool  success = 2;
+  string error_message = 3;
+  bool is_finished = 4;
+  string action = 5;
+  repeated string face_codes = 6;
+}
+
+message FaceMonitorCallbackResponse {
+  Status status = 1;
 }
 
 message FaceRecognitionCallbackRequest{
