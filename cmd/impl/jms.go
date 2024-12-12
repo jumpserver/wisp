@@ -50,17 +50,18 @@ func (j *JMServer) GetTokenAuthInfo(ctx context.Context, req *pb.TokenRequest) (
 	}
 	setting := j.uploader.GetTerminalSetting()
 	dbTokenInfo := pb.TokenAuthInfo{
-		KeyId:       tokenAuthInfo.Id,
-		SecreteId:   tokenAuthInfo.Value,
-		Asset:       ConvertToProtobufAsset(tokenAuthInfo.Asset),
-		User:        ConvertToProtobufUser(tokenAuthInfo.User),
-		FilterRules: ConvertToProtobufFilterRules(tokenAuthInfo.CommandFilterACLs),
-		Account:     ConvertToProtobufAccount(tokenAuthInfo.Account),
-		Permission:  ConvertToProtobufPermission(tokenAuthInfo.Actions),
-		ExpireInfo:  ConvertToProtobufExpireInfo(tokenAuthInfo.ExpireAt),
-		Gateways:    ConvertToProtobufGateways(gateways),
-		Setting:     ConvertToPbSetting(&setting),
-		Platform:    ConvertToPbPlatform(&tokenAuthInfo.Platform),
+		KeyId:            tokenAuthInfo.Id,
+		SecreteId:        tokenAuthInfo.Value,
+		Asset:            ConvertToProtobufAsset(tokenAuthInfo.Asset),
+		User:             ConvertToProtobufUser(tokenAuthInfo.User),
+		FilterRules:      ConvertToProtobufFilterRules(tokenAuthInfo.CommandFilterACLs),
+		Account:          ConvertToProtobufAccount(tokenAuthInfo.Account),
+		Permission:       ConvertToProtobufPermission(tokenAuthInfo.Actions),
+		ExpireInfo:       ConvertToProtobufExpireInfo(tokenAuthInfo.ExpireAt),
+		Gateways:         ConvertToProtobufGateways(gateways),
+		Setting:          ConvertToPbSetting(&setting),
+		Platform:         ConvertToPbPlatform(&tokenAuthInfo.Platform),
+		FaceMonitorToken: tokenAuthInfo.FaceMonitorToken,
 	}
 	status.Ok = true
 	logger.Debugf("Get database auth info success by token: %s", req.Token)

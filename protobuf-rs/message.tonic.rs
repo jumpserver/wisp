@@ -574,6 +574,54 @@ pub mod service_client {
                 .insert(GrpcMethod::new("message.Service", "FaceRecognitionCallback"));
             self.inner.unary(req, path, codec).await
         }
+        pub async fn face_monitor_callback(
+            &mut self,
+            request: impl tonic::IntoRequest<super::FaceMonitorCallbackRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::FaceMonitorCallbackResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/message.Service/FaceMonitorCallback",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("message.Service", "FaceMonitorCallback"));
+            self.inner.unary(req, path, codec).await
+        }
+        pub async fn join_face_monitor(
+            &mut self,
+            request: impl tonic::IntoRequest<super::JoinFaceMonitorRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::JoinFaceMonitorResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/message.Service/JoinFaceMonitor",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("message.Service", "JoinFaceMonitor"));
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// Generated server implementations.
@@ -710,6 +758,20 @@ pub mod service_server {
             request: tonic::Request<super::FaceRecognitionCallbackRequest>,
         ) -> std::result::Result<
             tonic::Response<super::FaceRecognitionCallbackResponse>,
+            tonic::Status,
+        >;
+        async fn face_monitor_callback(
+            &self,
+            request: tonic::Request<super::FaceMonitorCallbackRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::FaceMonitorCallbackResponse>,
+            tonic::Status,
+        >;
+        async fn join_face_monitor(
+            &self,
+            request: tonic::Request<super::JoinFaceMonitorRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::JoinFaceMonitorResponse>,
             tonic::Status,
         >;
     }
@@ -1711,6 +1773,96 @@ pub mod service_server {
                     let inner = self.inner.clone();
                     let fut = async move {
                         let method = FaceRecognitionCallbackSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            )
+                            .apply_max_message_size_config(
+                                max_decoding_message_size,
+                                max_encoding_message_size,
+                            );
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/message.Service/FaceMonitorCallback" => {
+                    #[allow(non_camel_case_types)]
+                    struct FaceMonitorCallbackSvc<T: Service>(pub Arc<T>);
+                    impl<
+                        T: Service,
+                    > tonic::server::UnaryService<super::FaceMonitorCallbackRequest>
+                    for FaceMonitorCallbackSvc<T> {
+                        type Response = super::FaceMonitorCallbackResponse;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::FaceMonitorCallbackRequest>,
+                        ) -> Self::Future {
+                            let inner = Arc::clone(&self.0);
+                            let fut = async move {
+                                <T as Service>::face_monitor_callback(&inner, request).await
+                            };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let max_decoding_message_size = self.max_decoding_message_size;
+                    let max_encoding_message_size = self.max_encoding_message_size;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let method = FaceMonitorCallbackSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            )
+                            .apply_max_message_size_config(
+                                max_decoding_message_size,
+                                max_encoding_message_size,
+                            );
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/message.Service/JoinFaceMonitor" => {
+                    #[allow(non_camel_case_types)]
+                    struct JoinFaceMonitorSvc<T: Service>(pub Arc<T>);
+                    impl<
+                        T: Service,
+                    > tonic::server::UnaryService<super::JoinFaceMonitorRequest>
+                    for JoinFaceMonitorSvc<T> {
+                        type Response = super::JoinFaceMonitorResponse;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::JoinFaceMonitorRequest>,
+                        ) -> Self::Future {
+                            let inner = Arc::clone(&self.0);
+                            let fut = async move {
+                                <T as Service>::join_face_monitor(&inner, request).await
+                            };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let max_decoding_message_size = self.max_decoding_message_size;
+                    let max_encoding_message_size = self.max_encoding_message_size;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let method = JoinFaceMonitorSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = tonic::server::Grpc::new(codec)
                             .apply_compression_config(

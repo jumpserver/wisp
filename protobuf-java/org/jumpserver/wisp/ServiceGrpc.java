@@ -666,6 +666,68 @@ public final class ServiceGrpc {
     return getFaceRecognitionCallbackMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<org.jumpserver.wisp.ServiceOuterClass.FaceMonitorCallbackRequest,
+      org.jumpserver.wisp.ServiceOuterClass.FaceMonitorCallbackResponse> getFaceMonitorCallbackMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "FaceMonitorCallback",
+      requestType = org.jumpserver.wisp.ServiceOuterClass.FaceMonitorCallbackRequest.class,
+      responseType = org.jumpserver.wisp.ServiceOuterClass.FaceMonitorCallbackResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<org.jumpserver.wisp.ServiceOuterClass.FaceMonitorCallbackRequest,
+      org.jumpserver.wisp.ServiceOuterClass.FaceMonitorCallbackResponse> getFaceMonitorCallbackMethod() {
+    io.grpc.MethodDescriptor<org.jumpserver.wisp.ServiceOuterClass.FaceMonitorCallbackRequest, org.jumpserver.wisp.ServiceOuterClass.FaceMonitorCallbackResponse> getFaceMonitorCallbackMethod;
+    if ((getFaceMonitorCallbackMethod = ServiceGrpc.getFaceMonitorCallbackMethod) == null) {
+      synchronized (ServiceGrpc.class) {
+        if ((getFaceMonitorCallbackMethod = ServiceGrpc.getFaceMonitorCallbackMethod) == null) {
+          ServiceGrpc.getFaceMonitorCallbackMethod = getFaceMonitorCallbackMethod =
+              io.grpc.MethodDescriptor.<org.jumpserver.wisp.ServiceOuterClass.FaceMonitorCallbackRequest, org.jumpserver.wisp.ServiceOuterClass.FaceMonitorCallbackResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "FaceMonitorCallback"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  org.jumpserver.wisp.ServiceOuterClass.FaceMonitorCallbackRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  org.jumpserver.wisp.ServiceOuterClass.FaceMonitorCallbackResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new ServiceMethodDescriptorSupplier("FaceMonitorCallback"))
+              .build();
+        }
+      }
+    }
+    return getFaceMonitorCallbackMethod;
+  }
+
+  private static volatile io.grpc.MethodDescriptor<org.jumpserver.wisp.ServiceOuterClass.JoinFaceMonitorRequest,
+      org.jumpserver.wisp.ServiceOuterClass.JoinFaceMonitorResponse> getJoinFaceMonitorMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "JoinFaceMonitor",
+      requestType = org.jumpserver.wisp.ServiceOuterClass.JoinFaceMonitorRequest.class,
+      responseType = org.jumpserver.wisp.ServiceOuterClass.JoinFaceMonitorResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<org.jumpserver.wisp.ServiceOuterClass.JoinFaceMonitorRequest,
+      org.jumpserver.wisp.ServiceOuterClass.JoinFaceMonitorResponse> getJoinFaceMonitorMethod() {
+    io.grpc.MethodDescriptor<org.jumpserver.wisp.ServiceOuterClass.JoinFaceMonitorRequest, org.jumpserver.wisp.ServiceOuterClass.JoinFaceMonitorResponse> getJoinFaceMonitorMethod;
+    if ((getJoinFaceMonitorMethod = ServiceGrpc.getJoinFaceMonitorMethod) == null) {
+      synchronized (ServiceGrpc.class) {
+        if ((getJoinFaceMonitorMethod = ServiceGrpc.getJoinFaceMonitorMethod) == null) {
+          ServiceGrpc.getJoinFaceMonitorMethod = getJoinFaceMonitorMethod =
+              io.grpc.MethodDescriptor.<org.jumpserver.wisp.ServiceOuterClass.JoinFaceMonitorRequest, org.jumpserver.wisp.ServiceOuterClass.JoinFaceMonitorResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "JoinFaceMonitor"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  org.jumpserver.wisp.ServiceOuterClass.JoinFaceMonitorRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  org.jumpserver.wisp.ServiceOuterClass.JoinFaceMonitorResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new ServiceMethodDescriptorSupplier("JoinFaceMonitor"))
+              .build();
+        }
+      }
+    }
+    return getJoinFaceMonitorMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -859,6 +921,20 @@ public final class ServiceGrpc {
     default void faceRecognitionCallback(org.jumpserver.wisp.ServiceOuterClass.FaceRecognitionCallbackRequest request,
         io.grpc.stub.StreamObserver<org.jumpserver.wisp.ServiceOuterClass.FaceRecognitionCallbackResponse> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getFaceRecognitionCallbackMethod(), responseObserver);
+    }
+
+    /**
+     */
+    default void faceMonitorCallback(org.jumpserver.wisp.ServiceOuterClass.FaceMonitorCallbackRequest request,
+        io.grpc.stub.StreamObserver<org.jumpserver.wisp.ServiceOuterClass.FaceMonitorCallbackResponse> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getFaceMonitorCallbackMethod(), responseObserver);
+    }
+
+    /**
+     */
+    default void joinFaceMonitor(org.jumpserver.wisp.ServiceOuterClass.JoinFaceMonitorRequest request,
+        io.grpc.stub.StreamObserver<org.jumpserver.wisp.ServiceOuterClass.JoinFaceMonitorResponse> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getJoinFaceMonitorMethod(), responseObserver);
     }
   }
 
@@ -1056,6 +1132,22 @@ public final class ServiceGrpc {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getFaceRecognitionCallbackMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void faceMonitorCallback(org.jumpserver.wisp.ServiceOuterClass.FaceMonitorCallbackRequest request,
+        io.grpc.stub.StreamObserver<org.jumpserver.wisp.ServiceOuterClass.FaceMonitorCallbackResponse> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getFaceMonitorCallbackMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
+    public void joinFaceMonitor(org.jumpserver.wisp.ServiceOuterClass.JoinFaceMonitorRequest request,
+        io.grpc.stub.StreamObserver<org.jumpserver.wisp.ServiceOuterClass.JoinFaceMonitorResponse> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getJoinFaceMonitorMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -1212,6 +1304,20 @@ public final class ServiceGrpc {
     public org.jumpserver.wisp.ServiceOuterClass.FaceRecognitionCallbackResponse faceRecognitionCallback(org.jumpserver.wisp.ServiceOuterClass.FaceRecognitionCallbackRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getFaceRecognitionCallbackMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public org.jumpserver.wisp.ServiceOuterClass.FaceMonitorCallbackResponse faceMonitorCallback(org.jumpserver.wisp.ServiceOuterClass.FaceMonitorCallbackRequest request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getFaceMonitorCallbackMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public org.jumpserver.wisp.ServiceOuterClass.JoinFaceMonitorResponse joinFaceMonitor(org.jumpserver.wisp.ServiceOuterClass.JoinFaceMonitorRequest request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getJoinFaceMonitorMethod(), getCallOptions(), request);
     }
   }
 
@@ -1390,6 +1496,22 @@ public final class ServiceGrpc {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getFaceRecognitionCallbackMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<org.jumpserver.wisp.ServiceOuterClass.FaceMonitorCallbackResponse> faceMonitorCallback(
+        org.jumpserver.wisp.ServiceOuterClass.FaceMonitorCallbackRequest request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getFaceMonitorCallbackMethod(), getCallOptions()), request);
+    }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<org.jumpserver.wisp.ServiceOuterClass.JoinFaceMonitorResponse> joinFaceMonitor(
+        org.jumpserver.wisp.ServiceOuterClass.JoinFaceMonitorRequest request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getJoinFaceMonitorMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_GET_TOKEN_AUTH_INFO = 0;
@@ -1412,7 +1534,9 @@ public final class ServiceGrpc {
   private static final int METHODID_CHECK_USER_BY_COOKIES = 17;
   private static final int METHODID_RECORD_SESSION_LIFECYCLE_LOG = 18;
   private static final int METHODID_FACE_RECOGNITION_CALLBACK = 19;
-  private static final int METHODID_DISPATCH_TASK = 20;
+  private static final int METHODID_FACE_MONITOR_CALLBACK = 20;
+  private static final int METHODID_JOIN_FACE_MONITOR = 21;
+  private static final int METHODID_DISPATCH_TASK = 22;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -1510,6 +1634,14 @@ public final class ServiceGrpc {
         case METHODID_FACE_RECOGNITION_CALLBACK:
           serviceImpl.faceRecognitionCallback((org.jumpserver.wisp.ServiceOuterClass.FaceRecognitionCallbackRequest) request,
               (io.grpc.stub.StreamObserver<org.jumpserver.wisp.ServiceOuterClass.FaceRecognitionCallbackResponse>) responseObserver);
+          break;
+        case METHODID_FACE_MONITOR_CALLBACK:
+          serviceImpl.faceMonitorCallback((org.jumpserver.wisp.ServiceOuterClass.FaceMonitorCallbackRequest) request,
+              (io.grpc.stub.StreamObserver<org.jumpserver.wisp.ServiceOuterClass.FaceMonitorCallbackResponse>) responseObserver);
+          break;
+        case METHODID_JOIN_FACE_MONITOR:
+          serviceImpl.joinFaceMonitor((org.jumpserver.wisp.ServiceOuterClass.JoinFaceMonitorRequest) request,
+              (io.grpc.stub.StreamObserver<org.jumpserver.wisp.ServiceOuterClass.JoinFaceMonitorResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -1679,6 +1811,20 @@ public final class ServiceGrpc {
               org.jumpserver.wisp.ServiceOuterClass.FaceRecognitionCallbackRequest,
               org.jumpserver.wisp.ServiceOuterClass.FaceRecognitionCallbackResponse>(
                 service, METHODID_FACE_RECOGNITION_CALLBACK)))
+        .addMethod(
+          getFaceMonitorCallbackMethod(),
+          io.grpc.stub.ServerCalls.asyncUnaryCall(
+            new MethodHandlers<
+              org.jumpserver.wisp.ServiceOuterClass.FaceMonitorCallbackRequest,
+              org.jumpserver.wisp.ServiceOuterClass.FaceMonitorCallbackResponse>(
+                service, METHODID_FACE_MONITOR_CALLBACK)))
+        .addMethod(
+          getJoinFaceMonitorMethod(),
+          io.grpc.stub.ServerCalls.asyncUnaryCall(
+            new MethodHandlers<
+              org.jumpserver.wisp.ServiceOuterClass.JoinFaceMonitorRequest,
+              org.jumpserver.wisp.ServiceOuterClass.JoinFaceMonitorResponse>(
+                service, METHODID_JOIN_FACE_MONITOR)))
         .build();
   }
 
@@ -1748,6 +1894,8 @@ public final class ServiceGrpc {
               .addMethod(getCheckUserByCookiesMethod())
               .addMethod(getRecordSessionLifecycleLogMethod())
               .addMethod(getFaceRecognitionCallbackMethod())
+              .addMethod(getFaceMonitorCallbackMethod())
+              .addMethod(getJoinFaceMonitorMethod())
               .build();
         }
       }
