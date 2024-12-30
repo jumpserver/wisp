@@ -114,3 +114,12 @@ proto-rust:
 	       --prost_out=./protobuf-rs \
 	       --tonic_out=./protobuf-rs \
 	       ${proto_files}
+
+
+.PHONY: proto-cplusplus
+proto-cplusplus:
+	@mkdir -p ./protobuf-cpp
+	protoc --proto_path=${proto_path} --cpp_out=./protobuf-cpp \
+	--grpc_out=./protobuf-cpp \
+	--plugin=protoc-gen-grpc=$(shell which grpc_cpp_plugin) \
+	${proto_files}
