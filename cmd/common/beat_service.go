@@ -1,6 +1,7 @@
 package common
 
 import (
+	"context"
 	"encoding/json"
 	"sync"
 	"time"
@@ -17,7 +18,7 @@ func NewBeatService(apiClient *service.JMService) *BeatService {
 	return &BeatService{
 		sessMap:   make(map[string]*SessionToken),
 		apiClient: apiClient,
-		taskChan:  make(chan *model.TerminalTask, 5),
+		taskChans: make(map[string]*TaskChanContext),
 	}
 }
 
@@ -27,12 +28,18 @@ type SessionToken struct {
 	invalid bool
 }
 
+type TaskChanContext struct {
+	Id     string
+	Ctx    context.Context
+	TaskCh chan *model.TerminalTask
+}
+
 type BeatService struct {
 	sessMap map[string]*SessionToken
 
 	apiClient *service.JMService
 
-	taskChan chan *model.TerminalTask
+	taskChans map[string]*TaskChanContext
 
 	sync.Mutex
 }
@@ -147,8 +154,16 @@ func (b *BeatService) RemoveSessionId(sid string) {
 	delete(b.sessMap, sid)
 }
 
-func (b *BeatService) GetTerminalTaskChan() <-chan *model.TerminalTask {
-	return b.taskChan
+func (b *BeatService) GetTerminalTaskChan(ctx context.Context) <-chan *model.TerminalTask {
+	b.Lock()
+	defer b.Unlock()
+	taskCtx := &TaskChanContext{
+		Id:     common.UUID(),
+		Ctx:    ctx,
+		TaskCh: make(chan *model.TerminalTask, 5),
+	}
+	b.taskChans[taskCtx.Id] = taskCtx
+	return taskCtx.TaskCh
 }
 
 func (b *BeatService) FinishTask(taskId string) error {
@@ -178,10 +193,27 @@ func (b *BeatService) KeepCheckTokens() {
 }
 
 func (b *BeatService) sendTask(task *model.TerminalTask) {
-	select {
-	case b.taskChan <- task:
-	default:
-		logger.Errorf("Discard task %v", task)
+	b.Lock()
+	defer b.Unlock()
+	taskChans := make([]string, 0, len(b.taskChans))
+	for i := range b.taskChans {
+		taskChanCtx := b.taskChans[i]
+		select {
+		case <-taskChanCtx.Ctx.Done():
+			close(taskChanCtx.TaskCh)
+			taskChans = append(taskChans, taskChanCtx.Id)
+			continue
+		default:
+
+		}
+		select {
+		case taskChanCtx.TaskCh <- task:
+		default:
+			logger.Errorf("Task channel is full, discard task %+v", task)
+		}
+	}
+	for _, id := range taskChans {
+		delete(b.taskChans, id)
 	}
 }
 
