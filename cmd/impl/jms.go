@@ -181,7 +181,7 @@ func (j *JMServer) ScanRemainReplays(ctx context.Context, req *pb.RemainReplayRe
 }
 
 func (j *JMServer) sendStreamTask(ctx context.Context, stream pb.Service_DispatchTaskServer) {
-	taskChan := j.beat.GetTerminalTaskChan()
+	taskChan := j.beat.GetTerminalTaskChan(ctx)
 	for {
 		select {
 		case <-ctx.Done():
