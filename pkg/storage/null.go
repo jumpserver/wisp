@@ -1,7 +1,7 @@
 package storage
 
 import (
-	"github.com/jumpserver/wisp/pkg/jms-sdk-go/model"
+	"github.com/jumpserver-dev/sdk-go/model"
 )
 
 func NewNullStorage() (storage NullStorage) {

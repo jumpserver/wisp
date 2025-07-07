@@ -10,7 +10,7 @@ import (
 
 	"github.com/spf13/viper"
 
-	"github.com/jumpserver/wisp/pkg/common"
+	"github.com/jumpserver-dev/sdk-go/common"
 )
 
 type Config struct {

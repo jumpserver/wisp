@@ -1,19 +1,19 @@
 package impl
 
 import (
-	"github.com/jumpserver/wisp/pkg/jms-sdk-go/common"
-	"github.com/jumpserver/wisp/pkg/jms-sdk-go/model"
+	"github.com/jumpserver-dev/sdk-go/common"
+	"github.com/jumpserver-dev/sdk-go/model"
 	pb "github.com/jumpserver/wisp/protobuf-go/protobuf"
 )
 
-var modelLoginFrom = map[pb.Session_LoginFrom]model.LabelFiled{
+var modelLoginFrom = map[pb.Session_LoginFrom]model.LabelField{
 	pb.Session_WT: model.LoginFromWT,
 	pb.Session_ST: model.LoginFromST,
 	pb.Session_RT: model.LoginFromRT,
 	pb.Session_DT: model.LoginFromDT,
 }
 
-func ConvertModelLoginFrom(lf pb.Session_LoginFrom) model.LabelFiled {
+func ConvertModelLoginFrom(lf pb.Session_LoginFrom) model.LabelField {
 	return modelLoginFrom[lf]
 }
 

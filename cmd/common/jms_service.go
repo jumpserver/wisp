@@ -5,9 +5,9 @@ import (
 	"os"
 	"time"
 
+	"github.com/jumpserver-dev/sdk-go/model"
+	"github.com/jumpserver-dev/sdk-go/service"
 	"github.com/jumpserver/wisp/pkg/config"
-	"github.com/jumpserver/wisp/pkg/jms-sdk-go/model"
-	"github.com/jumpserver/wisp/pkg/jms-sdk-go/service"
 	"github.com/jumpserver/wisp/pkg/logger"
 )
 
