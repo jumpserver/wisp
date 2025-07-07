@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/jumpserver/wisp/pkg/jms-sdk-go/model"
+	"github.com/jumpserver-dev/sdk-go/model"
 	pb "github.com/jumpserver/wisp/protobuf-go/protobuf"
 )
 
@@ -57,7 +57,7 @@ func ConvertToProtobufAsset(asset model.Asset) *pb.Asset {
 			ClientCert:       secretInfo.ClientCert,
 			ClientKey:        secretInfo.ClientKey,
 			AllowInvalidCert: specific.AllowInvalidCert,
-			AutoFill:         specific.AutoFill,
+			AutoFill:         specific.Autofill,
 			UsernameSelector: specific.UsernameSelector,
 			PasswordSelector: specific.PasswordSelector,
 			SubmitSelector:   specific.SubmitSelector,
@@ -131,7 +131,7 @@ func ConvertToProtobufFilterRule(rule model.CommandACL) *pb.CommandACL {
 	}
 }
 
-func ConvertToProtobufCommandGroup(groups []model.CommandGroup) []*pb.CommandGroup {
+func ConvertToProtobufCommandGroup(groups []model.CommandFilterItem) []*pb.CommandGroup {
 	pbRules := make([]*pb.CommandGroup, 0, len(groups))
 	for i := range groups {
 		group := groups[i]
@@ -140,7 +140,7 @@ func ConvertToProtobufCommandGroup(groups []model.CommandGroup) []*pb.CommandGro
 			Name:       group.Name,
 			Type:       group.Type,
 			IgnoreCase: group.IgnoreCase,
-			Pattern:    group.Pattern,
+			Pattern:    group.RePattern,
 			Content:    group.Content})
 	}
 	return pbRules
@@ -193,11 +193,11 @@ func ConvertToProtobufSession(sess model.Session) *pb.Session {
 	}
 }
 
-func ConvertToPbLoginFrom(s model.LabelFiled) pb.Session_LoginFrom {
+func ConvertToPbLoginFrom(s model.LabelField) pb.Session_LoginFrom {
 	return pbLoginFrom[s]
 }
 
-var pbLoginFrom = map[model.LabelFiled]pb.Session_LoginFrom{
+var pbLoginFrom = map[model.LabelField]pb.Session_LoginFrom{
 	model.LoginFromWT: pb.Session_WT,
 	model.LoginFromST: pb.Session_ST,
 	model.LoginFromRT: pb.Session_RT,

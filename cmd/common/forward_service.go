@@ -7,8 +7,8 @@ import (
 
 	"golang.org/x/crypto/ssh"
 
+	"github.com/jumpserver-dev/sdk-go/model"
 	"github.com/jumpserver/wisp/pkg/forward"
-	"github.com/jumpserver/wisp/pkg/jms-sdk-go/model"
 	"github.com/jumpserver/wisp/pkg/logger"
 	"github.com/jumpserver/wisp/pkg/sshclient"
 

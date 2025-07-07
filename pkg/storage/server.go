@@ -4,8 +4,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/jumpserver/wisp/pkg/jms-sdk-go/model"
-	"github.com/jumpserver/wisp/pkg/jms-sdk-go/service"
+	"github.com/jumpserver-dev/sdk-go/model"
+	"github.com/jumpserver-dev/sdk-go/service"
 )
 
 type ServerStorage struct {

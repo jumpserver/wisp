@@ -2,7 +2,8 @@ package impl
 
 import (
 	"context"
-	"github.com/jumpserver/wisp/pkg/jms-sdk-go/service"
+
+	"github.com/jumpserver-dev/sdk-go/service"
 	pb "github.com/jumpserver/wisp/protobuf-go/protobuf"
 )
 

@@ -3,7 +3,7 @@ package impl
 import (
 	"context"
 
-	"github.com/jumpserver/wisp/pkg/jms-sdk-go/model"
+	"github.com/jumpserver-dev/sdk-go/model"
 	"github.com/jumpserver/wisp/pkg/logger"
 	pb "github.com/jumpserver/wisp/protobuf-go/protobuf"
 )

@@ -9,9 +9,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	modelCommon "github.com/jumpserver/wisp/pkg/jms-sdk-go/common"
-	"github.com/jumpserver/wisp/pkg/jms-sdk-go/model"
-	"github.com/jumpserver/wisp/pkg/jms-sdk-go/service"
+	modelCommon "github.com/jumpserver-dev/sdk-go/common"
+	"github.com/jumpserver-dev/sdk-go/model"
+	"github.com/jumpserver-dev/sdk-go/service"
 	"github.com/jumpserver/wisp/pkg/logger"
 )
 
@@ -178,11 +178,17 @@ func (u *UploaderService) UploadReplay(sid, replayPath string) error {
 		return nil
 	}
 
+	fileInfo, err := os.Stat(absGzFile)
+	if err != nil {
+		logger.Errorf("Uploader service replay file %s stat failed: %s", absGzFile, err)
+		return err
+	}
+
 	err = replayBackend.Upload(absGzFile, target)
 	if err != nil && replayBackendName != "server" {
 		u.recordingSessionLifecycleReplay(sid, model.ReplayUploadFailure, err.Error())
 		logger.Errorf("Uploader service replay backend %s error %s", replayBackendName, err)
-		logger.Error("Switch default server to upload replay %s.", absGzFile)
+		logger.Errorf("Switch default server to upload replay %s.", absGzFile)
 		replayBackendName = "server"
 		u.recordingSessionLifecycleReplay(sid, model.ReplayUploadStart, "")
 		err = u.apiClient.Upload(sid, absGzFile)
@@ -194,7 +200,7 @@ func (u *UploaderService) UploadReplay(sid, replayPath string) error {
 	}
 	u.recordingSessionLifecycleReplay(sid, model.ReplayUploadSuccess, "")
 	logger.Infof("Uploader service replay file %s upload to %s", absGzFile, replayBackendName)
-	if _, err = u.apiClient.FinishReply(sid); err != nil {
+	if _, err = u.apiClient.FinishReplyWithSize(sid, fileInfo.Size()); err != nil {
 		logger.Errorf("Finish %s replay api failed: %s", sid, err)
 		return err
 	}
@@ -228,17 +234,22 @@ func (u *UploaderService) UploadRemainReplays(replayDir string) {
 		u.recordingSessionLifecycleReplay(remainReplay.Id, model.ReplayUploadSuccess, "")
 		logger.Infof("Uploader service upload replay %s success", replayPath)
 		// 上传完成 删除原录像文件
+
+		fileInfo, err := os.Stat(replayPath)
+		if err != nil {
+			logger.Errorf("Uploader service replay file %s stat failed: %s", replayPath, err)
+			continue
+		}
+		if _, err := u.apiClient.FinishReplyWithSize(remainReplay.Id, fileInfo.Size()); err != nil {
+			logger.Errorf("Uploader service notify session %s replay finished failed: %s",
+				remainReplay.Id, err)
+		}
 		if err := os.Remove(replayPath); err != nil {
 			logger.Errorf("Uploader service clean remain replay %s failed: %s",
 				replayPath, err)
 		}
-		if _, err := u.apiClient.FinishReply(remainReplay.Id); err != nil {
-			logger.Errorf("Uploader service notify session %s replay finished failed: %s",
-				remainReplay.Id, err)
-		}
 	}
 	logger.Infof("Uploader service upload remain replay files done")
-	return
 }
 
 func (u *UploaderService) recordingSessionLifecycleReplay(sid string, event model.LifecycleEvent, msgErr string) {

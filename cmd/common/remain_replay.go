@@ -3,8 +3,8 @@ package common
 import (
 	"strings"
 
-	modelCommon "github.com/jumpserver/wisp/pkg/jms-sdk-go/common"
-	"github.com/jumpserver/wisp/pkg/jms-sdk-go/model"
+	modelCommon "github.com/jumpserver-dev/sdk-go/common"
+	"github.com/jumpserver-dev/sdk-go/model"
 )
 
 /*

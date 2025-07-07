@@ -7,11 +7,11 @@ import (
 	"net"
 	"strconv"
 
+	modelCommon "github.com/jumpserver-dev/sdk-go/common"
+	"github.com/jumpserver-dev/sdk-go/model"
+	"github.com/jumpserver-dev/sdk-go/service"
 	"github.com/jumpserver/wisp/cmd/common"
 	"github.com/jumpserver/wisp/pkg/forward"
-	modelCommon "github.com/jumpserver/wisp/pkg/jms-sdk-go/common"
-	"github.com/jumpserver/wisp/pkg/jms-sdk-go/model"
-	"github.com/jumpserver/wisp/pkg/jms-sdk-go/service"
 	"github.com/jumpserver/wisp/pkg/logger"
 	pb "github.com/jumpserver/wisp/protobuf-go/protobuf"
 )
@@ -39,7 +39,7 @@ type JMServer struct {
 func (j *JMServer) GetTokenAuthInfo(ctx context.Context, req *pb.TokenRequest) (*pb.TokenResponse, error) {
 	var status pb.Status
 	var gateways []model.Gateway
-	tokenAuthInfo, err := j.apiClient.GetConnectTokenInfo(req.Token)
+	tokenAuthInfo, err := j.apiClient.GetConnectTokenInfo(req.Token, true)
 	if err != nil {
 		status.Err = err.Error()
 		logger.Errorf("Get Connect token auth failed: %s", err)
@@ -381,10 +381,10 @@ func (j *JMServer) GetPublicSetting(ctx context.Context, empty *pb.Empty) (*pb.P
 	pbSetting := pb.PublicSetting{
 		XpackEnabled:   data.XpackEnabled,
 		ValidLicense:   data.ValidLicense,
-		GptBaseUrl:     setting.GPTBaseURL,
-		GptApiKey:      setting.GPTApiKey,
-		GptProxy:       setting.GPTProxy,
-		GptModel:       setting.GPTModel,
+		GptBaseUrl:     setting.GptBaseUrl,
+		GptApiKey:      setting.GptApiKey,
+		GptProxy:       setting.GptProxy,
+		GptModel:       setting.GptModel,
 		LicenseContent: setting.LicenseContent,
 	}
 	return &pb.PublicSettingResponse{Status: &status, Data: &pbSetting}, nil
