@@ -181,8 +181,8 @@ github.com/jmespath/go-jmespath/internal/testify v1.5.1 h1:shLQSRRSCCPj3f2gpwzGw
 github.com/jmespath/go-jmespath/internal/testify v1.5.1/go.mod h1:L3OGu8Wl2/fWfCI6z80xFu9LTZmf1ZRjMHUOPmWr69U=
 github.com/jstemmer/go-junit-report v0.0.0-20190106144839-af01ea7f8024/go.mod h1:6v2b51hI/fHJwM22ozAgKL4VKDeJcHhJFhtBdhmNjmU=
 github.com/jstemmer/go-junit-report v0.9.1/go.mod h1:Brl9GWCQeLvo8nXZwPNNblvFj/XSXhF0NWZEnDohbsk=
-github.com/jumpserver-dev/sdk-go v0.0.0-20250707105910-98c9d10712c9 h1:bUCojcpbmP9MalTXS/ADrYyqI+xdU6SSzwzMfSJF7kM=
-github.com/jumpserver-dev/sdk-go v0.0.0-20250707105910-98c9d10712c9/go.mod h1:oKqd4iFflZzsagiXplyWlpKZPp7ZZIrCSp6x3RfHX0U=
+github.com/jumpserver-dev/sdk-go v0.0.0-20250708045559-e0977dde0649 h1:xeYk4j69TC/P8dmsE2BW7UMgBI16dMJhFO5pYutwLM4=
+github.com/jumpserver-dev/sdk-go v0.0.0-20250708045559-e0977dde0649/go.mod h1:oKqd4iFflZzsagiXplyWlpKZPp7ZZIrCSp6x3RfHX0U=
 github.com/kisielk/gotool v1.0.0/go.mod h1:XhKaO+MFFWcvkIS/tQcRk01m1F5IRFswLeQ+oQHNcck=
 github.com/kr/fs v0.1.0/go.mod h1:FFnZGqtBN9Gxj7eW1uZ42v5BccTP0vu6NEaFoC2HwRg=
 github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORNo=
