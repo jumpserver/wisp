@@ -10,7 +10,7 @@ require (
 	github.com/elastic/go-elasticsearch/v8 v8.14.0
 	github.com/gorilla/websocket v1.5.3
 	github.com/huaweicloud/huaweicloud-sdk-go-obs v3.21.12+incompatible
-	github.com/jumpserver-dev/sdk-go v0.0.0-20250707105910-98c9d10712c9
+	github.com/jumpserver-dev/sdk-go v0.0.0-20250708045559-e0977dde0649
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/cobra v1.6.1
 	github.com/spf13/viper v1.14.0
