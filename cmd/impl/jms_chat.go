@@ -37,5 +37,6 @@ func (j *JMServer) GetAccountChat(ctx context.Context, req *pb.Empty) (*pb.Accou
 			Status: &status,
 		}, nil
 	}
+	status.Ok = true
 	return &pb.AccountDetailResponse{Status: &status, Payload: st}, nil
 }
