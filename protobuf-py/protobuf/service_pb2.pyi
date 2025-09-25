@@ -1,4 +1,5 @@
 import common_pb2 as _common_pb2
+from google.protobuf import struct_pb2 as _struct_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
@@ -427,3 +428,11 @@ class SessionLifecycleLogRequest(_message.Message):
     reason: str
     user: str
     def __init__(self, session_id: _Optional[str] = ..., event: _Optional[_Union[SessionLifecycleLogRequest.EventType, str]] = ..., reason: _Optional[str] = ..., user: _Optional[str] = ...) -> None: ...
+
+class AccountDetailResponse(_message.Message):
+    __slots__ = ("status", "payload")
+    STATUS_FIELD_NUMBER: _ClassVar[int]
+    PAYLOAD_FIELD_NUMBER: _ClassVar[int]
+    status: Status
+    payload: _struct_pb2.Struct
+    def __init__(self, status: _Optional[_Union[Status, _Mapping]] = ..., payload: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...) -> None: ...

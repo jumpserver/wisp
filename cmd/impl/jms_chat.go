@@ -1,0 +1,41 @@
+package impl
+
+import (
+	"context"
+
+	"github.com/go-viper/mapstructure/v2"
+	"github.com/jumpserver/wisp/pkg/logger"
+	pb "github.com/jumpserver/wisp/protobuf-go/protobuf"
+	"google.golang.org/protobuf/types/known/structpb"
+)
+
+func (j *JMServer) GetAccountChat(ctx context.Context, req *pb.Empty) (*pb.AccountDetailResponse, error) {
+	var (
+		status pb.Status
+	)
+	accountChatDetail, err := j.apiClient.GetAccountsChat()
+	if err != nil {
+		logger.Errorf("GetAccountChat: %v", err)
+		status.Err = err.Error()
+		return &pb.AccountDetailResponse{
+			Status: &status,
+		}, nil
+	}
+	var m map[string]interface{}
+	err = mapstructure.Decode(accountChatDetail, &m)
+	if err != nil {
+		logger.Errorf("mapstructure decode: %v", err)
+		status.Err = err.Error()
+		return &pb.AccountDetailResponse{
+			Status: &status,
+		}, nil
+	}
+	st, err1 := structpb.NewStruct(m)
+	if err1 != nil {
+		status.Err = err1.Error()
+		return &pb.AccountDetailResponse{
+			Status: &status,
+		}, nil
+	}
+	return &pb.AccountDetailResponse{Status: &status, Payload: st}, nil
+}

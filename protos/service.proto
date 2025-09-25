@@ -1,5 +1,6 @@
 syntax = "proto3";
 import "common.proto";
+import "google/protobuf/struct.proto";
 
 package message;
 
@@ -32,6 +33,7 @@ service Service {
   rpc FaceRecognitionCallback(FaceRecognitionCallbackRequest) returns (FaceRecognitionCallbackResponse){};
   rpc FaceMonitorCallback(FaceMonitorCallbackRequest) returns(FaceMonitorCallbackResponse){};
   rpc JoinFaceMonitor(JoinFaceMonitorRequest)returns(JoinFaceMonitorResponse){};
+  rpc GetAccountChat(Empty) returns (AccountDetailResponse) {};
 }
 
 
@@ -285,4 +287,9 @@ message SessionLifecycleLogRequest {
   EventType event = 2;
   string reason = 3;
   string user = 4;
+}
+
+message AccountDetailResponse {
+  Status status = 1;
+  google.protobuf.Struct payload = 2;
 }

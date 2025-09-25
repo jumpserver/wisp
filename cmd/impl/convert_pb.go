@@ -198,10 +198,10 @@ func ConvertToPbLoginFrom(s model.LabelField) pb.Session_LoginFrom {
 }
 
 var pbLoginFrom = map[model.LabelField]pb.Session_LoginFrom{
-	model.LoginFromWT: pb.Session_WT,
-	model.LoginFromST: pb.Session_ST,
-	model.LoginFromRT: pb.Session_RT,
-	model.LoginFromDT: pb.Session_DT,
+	model.LoginFromWeb: pb.Session_WT,
+	model.LoginFromSSH: pb.Session_ST,
+	model.LoginFromRT:  pb.Session_RT,
+	model.LoginFromDT:  pb.Session_DT,
 }
 
 func ConvertToPbTicketInfo(info *model.TicketInfo) *pb.TicketInfo {
