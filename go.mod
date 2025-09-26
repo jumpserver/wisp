@@ -8,7 +8,6 @@ require (
 	github.com/aws/aws-sdk-go v1.44.306
 	github.com/elastic/go-elasticsearch/v6 v6.8.5
 	github.com/elastic/go-elasticsearch/v8 v8.14.0
-	github.com/go-viper/mapstructure/v2 v2.4.0
 	github.com/gorilla/websocket v1.5.3
 	github.com/huaweicloud/huaweicloud-sdk-go-obs v3.25.4+incompatible
 	github.com/jumpserver-dev/sdk-go v0.0.0-20250925081620-d22b2b8e24d1
@@ -30,6 +29,7 @@ require (
 	github.com/go-logr/logr v1.4.1 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
+	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect

@@ -176,6 +176,10 @@ func (b *BeatService) KeepCheckTokens() {
 		sessions := b.GetSessions()
 		tokens := make(map[string]model.TokenCheckStatus, len(sessions))
 		for _, s := range sessions {
+			if s.TokenId == "" {
+				logger.Infof("Check session %s token id empty", s.ID)
+				continue
+			}
 			ret, ok := tokens[s.TokenId]
 			if ok {
 				b.handleTokenCheck(s, &ret)
