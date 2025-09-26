@@ -1,0 +1,7 @@
+vendor
+build/*
+logs/*
+data/*
+release/*
+node_modules/
+Dockerfile

@@ -1,0 +1,21 @@
+version: "3.0"
+
+networks:
+  wisp:
+    driver: bridge
+
+services:
+  wisp:
+    image: ghcr.io/jumpserver/wisp:latest
+    container_name: jms_wisp
+    ports:
+      - "9090:9090"
+    environment:
+      LOG_LEVEL: DEBUG
+      CORE_HOST: http://docker.host.internal:8080
+      BOOTSTRAP_TOKEN: PleaseChangeMe
+    networks:
+      - guacd
+    restart: always
+    volumes:
+      - ./data/:/opt/wisp/data/:rw # /opt/wisp/-> 本地项目路径, 修改 ./data 目录权限为777

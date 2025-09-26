@@ -622,6 +622,30 @@ pub mod service_client {
                 .insert(GrpcMethod::new("message.Service", "JoinFaceMonitor"));
             self.inner.unary(req, path, codec).await
         }
+        pub async fn get_account_chat(
+            &mut self,
+            request: impl tonic::IntoRequest<super::Empty>,
+        ) -> std::result::Result<
+            tonic::Response<super::AccountDetailResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/message.Service/GetAccountChat",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("message.Service", "GetAccountChat"));
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// Generated server implementations.
@@ -772,6 +796,13 @@ pub mod service_server {
             request: tonic::Request<super::JoinFaceMonitorRequest>,
         ) -> std::result::Result<
             tonic::Response<super::JoinFaceMonitorResponse>,
+            tonic::Status,
+        >;
+        async fn get_account_chat(
+            &self,
+            request: tonic::Request<super::Empty>,
+        ) -> std::result::Result<
+            tonic::Response<super::AccountDetailResponse>,
             tonic::Status,
         >;
     }
@@ -1863,6 +1894,49 @@ pub mod service_server {
                     let inner = self.inner.clone();
                     let fut = async move {
                         let method = JoinFaceMonitorSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            )
+                            .apply_max_message_size_config(
+                                max_decoding_message_size,
+                                max_encoding_message_size,
+                            );
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/message.Service/GetAccountChat" => {
+                    #[allow(non_camel_case_types)]
+                    struct GetAccountChatSvc<T: Service>(pub Arc<T>);
+                    impl<T: Service> tonic::server::UnaryService<super::Empty>
+                    for GetAccountChatSvc<T> {
+                        type Response = super::AccountDetailResponse;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::Empty>,
+                        ) -> Self::Future {
+                            let inner = Arc::clone(&self.0);
+                            let fut = async move {
+                                <T as Service>::get_account_chat(&inner, request).await
+                            };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let max_decoding_message_size = self.max_decoding_message_size;
+                    let max_encoding_message_size = self.max_encoding_message_size;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let method = GetAccountChatSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = tonic::server::Grpc::new(codec)
                             .apply_compression_config(

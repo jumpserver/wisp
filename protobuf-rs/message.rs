@@ -960,5 +960,12 @@ pub mod session_lifecycle_log_request {
         }
     }
 }
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccountDetailResponse {
+    #[prost(message, optional, tag="1")]
+    pub status: ::core::option::Option<Status>,
+    #[prost(message, optional, tag="2")]
+    pub payload: ::core::option::Option<::prost_types::Struct>,
+}
 include!("message.tonic.rs");
 // @@protoc_insertion_point(module)

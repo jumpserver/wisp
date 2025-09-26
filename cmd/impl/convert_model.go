@@ -7,8 +7,8 @@ import (
 )
 
 var modelLoginFrom = map[pb.Session_LoginFrom]model.LabelField{
-	pb.Session_WT: model.LoginFromWT,
-	pb.Session_ST: model.LoginFromST,
+	pb.Session_WT: model.LoginFromWeb,
+	pb.Session_ST: model.LoginFromSSH,
 	pb.Session_RT: model.LoginFromRT,
 	pb.Session_DT: model.LoginFromDT,
 }
