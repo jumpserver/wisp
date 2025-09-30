@@ -436,3 +436,39 @@ class AccountDetailResponse(_message.Message):
     status: Status
     payload: _struct_pb2.Struct
     def __init__(self, status: _Optional[_Union[Status, _Mapping]] = ..., payload: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...) -> None: ...
+
+class HTTPRequest(_message.Message):
+    __slots__ = ("method", "path", "query", "header", "body")
+    class QueryEntry(_message.Message):
+        __slots__ = ("key", "value")
+        KEY_FIELD_NUMBER: _ClassVar[int]
+        VALUE_FIELD_NUMBER: _ClassVar[int]
+        key: str
+        value: str
+        def __init__(self, key: _Optional[str] = ..., value: _Optional[str] = ...) -> None: ...
+    class HeaderEntry(_message.Message):
+        __slots__ = ("key", "value")
+        KEY_FIELD_NUMBER: _ClassVar[int]
+        VALUE_FIELD_NUMBER: _ClassVar[int]
+        key: str
+        value: str
+        def __init__(self, key: _Optional[str] = ..., value: _Optional[str] = ...) -> None: ...
+    METHOD_FIELD_NUMBER: _ClassVar[int]
+    PATH_FIELD_NUMBER: _ClassVar[int]
+    QUERY_FIELD_NUMBER: _ClassVar[int]
+    HEADER_FIELD_NUMBER: _ClassVar[int]
+    BODY_FIELD_NUMBER: _ClassVar[int]
+    method: str
+    path: str
+    query: _containers.ScalarMap[str, str]
+    header: _containers.ScalarMap[str, str]
+    body: bytes
+    def __init__(self, method: _Optional[str] = ..., path: _Optional[str] = ..., query: _Optional[_Mapping[str, str]] = ..., header: _Optional[_Mapping[str, str]] = ..., body: _Optional[bytes] = ...) -> None: ...
+
+class HTTPResponse(_message.Message):
+    __slots__ = ("status", "body")
+    STATUS_FIELD_NUMBER: _ClassVar[int]
+    BODY_FIELD_NUMBER: _ClassVar[int]
+    status: Status
+    body: bytes
+    def __init__(self, status: _Optional[_Union[Status, _Mapping]] = ..., body: _Optional[bytes] = ...) -> None: ...

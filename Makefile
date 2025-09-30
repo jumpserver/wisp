@@ -77,7 +77,7 @@ proto_go_dir=./protobuf-go
 protobuf_py_dir=./protobuf-py/protobuf
 
 .PHONY: proto
-proto: proto-go proto-java proto-rust
+proto: proto-go proto-java proto-rust proto-py
 
 .PHONY: proto-go
 proto-go:
