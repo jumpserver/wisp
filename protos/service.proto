@@ -34,6 +34,7 @@ service Service {
   rpc FaceMonitorCallback(FaceMonitorCallbackRequest) returns(FaceMonitorCallbackResponse){};
   rpc JoinFaceMonitor(JoinFaceMonitorRequest)returns(JoinFaceMonitorResponse){};
   rpc GetAccountChat(Empty) returns (AccountDetailResponse) {};
+  rpc CallAPI(HTTPRequest) returns (HTTPResponse) {}
 }
 
 
@@ -292,4 +293,17 @@ message SessionLifecycleLogRequest {
 message AccountDetailResponse {
   Status status = 1;
   google.protobuf.Struct payload = 2;
+}
+
+message HTTPRequest {
+  string method = 1;
+  string path = 2;
+  map<string, string> query = 3;
+  map<string, string> header = 4;
+  bytes body = 5;
+}
+
+message HTTPResponse {
+  Status status = 1;
+  bytes body = 2;
 }

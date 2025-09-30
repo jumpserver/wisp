@@ -1,6 +1,7 @@
 package impl
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 
@@ -46,4 +47,36 @@ func (j *JMServer) GetAccountChat(ctx context.Context, req *pb.Empty) (*pb.Accou
 	}
 	status.Ok = true
 	return &pb.AccountDetailResponse{Status: &status, Payload: st}, nil
+}
+
+func (j *JMServer) CallAPI(ctx context.Context, req *pb.HTTPRequest) (*pb.HTTPResponse, error) {
+	method := req.GetMethod()
+	reqUrl := req.GetPath()
+	query := req.GetQuery()
+	body := req.GetBody()
+	header := req.GetHeader()
+	apiClient := j.apiClient.Copy()
+	var (
+		status pb.Status
+	)
+	for k, v := range header {
+		apiClient.SetHeader(k, v)
+	}
+	var bodyObj any
+	if len(body) > 0 {
+		if err := json.NewDecoder(bytes.NewBuffer(body)).Decode(&bodyObj); err != nil {
+			logger.Errorf("Decode body failed: %v", err)
+			status.Err = err.Error()
+			return &pb.HTTPResponse{Status: &status}, err
+		}
+	}
+	var resJson bytes.Buffer
+	_, err := apiClient.Call(method, reqUrl, bodyObj, &resJson, query)
+	if err != nil {
+		logger.Errorf("Call: %v", err)
+		status.Err = err.Error()
+		return &pb.HTTPResponse{Status: &status}, err
+	}
+	status.Ok = true
+	return &pb.HTTPResponse{Status: &status, Body: resJson.Bytes()}, nil
 }
