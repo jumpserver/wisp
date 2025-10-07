@@ -10,7 +10,7 @@ require (
 	github.com/elastic/go-elasticsearch/v8 v8.14.0
 	github.com/gorilla/websocket v1.5.3
 	github.com/huaweicloud/huaweicloud-sdk-go-obs v3.25.4+incompatible
-	github.com/jumpserver-dev/sdk-go v0.0.0-20250925081620-d22b2b8e24d1
+	github.com/jumpserver-dev/sdk-go v0.0.0-20251007162206-113f4e3fdde6
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.10.1
 	github.com/spf13/viper v1.21.0
@@ -18,6 +18,7 @@ require (
 	google.golang.org/grpc v1.65.0
 	google.golang.org/protobuf v1.34.2
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
+
 )
 
 require (

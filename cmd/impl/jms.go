@@ -61,6 +61,7 @@ func (j *JMServer) GetTokenAuthInfo(ctx context.Context, req *pb.TokenRequest) (
 		Gateways:         ConvertToProtobufGateways(gateways),
 		Setting:          ConvertToPbSetting(&setting),
 		Platform:         ConvertToPbPlatform(&tokenAuthInfo.Platform),
+		DataMaskingRules: ConvertToDataMaskingRules(tokenAuthInfo.DataMaskingRules),
 		FaceMonitorToken: tokenAuthInfo.FaceMonitorToken,
 	}
 	status.Ok = true

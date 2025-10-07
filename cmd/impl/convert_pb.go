@@ -2,6 +2,7 @@ package impl
 
 import (
 	"fmt"
+	"sort"
 	"strconv"
 
 	"github.com/jumpserver-dev/sdk-go/model"
@@ -279,4 +280,27 @@ func ConvertToPlatformProtobufProtocols(protocols []model.PlatformProtocol) []*p
 		pbPlatformProtocols = append(pbPlatformProtocols, pbProtocol)
 	}
 	return pbPlatformProtocols
+}
+
+func ConvertToDataMaskingRules(rules []model.DataMaskingRule) []*pb.DataMaskingRule {
+	pbDataMaskingRules := make([]*pb.DataMaskingRule, 0, len(rules))
+
+	maskingRules := model.DataMaskingRules(rules)
+	sort.Sort(maskingRules)
+
+	for i := range maskingRules {
+		rule := maskingRules[i]
+		if rule.IsActive {
+			pbDataMaskingRules = append(pbDataMaskingRules, &pb.DataMaskingRule{
+				Id:            rule.ID,
+				Name:          rule.Name,
+				Priority:      int32(rule.Priority),
+				IsActive:      rule.IsActive,
+				MaskingMethod: rule.MaskingMethod,
+				MaskPattern:   rule.MaskPattern,
+				FieldsPattern: rule.FieldsPattern,
+			})
+		}
+	}
+	return pbDataMaskingRules
 }

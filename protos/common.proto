@@ -95,6 +95,16 @@ message CommandACL {
   repeated CommandGroup command_groups = 7;
 }
 
+message DataMaskingRule {
+  string id = 1;
+  string name = 2;
+  int32 priority = 3;
+  bool is_active = 4;
+  string masking_method = 5;
+  string mask_pattern = 6;
+  string fields_pattern = 7;
+}
+
 message CommandGroup {
   string id = 1;
   string name = 2;
@@ -175,6 +185,7 @@ message TokenAuthInfo {
   ComponentSetting setting = 10;
   Platform platform = 11;
   string FaceMonitorToken = 12;
+  repeated DataMaskingRule data_masking_rules=13;
 }
 
 message Platform {
