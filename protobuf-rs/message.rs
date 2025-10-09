@@ -182,6 +182,23 @@ pub mod command_acl {
     }
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataMaskingRule {
+    #[prost(string, tag="1")]
+    pub id: ::prost::alloc::string::String,
+    #[prost(string, tag="2")]
+    pub name: ::prost::alloc::string::String,
+    #[prost(int32, tag="3")]
+    pub priority: i32,
+    #[prost(bool, tag="4")]
+    pub is_active: bool,
+    #[prost(string, tag="5")]
+    pub masking_method: ::prost::alloc::string::String,
+    #[prost(string, tag="6")]
+    pub mask_pattern: ::prost::alloc::string::String,
+    #[prost(string, tag="7")]
+    pub fields_pattern: ::prost::alloc::string::String,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommandGroup {
     #[prost(string, tag="1")]
     pub id: ::prost::alloc::string::String,
@@ -315,6 +332,8 @@ pub struct TokenAuthInfo {
     pub platform: ::core::option::Option<Platform>,
     #[prost(string, tag="12")]
     pub face_monitor_token: ::prost::alloc::string::String,
+    #[prost(message, repeated, tag="13")]
+    pub data_masking_rules: ::prost::alloc::vec::Vec<DataMaskingRule>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Platform {
@@ -966,6 +985,26 @@ pub struct AccountDetailResponse {
     pub status: ::core::option::Option<Status>,
     #[prost(message, optional, tag="2")]
     pub payload: ::core::option::Option<::prost_types::Struct>,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct HttpRequest {
+    #[prost(string, tag="1")]
+    pub method: ::prost::alloc::string::String,
+    #[prost(string, tag="2")]
+    pub path: ::prost::alloc::string::String,
+    #[prost(map="string, string", tag="3")]
+    pub query: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map="string, string", tag="4")]
+    pub header: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(bytes="vec", tag="5")]
+    pub body: ::prost::alloc::vec::Vec<u8>,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct HttpResponse {
+    #[prost(message, optional, tag="1")]
+    pub status: ::core::option::Option<Status>,
+    #[prost(bytes="vec", tag="2")]
+    pub body: ::prost::alloc::vec::Vec<u8>,
 }
 include!("message.tonic.rs");
 // @@protoc_insertion_point(module)
