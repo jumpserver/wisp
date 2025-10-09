@@ -73,6 +73,7 @@ type ServiceClient interface {
 	FaceMonitorCallback(ctx context.Context, in *FaceMonitorCallbackRequest, opts ...grpc.CallOption) (*FaceMonitorCallbackResponse, error)
 	JoinFaceMonitor(ctx context.Context, in *JoinFaceMonitorRequest, opts ...grpc.CallOption) (*JoinFaceMonitorResponse, error)
 	GetAccountChat(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*AccountDetailResponse, error)
+	CallAPI(ctx context.Context, in *HTTPRequest, opts ...grpc.CallOption) (*HTTPResponse, error)
 }
 
 type serviceClient struct {
@@ -326,6 +327,15 @@ func (c *serviceClient) GetAccountChat(ctx context.Context, in *Empty, opts ...g
 	return out, nil
 }
 
+func (c *serviceClient) CallAPI(ctx context.Context, in *HTTPRequest, opts ...grpc.CallOption) (*HTTPResponse, error) {
+	out := new(HTTPResponse)
+	err := c.cc.Invoke(ctx, "/message.Service/CallAPI", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ServiceServer is the server API for Service service.
 // All implementations must embed UnimplementedServiceServer
 // for forward compatibility.
@@ -354,6 +364,7 @@ type ServiceServer interface {
 	FaceMonitorCallback(context.Context, *FaceMonitorCallbackRequest) (*FaceMonitorCallbackResponse, error)
 	JoinFaceMonitor(context.Context, *JoinFaceMonitorRequest) (*JoinFaceMonitorResponse, error)
 	GetAccountChat(context.Context, *Empty) (*AccountDetailResponse, error)
+	CallAPI(context.Context, *HTTPRequest) (*HTTPResponse, error)
 	mustEmbedUnimplementedServiceServer()
 }
 
@@ -435,6 +446,9 @@ func (UnimplementedServiceServer) JoinFaceMonitor(context.Context, *JoinFaceMoni
 }
 func (UnimplementedServiceServer) GetAccountChat(context.Context, *Empty) (*AccountDetailResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAccountChat not implemented")
+}
+func (UnimplementedServiceServer) CallAPI(context.Context, *HTTPRequest) (*HTTPResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CallAPI not implemented")
 }
 func (UnimplementedServiceServer) mustEmbedUnimplementedServiceServer() {}
 func (UnimplementedServiceServer) testEmbeddedByValue()                 {}
@@ -878,6 +892,24 @@ func _Service_GetAccountChat_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Service_CallAPI_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HTTPRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServiceServer).CallAPI(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/message.Service/CallAPI",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServiceServer).CallAPI(ctx, req.(*HTTPRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Service_ServiceDesc is the grpc.ServiceDesc for Service service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -976,6 +1008,10 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetAccountChat",
 			Handler:    _Service_GetAccountChat_Handler,
+		},
+		{
+			MethodName: "CallAPI",
+			Handler:    _Service_CallAPI_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
