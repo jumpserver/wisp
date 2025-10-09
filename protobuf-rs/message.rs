@@ -182,6 +182,23 @@ pub mod command_acl {
     }
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataMaskingRule {
+    #[prost(string, tag="1")]
+    pub id: ::prost::alloc::string::String,
+    #[prost(string, tag="2")]
+    pub name: ::prost::alloc::string::String,
+    #[prost(int32, tag="3")]
+    pub priority: i32,
+    #[prost(bool, tag="4")]
+    pub is_active: bool,
+    #[prost(string, tag="5")]
+    pub masking_method: ::prost::alloc::string::String,
+    #[prost(string, tag="6")]
+    pub mask_pattern: ::prost::alloc::string::String,
+    #[prost(string, tag="7")]
+    pub fields_pattern: ::prost::alloc::string::String,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommandGroup {
     #[prost(string, tag="1")]
     pub id: ::prost::alloc::string::String,
@@ -315,6 +332,8 @@ pub struct TokenAuthInfo {
     pub platform: ::core::option::Option<Platform>,
     #[prost(string, tag="12")]
     pub face_monitor_token: ::prost::alloc::string::String,
+    #[prost(message, repeated, tag="13")]
+    pub data_masking_rules: ::prost::alloc::vec::Vec<DataMaskingRule>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Platform {

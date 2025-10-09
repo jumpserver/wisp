@@ -194,6 +194,24 @@ class CommandACL(_message.Message):
     command_groups: _containers.RepeatedCompositeFieldContainer[CommandGroup]
     def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., priority: _Optional[int] = ..., action: _Optional[_Union[CommandACL.Action, str]] = ..., is_active: bool = ..., command_groups: _Optional[_Iterable[_Union[CommandGroup, _Mapping]]] = ...) -> None: ...
 
+class DataMaskingRule(_message.Message):
+    __slots__ = ("id", "name", "priority", "is_active", "masking_method", "mask_pattern", "fields_pattern")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    PRIORITY_FIELD_NUMBER: _ClassVar[int]
+    IS_ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    MASKING_METHOD_FIELD_NUMBER: _ClassVar[int]
+    MASK_PATTERN_FIELD_NUMBER: _ClassVar[int]
+    FIELDS_PATTERN_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    name: str
+    priority: int
+    is_active: bool
+    masking_method: str
+    mask_pattern: str
+    fields_pattern: str
+    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., priority: _Optional[int] = ..., is_active: bool = ..., masking_method: _Optional[str] = ..., mask_pattern: _Optional[str] = ..., fields_pattern: _Optional[str] = ...) -> None: ...
+
 class CommandGroup(_message.Message):
     __slots__ = ("id", "name", "content", "Type", "pattern", "ignore_case")
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -283,7 +301,7 @@ class TerminalTask(_message.Message):
     def __init__(self, id: _Optional[str] = ..., action: _Optional[_Union[TaskAction, str]] = ..., session_id: _Optional[str] = ..., terminated_by: _Optional[str] = ..., created_by: _Optional[str] = ..., token_status: _Optional[_Union[TokenStatus, _Mapping]] = ...) -> None: ...
 
 class TokenAuthInfo(_message.Message):
-    __slots__ = ("key_id", "secrete_id", "asset", "user", "account", "permission", "expire_info", "filter_rules", "gateways", "setting", "platform", "FaceMonitorToken")
+    __slots__ = ("key_id", "secrete_id", "asset", "user", "account", "permission", "expire_info", "filter_rules", "gateways", "setting", "platform", "FaceMonitorToken", "data_masking_rules")
     KEY_ID_FIELD_NUMBER: _ClassVar[int]
     SECRETE_ID_FIELD_NUMBER: _ClassVar[int]
     ASSET_FIELD_NUMBER: _ClassVar[int]
@@ -296,6 +314,7 @@ class TokenAuthInfo(_message.Message):
     SETTING_FIELD_NUMBER: _ClassVar[int]
     PLATFORM_FIELD_NUMBER: _ClassVar[int]
     FACEMONITORTOKEN_FIELD_NUMBER: _ClassVar[int]
+    DATA_MASKING_RULES_FIELD_NUMBER: _ClassVar[int]
     key_id: str
     secrete_id: str
     asset: Asset
@@ -308,7 +327,8 @@ class TokenAuthInfo(_message.Message):
     setting: ComponentSetting
     platform: Platform
     FaceMonitorToken: str
-    def __init__(self, key_id: _Optional[str] = ..., secrete_id: _Optional[str] = ..., asset: _Optional[_Union[Asset, _Mapping]] = ..., user: _Optional[_Union[User, _Mapping]] = ..., account: _Optional[_Union[Account, _Mapping]] = ..., permission: _Optional[_Union[Permission, _Mapping]] = ..., expire_info: _Optional[_Union[ExpireInfo, _Mapping]] = ..., filter_rules: _Optional[_Iterable[_Union[CommandACL, _Mapping]]] = ..., gateways: _Optional[_Iterable[_Union[Gateway, _Mapping]]] = ..., setting: _Optional[_Union[ComponentSetting, _Mapping]] = ..., platform: _Optional[_Union[Platform, _Mapping]] = ..., FaceMonitorToken: _Optional[str] = ...) -> None: ...
+    data_masking_rules: _containers.RepeatedCompositeFieldContainer[DataMaskingRule]
+    def __init__(self, key_id: _Optional[str] = ..., secrete_id: _Optional[str] = ..., asset: _Optional[_Union[Asset, _Mapping]] = ..., user: _Optional[_Union[User, _Mapping]] = ..., account: _Optional[_Union[Account, _Mapping]] = ..., permission: _Optional[_Union[Permission, _Mapping]] = ..., expire_info: _Optional[_Union[ExpireInfo, _Mapping]] = ..., filter_rules: _Optional[_Iterable[_Union[CommandACL, _Mapping]]] = ..., gateways: _Optional[_Iterable[_Union[Gateway, _Mapping]]] = ..., setting: _Optional[_Union[ComponentSetting, _Mapping]] = ..., platform: _Optional[_Union[Platform, _Mapping]] = ..., FaceMonitorToken: _Optional[str] = ..., data_masking_rules: _Optional[_Iterable[_Union[DataMaskingRule, _Mapping]]] = ...) -> None: ...
 
 class Platform(_message.Message):
     __slots__ = ("id", "name", "category", "charset", "type", "protocols")
