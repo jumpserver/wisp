@@ -1,0 +1,35 @@
+FROM debian:bullseye-slim AS stage-build
+ARG TARGETARCH
+ARG VERSION
+ENV VERSION=$VERSION
+WORKDIR /opt/wisp
+
+ENV WISP_BUILD_NAME=wisp-${VERSION}-linux-${TARGETARCH}
+
+COPY ./build/${WISP_BUILD_NAME}.tar.gz .
+RUN tar -xzvf ${WISP_BUILD_NAME}.tar.gz && mv ${WISP_BUILD_NAME}/wisp /usr/local/bin/wisp
+
+FROM debian:bullseye-slim
+
+ARG TARGETARCH
+ENV LANG=en_US.UTF-8
+ARG APT_MIRROR=http://deb.debian.org
+ARG DEPENDENCIES="                    \
+        bash-completion               \
+        jq                            \
+        less                          \
+        ca-certificates"
+
+RUN set -ex \
+    && sed -i "s@http://.*.debian.org@${APT_MIRROR}@g" /etc/apt/sources.list \
+    && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends ${DEPENDENCIES} \
+    && apt-get clean all \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /opt/wisp
+
+COPY --from=stage-build /usr/local/bin/wisp .
+
+CMD ["./wisp"]
