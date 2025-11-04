@@ -10,6 +10,11 @@ on:
         required: true
         default: 'latest'
         type: string
+      version:
+        description: 'Version'
+        required: true
+        default: 'master'
+        type: string
 
 
 # Defines two custom environment variables for the workflow. These are used for the Container registry domain, and a name for the Docker image that this workflow builds.
@@ -27,10 +32,18 @@ jobs:
       packages: write
       attestations: write
       id-token: write
-      #
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: 'stable' # The Go version to download (if necessary) and use.
+      - name: Make Build
+        id: make_build
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          make linux-amd64 linux-arm64 -s && ls build
       # Uses the `docker/login-action` action to log in to the Container registry registry using the account and password that will publish the packages. Once published, the packages are scoped to the account defined here.
       - name: Log in to the Container registry
         uses: docker/login-action@v3
@@ -58,6 +71,8 @@ jobs:
         with:
           platforms: linux/amd64,linux/arm64
           context: .
+          build-args: VERSION=${{ inputs.version }}
           push: true
+          file: Dockerfile.action
           tags: ${{ steps.meta.outputs.tags }}
       
