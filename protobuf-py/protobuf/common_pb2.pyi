@@ -35,20 +35,42 @@ ReviewAccept: RiskLevel
 ReviewCancel: RiskLevel
 
 class User(_message.Message):
-    __slots__ = ("id", "name", "username", "role", "is_valid", "is_active")
+    __slots__ = ("id", "name", "username", "role", "is_valid", "is_active", "org_roles", "system_roles")
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     USERNAME_FIELD_NUMBER: _ClassVar[int]
     ROLE_FIELD_NUMBER: _ClassVar[int]
     IS_VALID_FIELD_NUMBER: _ClassVar[int]
     IS_ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    ORG_ROLES_FIELD_NUMBER: _ClassVar[int]
+    SYSTEM_ROLES_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
     username: str
     role: str
     is_valid: bool
     is_active: bool
-    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., username: _Optional[str] = ..., role: _Optional[str] = ..., is_valid: bool = ..., is_active: bool = ...) -> None: ...
+    org_roles: _containers.RepeatedCompositeFieldContainer[OrgRole]
+    system_roles: _containers.RepeatedCompositeFieldContainer[SystemRole]
+    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., username: _Optional[str] = ..., role: _Optional[str] = ..., is_valid: bool = ..., is_active: bool = ..., org_roles: _Optional[_Iterable[_Union[OrgRole, _Mapping]]] = ..., system_roles: _Optional[_Iterable[_Union[SystemRole, _Mapping]]] = ...) -> None: ...
+
+class OrgRole(_message.Message):
+    __slots__ = ("id", "name", "display_name")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    DISPLAY_NAME_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    name: str
+    display_name: str
+    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., display_name: _Optional[str] = ...) -> None: ...
+
+class SystemRole(_message.Message):
+    __slots__ = ("id", "display_name")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    DISPLAY_NAME_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    display_name: str
+    def __init__(self, id: _Optional[str] = ..., display_name: _Optional[str] = ...) -> None: ...
 
 class Account(_message.Message):
     __slots__ = ("id", "name", "username", "secret", "secretType")

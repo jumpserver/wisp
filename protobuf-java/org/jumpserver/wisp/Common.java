@@ -385,6 +385,54 @@ public final class Common {
      * @return The isActive.
      */
     boolean getIsActive();
+
+    /**
+     * <code>repeated .message.OrgRole org_roles = 7;</code>
+     */
+    java.util.List<org.jumpserver.wisp.Common.OrgRole> 
+        getOrgRolesList();
+    /**
+     * <code>repeated .message.OrgRole org_roles = 7;</code>
+     */
+    org.jumpserver.wisp.Common.OrgRole getOrgRoles(int index);
+    /**
+     * <code>repeated .message.OrgRole org_roles = 7;</code>
+     */
+    int getOrgRolesCount();
+    /**
+     * <code>repeated .message.OrgRole org_roles = 7;</code>
+     */
+    java.util.List<? extends org.jumpserver.wisp.Common.OrgRoleOrBuilder> 
+        getOrgRolesOrBuilderList();
+    /**
+     * <code>repeated .message.OrgRole org_roles = 7;</code>
+     */
+    org.jumpserver.wisp.Common.OrgRoleOrBuilder getOrgRolesOrBuilder(
+        int index);
+
+    /**
+     * <code>repeated .message.SystemRole system_roles = 8;</code>
+     */
+    java.util.List<org.jumpserver.wisp.Common.SystemRole> 
+        getSystemRolesList();
+    /**
+     * <code>repeated .message.SystemRole system_roles = 8;</code>
+     */
+    org.jumpserver.wisp.Common.SystemRole getSystemRoles(int index);
+    /**
+     * <code>repeated .message.SystemRole system_roles = 8;</code>
+     */
+    int getSystemRolesCount();
+    /**
+     * <code>repeated .message.SystemRole system_roles = 8;</code>
+     */
+    java.util.List<? extends org.jumpserver.wisp.Common.SystemRoleOrBuilder> 
+        getSystemRolesOrBuilderList();
+    /**
+     * <code>repeated .message.SystemRole system_roles = 8;</code>
+     */
+    org.jumpserver.wisp.Common.SystemRoleOrBuilder getSystemRolesOrBuilder(
+        int index);
   }
   /**
    * Protobuf type {@code message.User}
@@ -412,6 +460,8 @@ public final class Common {
       name_ = "";
       username_ = "";
       role_ = "";
+      orgRoles_ = java.util.Collections.emptyList();
+      systemRoles_ = java.util.Collections.emptyList();
     }
 
     public static final com.google.protobuf.Descriptors.Descriptor
@@ -605,6 +655,88 @@ public final class Common {
       return isActive_;
     }
 
+    public static final int ORG_ROLES_FIELD_NUMBER = 7;
+    @SuppressWarnings("serial")
+    private java.util.List<org.jumpserver.wisp.Common.OrgRole> orgRoles_;
+    /**
+     * <code>repeated .message.OrgRole org_roles = 7;</code>
+     */
+    @java.lang.Override
+    public java.util.List<org.jumpserver.wisp.Common.OrgRole> getOrgRolesList() {
+      return orgRoles_;
+    }
+    /**
+     * <code>repeated .message.OrgRole org_roles = 7;</code>
+     */
+    @java.lang.Override
+    public java.util.List<? extends org.jumpserver.wisp.Common.OrgRoleOrBuilder> 
+        getOrgRolesOrBuilderList() {
+      return orgRoles_;
+    }
+    /**
+     * <code>repeated .message.OrgRole org_roles = 7;</code>
+     */
+    @java.lang.Override
+    public int getOrgRolesCount() {
+      return orgRoles_.size();
+    }
+    /**
+     * <code>repeated .message.OrgRole org_roles = 7;</code>
+     */
+    @java.lang.Override
+    public org.jumpserver.wisp.Common.OrgRole getOrgRoles(int index) {
+      return orgRoles_.get(index);
+    }
+    /**
+     * <code>repeated .message.OrgRole org_roles = 7;</code>
+     */
+    @java.lang.Override
+    public org.jumpserver.wisp.Common.OrgRoleOrBuilder getOrgRolesOrBuilder(
+        int index) {
+      return orgRoles_.get(index);
+    }
+
+    public static final int SYSTEM_ROLES_FIELD_NUMBER = 8;
+    @SuppressWarnings("serial")
+    private java.util.List<org.jumpserver.wisp.Common.SystemRole> systemRoles_;
+    /**
+     * <code>repeated .message.SystemRole system_roles = 8;</code>
+     */
+    @java.lang.Override
+    public java.util.List<org.jumpserver.wisp.Common.SystemRole> getSystemRolesList() {
+      return systemRoles_;
+    }
+    /**
+     * <code>repeated .message.SystemRole system_roles = 8;</code>
+     */
+    @java.lang.Override
+    public java.util.List<? extends org.jumpserver.wisp.Common.SystemRoleOrBuilder> 
+        getSystemRolesOrBuilderList() {
+      return systemRoles_;
+    }
+    /**
+     * <code>repeated .message.SystemRole system_roles = 8;</code>
+     */
+    @java.lang.Override
+    public int getSystemRolesCount() {
+      return systemRoles_.size();
+    }
+    /**
+     * <code>repeated .message.SystemRole system_roles = 8;</code>
+     */
+    @java.lang.Override
+    public org.jumpserver.wisp.Common.SystemRole getSystemRoles(int index) {
+      return systemRoles_.get(index);
+    }
+    /**
+     * <code>repeated .message.SystemRole system_roles = 8;</code>
+     */
+    @java.lang.Override
+    public org.jumpserver.wisp.Common.SystemRoleOrBuilder getSystemRolesOrBuilder(
+        int index) {
+      return systemRoles_.get(index);
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -637,6 +769,12 @@ public final class Common {
       if (isActive_ != false) {
         output.writeBool(6, isActive_);
       }
+      for (int i = 0; i < orgRoles_.size(); i++) {
+        output.writeMessage(7, orgRoles_.get(i));
+      }
+      for (int i = 0; i < systemRoles_.size(); i++) {
+        output.writeMessage(8, systemRoles_.get(i));
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -666,6 +804,14 @@ public final class Common {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(6, isActive_);
       }
+      for (int i = 0; i < orgRoles_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(7, orgRoles_.get(i));
+      }
+      for (int i = 0; i < systemRoles_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(8, systemRoles_.get(i));
+      }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
@@ -693,6 +839,10 @@ public final class Common {
           != other.getIsValid()) return false;
       if (getIsActive()
           != other.getIsActive()) return false;
+      if (!getOrgRolesList()
+          .equals(other.getOrgRolesList())) return false;
+      if (!getSystemRolesList()
+          .equals(other.getSystemRolesList())) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -718,6 +868,14 @@ public final class Common {
       hash = (37 * hash) + IS_ACTIVE_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getIsActive());
+      if (getOrgRolesCount() > 0) {
+        hash = (37 * hash) + ORG_ROLES_FIELD_NUMBER;
+        hash = (53 * hash) + getOrgRolesList().hashCode();
+      }
+      if (getSystemRolesCount() > 0) {
+        hash = (37 * hash) + SYSTEM_ROLES_FIELD_NUMBER;
+        hash = (53 * hash) + getSystemRolesList().hashCode();
+      }
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -855,6 +1013,20 @@ public final class Common {
         role_ = "";
         isValid_ = false;
         isActive_ = false;
+        if (orgRolesBuilder_ == null) {
+          orgRoles_ = java.util.Collections.emptyList();
+        } else {
+          orgRoles_ = null;
+          orgRolesBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000040);
+        if (systemRolesBuilder_ == null) {
+          systemRoles_ = java.util.Collections.emptyList();
+        } else {
+          systemRoles_ = null;
+          systemRolesBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000080);
         return this;
       }
 
@@ -881,9 +1053,31 @@ public final class Common {
       @java.lang.Override
       public org.jumpserver.wisp.Common.User buildPartial() {
         org.jumpserver.wisp.Common.User result = new org.jumpserver.wisp.Common.User(this);
+        buildPartialRepeatedFields(result);
         if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
+      }
+
+      private void buildPartialRepeatedFields(org.jumpserver.wisp.Common.User result) {
+        if (orgRolesBuilder_ == null) {
+          if (((bitField0_ & 0x00000040) != 0)) {
+            orgRoles_ = java.util.Collections.unmodifiableList(orgRoles_);
+            bitField0_ = (bitField0_ & ~0x00000040);
+          }
+          result.orgRoles_ = orgRoles_;
+        } else {
+          result.orgRoles_ = orgRolesBuilder_.build();
+        }
+        if (systemRolesBuilder_ == null) {
+          if (((bitField0_ & 0x00000080) != 0)) {
+            systemRoles_ = java.util.Collections.unmodifiableList(systemRoles_);
+            bitField0_ = (bitField0_ & ~0x00000080);
+          }
+          result.systemRoles_ = systemRoles_;
+        } else {
+          result.systemRoles_ = systemRolesBuilder_.build();
+        }
       }
 
       private void buildPartial0(org.jumpserver.wisp.Common.User result) {
@@ -946,6 +1140,58 @@ public final class Common {
         if (other.getIsActive() != false) {
           setIsActive(other.getIsActive());
         }
+        if (orgRolesBuilder_ == null) {
+          if (!other.orgRoles_.isEmpty()) {
+            if (orgRoles_.isEmpty()) {
+              orgRoles_ = other.orgRoles_;
+              bitField0_ = (bitField0_ & ~0x00000040);
+            } else {
+              ensureOrgRolesIsMutable();
+              orgRoles_.addAll(other.orgRoles_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.orgRoles_.isEmpty()) {
+            if (orgRolesBuilder_.isEmpty()) {
+              orgRolesBuilder_.dispose();
+              orgRolesBuilder_ = null;
+              orgRoles_ = other.orgRoles_;
+              bitField0_ = (bitField0_ & ~0x00000040);
+              orgRolesBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getOrgRolesFieldBuilder() : null;
+            } else {
+              orgRolesBuilder_.addAllMessages(other.orgRoles_);
+            }
+          }
+        }
+        if (systemRolesBuilder_ == null) {
+          if (!other.systemRoles_.isEmpty()) {
+            if (systemRoles_.isEmpty()) {
+              systemRoles_ = other.systemRoles_;
+              bitField0_ = (bitField0_ & ~0x00000080);
+            } else {
+              ensureSystemRolesIsMutable();
+              systemRoles_.addAll(other.systemRoles_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.systemRoles_.isEmpty()) {
+            if (systemRolesBuilder_.isEmpty()) {
+              systemRolesBuilder_.dispose();
+              systemRolesBuilder_ = null;
+              systemRoles_ = other.systemRoles_;
+              bitField0_ = (bitField0_ & ~0x00000080);
+              systemRolesBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getSystemRolesFieldBuilder() : null;
+            } else {
+              systemRolesBuilder_.addAllMessages(other.systemRoles_);
+            }
+          }
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
@@ -1002,6 +1248,32 @@ public final class Common {
                 bitField0_ |= 0x00000020;
                 break;
               } // case 48
+              case 58: {
+                org.jumpserver.wisp.Common.OrgRole m =
+                    input.readMessage(
+                        org.jumpserver.wisp.Common.OrgRole.parser(),
+                        extensionRegistry);
+                if (orgRolesBuilder_ == null) {
+                  ensureOrgRolesIsMutable();
+                  orgRoles_.add(m);
+                } else {
+                  orgRolesBuilder_.addMessage(m);
+                }
+                break;
+              } // case 58
+              case 66: {
+                org.jumpserver.wisp.Common.SystemRole m =
+                    input.readMessage(
+                        org.jumpserver.wisp.Common.SystemRole.parser(),
+                        extensionRegistry);
+                if (systemRolesBuilder_ == null) {
+                  ensureSystemRolesIsMutable();
+                  systemRoles_.add(m);
+                } else {
+                  systemRolesBuilder_.addMessage(m);
+                }
+                break;
+              } // case 66
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -1371,6 +1643,486 @@ public final class Common {
         return this;
       }
 
+      private java.util.List<org.jumpserver.wisp.Common.OrgRole> orgRoles_ =
+        java.util.Collections.emptyList();
+      private void ensureOrgRolesIsMutable() {
+        if (!((bitField0_ & 0x00000040) != 0)) {
+          orgRoles_ = new java.util.ArrayList<org.jumpserver.wisp.Common.OrgRole>(orgRoles_);
+          bitField0_ |= 0x00000040;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          org.jumpserver.wisp.Common.OrgRole, org.jumpserver.wisp.Common.OrgRole.Builder, org.jumpserver.wisp.Common.OrgRoleOrBuilder> orgRolesBuilder_;
+
+      /**
+       * <code>repeated .message.OrgRole org_roles = 7;</code>
+       */
+      public java.util.List<org.jumpserver.wisp.Common.OrgRole> getOrgRolesList() {
+        if (orgRolesBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(orgRoles_);
+        } else {
+          return orgRolesBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .message.OrgRole org_roles = 7;</code>
+       */
+      public int getOrgRolesCount() {
+        if (orgRolesBuilder_ == null) {
+          return orgRoles_.size();
+        } else {
+          return orgRolesBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .message.OrgRole org_roles = 7;</code>
+       */
+      public org.jumpserver.wisp.Common.OrgRole getOrgRoles(int index) {
+        if (orgRolesBuilder_ == null) {
+          return orgRoles_.get(index);
+        } else {
+          return orgRolesBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .message.OrgRole org_roles = 7;</code>
+       */
+      public Builder setOrgRoles(
+          int index, org.jumpserver.wisp.Common.OrgRole value) {
+        if (orgRolesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureOrgRolesIsMutable();
+          orgRoles_.set(index, value);
+          onChanged();
+        } else {
+          orgRolesBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .message.OrgRole org_roles = 7;</code>
+       */
+      public Builder setOrgRoles(
+          int index, org.jumpserver.wisp.Common.OrgRole.Builder builderForValue) {
+        if (orgRolesBuilder_ == null) {
+          ensureOrgRolesIsMutable();
+          orgRoles_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          orgRolesBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .message.OrgRole org_roles = 7;</code>
+       */
+      public Builder addOrgRoles(org.jumpserver.wisp.Common.OrgRole value) {
+        if (orgRolesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureOrgRolesIsMutable();
+          orgRoles_.add(value);
+          onChanged();
+        } else {
+          orgRolesBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .message.OrgRole org_roles = 7;</code>
+       */
+      public Builder addOrgRoles(
+          int index, org.jumpserver.wisp.Common.OrgRole value) {
+        if (orgRolesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureOrgRolesIsMutable();
+          orgRoles_.add(index, value);
+          onChanged();
+        } else {
+          orgRolesBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .message.OrgRole org_roles = 7;</code>
+       */
+      public Builder addOrgRoles(
+          org.jumpserver.wisp.Common.OrgRole.Builder builderForValue) {
+        if (orgRolesBuilder_ == null) {
+          ensureOrgRolesIsMutable();
+          orgRoles_.add(builderForValue.build());
+          onChanged();
+        } else {
+          orgRolesBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .message.OrgRole org_roles = 7;</code>
+       */
+      public Builder addOrgRoles(
+          int index, org.jumpserver.wisp.Common.OrgRole.Builder builderForValue) {
+        if (orgRolesBuilder_ == null) {
+          ensureOrgRolesIsMutable();
+          orgRoles_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          orgRolesBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .message.OrgRole org_roles = 7;</code>
+       */
+      public Builder addAllOrgRoles(
+          java.lang.Iterable<? extends org.jumpserver.wisp.Common.OrgRole> values) {
+        if (orgRolesBuilder_ == null) {
+          ensureOrgRolesIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, orgRoles_);
+          onChanged();
+        } else {
+          orgRolesBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .message.OrgRole org_roles = 7;</code>
+       */
+      public Builder clearOrgRoles() {
+        if (orgRolesBuilder_ == null) {
+          orgRoles_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000040);
+          onChanged();
+        } else {
+          orgRolesBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .message.OrgRole org_roles = 7;</code>
+       */
+      public Builder removeOrgRoles(int index) {
+        if (orgRolesBuilder_ == null) {
+          ensureOrgRolesIsMutable();
+          orgRoles_.remove(index);
+          onChanged();
+        } else {
+          orgRolesBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .message.OrgRole org_roles = 7;</code>
+       */
+      public org.jumpserver.wisp.Common.OrgRole.Builder getOrgRolesBuilder(
+          int index) {
+        return getOrgRolesFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .message.OrgRole org_roles = 7;</code>
+       */
+      public org.jumpserver.wisp.Common.OrgRoleOrBuilder getOrgRolesOrBuilder(
+          int index) {
+        if (orgRolesBuilder_ == null) {
+          return orgRoles_.get(index);  } else {
+          return orgRolesBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .message.OrgRole org_roles = 7;</code>
+       */
+      public java.util.List<? extends org.jumpserver.wisp.Common.OrgRoleOrBuilder> 
+           getOrgRolesOrBuilderList() {
+        if (orgRolesBuilder_ != null) {
+          return orgRolesBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(orgRoles_);
+        }
+      }
+      /**
+       * <code>repeated .message.OrgRole org_roles = 7;</code>
+       */
+      public org.jumpserver.wisp.Common.OrgRole.Builder addOrgRolesBuilder() {
+        return getOrgRolesFieldBuilder().addBuilder(
+            org.jumpserver.wisp.Common.OrgRole.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .message.OrgRole org_roles = 7;</code>
+       */
+      public org.jumpserver.wisp.Common.OrgRole.Builder addOrgRolesBuilder(
+          int index) {
+        return getOrgRolesFieldBuilder().addBuilder(
+            index, org.jumpserver.wisp.Common.OrgRole.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .message.OrgRole org_roles = 7;</code>
+       */
+      public java.util.List<org.jumpserver.wisp.Common.OrgRole.Builder> 
+           getOrgRolesBuilderList() {
+        return getOrgRolesFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          org.jumpserver.wisp.Common.OrgRole, org.jumpserver.wisp.Common.OrgRole.Builder, org.jumpserver.wisp.Common.OrgRoleOrBuilder> 
+          getOrgRolesFieldBuilder() {
+        if (orgRolesBuilder_ == null) {
+          orgRolesBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              org.jumpserver.wisp.Common.OrgRole, org.jumpserver.wisp.Common.OrgRole.Builder, org.jumpserver.wisp.Common.OrgRoleOrBuilder>(
+                  orgRoles_,
+                  ((bitField0_ & 0x00000040) != 0),
+                  getParentForChildren(),
+                  isClean());
+          orgRoles_ = null;
+        }
+        return orgRolesBuilder_;
+      }
+
+      private java.util.List<org.jumpserver.wisp.Common.SystemRole> systemRoles_ =
+        java.util.Collections.emptyList();
+      private void ensureSystemRolesIsMutable() {
+        if (!((bitField0_ & 0x00000080) != 0)) {
+          systemRoles_ = new java.util.ArrayList<org.jumpserver.wisp.Common.SystemRole>(systemRoles_);
+          bitField0_ |= 0x00000080;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          org.jumpserver.wisp.Common.SystemRole, org.jumpserver.wisp.Common.SystemRole.Builder, org.jumpserver.wisp.Common.SystemRoleOrBuilder> systemRolesBuilder_;
+
+      /**
+       * <code>repeated .message.SystemRole system_roles = 8;</code>
+       */
+      public java.util.List<org.jumpserver.wisp.Common.SystemRole> getSystemRolesList() {
+        if (systemRolesBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(systemRoles_);
+        } else {
+          return systemRolesBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .message.SystemRole system_roles = 8;</code>
+       */
+      public int getSystemRolesCount() {
+        if (systemRolesBuilder_ == null) {
+          return systemRoles_.size();
+        } else {
+          return systemRolesBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .message.SystemRole system_roles = 8;</code>
+       */
+      public org.jumpserver.wisp.Common.SystemRole getSystemRoles(int index) {
+        if (systemRolesBuilder_ == null) {
+          return systemRoles_.get(index);
+        } else {
+          return systemRolesBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .message.SystemRole system_roles = 8;</code>
+       */
+      public Builder setSystemRoles(
+          int index, org.jumpserver.wisp.Common.SystemRole value) {
+        if (systemRolesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureSystemRolesIsMutable();
+          systemRoles_.set(index, value);
+          onChanged();
+        } else {
+          systemRolesBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .message.SystemRole system_roles = 8;</code>
+       */
+      public Builder setSystemRoles(
+          int index, org.jumpserver.wisp.Common.SystemRole.Builder builderForValue) {
+        if (systemRolesBuilder_ == null) {
+          ensureSystemRolesIsMutable();
+          systemRoles_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          systemRolesBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .message.SystemRole system_roles = 8;</code>
+       */
+      public Builder addSystemRoles(org.jumpserver.wisp.Common.SystemRole value) {
+        if (systemRolesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureSystemRolesIsMutable();
+          systemRoles_.add(value);
+          onChanged();
+        } else {
+          systemRolesBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .message.SystemRole system_roles = 8;</code>
+       */
+      public Builder addSystemRoles(
+          int index, org.jumpserver.wisp.Common.SystemRole value) {
+        if (systemRolesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureSystemRolesIsMutable();
+          systemRoles_.add(index, value);
+          onChanged();
+        } else {
+          systemRolesBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .message.SystemRole system_roles = 8;</code>
+       */
+      public Builder addSystemRoles(
+          org.jumpserver.wisp.Common.SystemRole.Builder builderForValue) {
+        if (systemRolesBuilder_ == null) {
+          ensureSystemRolesIsMutable();
+          systemRoles_.add(builderForValue.build());
+          onChanged();
+        } else {
+          systemRolesBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .message.SystemRole system_roles = 8;</code>
+       */
+      public Builder addSystemRoles(
+          int index, org.jumpserver.wisp.Common.SystemRole.Builder builderForValue) {
+        if (systemRolesBuilder_ == null) {
+          ensureSystemRolesIsMutable();
+          systemRoles_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          systemRolesBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .message.SystemRole system_roles = 8;</code>
+       */
+      public Builder addAllSystemRoles(
+          java.lang.Iterable<? extends org.jumpserver.wisp.Common.SystemRole> values) {
+        if (systemRolesBuilder_ == null) {
+          ensureSystemRolesIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, systemRoles_);
+          onChanged();
+        } else {
+          systemRolesBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .message.SystemRole system_roles = 8;</code>
+       */
+      public Builder clearSystemRoles() {
+        if (systemRolesBuilder_ == null) {
+          systemRoles_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000080);
+          onChanged();
+        } else {
+          systemRolesBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .message.SystemRole system_roles = 8;</code>
+       */
+      public Builder removeSystemRoles(int index) {
+        if (systemRolesBuilder_ == null) {
+          ensureSystemRolesIsMutable();
+          systemRoles_.remove(index);
+          onChanged();
+        } else {
+          systemRolesBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .message.SystemRole system_roles = 8;</code>
+       */
+      public org.jumpserver.wisp.Common.SystemRole.Builder getSystemRolesBuilder(
+          int index) {
+        return getSystemRolesFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .message.SystemRole system_roles = 8;</code>
+       */
+      public org.jumpserver.wisp.Common.SystemRoleOrBuilder getSystemRolesOrBuilder(
+          int index) {
+        if (systemRolesBuilder_ == null) {
+          return systemRoles_.get(index);  } else {
+          return systemRolesBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .message.SystemRole system_roles = 8;</code>
+       */
+      public java.util.List<? extends org.jumpserver.wisp.Common.SystemRoleOrBuilder> 
+           getSystemRolesOrBuilderList() {
+        if (systemRolesBuilder_ != null) {
+          return systemRolesBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(systemRoles_);
+        }
+      }
+      /**
+       * <code>repeated .message.SystemRole system_roles = 8;</code>
+       */
+      public org.jumpserver.wisp.Common.SystemRole.Builder addSystemRolesBuilder() {
+        return getSystemRolesFieldBuilder().addBuilder(
+            org.jumpserver.wisp.Common.SystemRole.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .message.SystemRole system_roles = 8;</code>
+       */
+      public org.jumpserver.wisp.Common.SystemRole.Builder addSystemRolesBuilder(
+          int index) {
+        return getSystemRolesFieldBuilder().addBuilder(
+            index, org.jumpserver.wisp.Common.SystemRole.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .message.SystemRole system_roles = 8;</code>
+       */
+      public java.util.List<org.jumpserver.wisp.Common.SystemRole.Builder> 
+           getSystemRolesBuilderList() {
+        return getSystemRolesFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          org.jumpserver.wisp.Common.SystemRole, org.jumpserver.wisp.Common.SystemRole.Builder, org.jumpserver.wisp.Common.SystemRoleOrBuilder> 
+          getSystemRolesFieldBuilder() {
+        if (systemRolesBuilder_ == null) {
+          systemRolesBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              org.jumpserver.wisp.Common.SystemRole, org.jumpserver.wisp.Common.SystemRole.Builder, org.jumpserver.wisp.Common.SystemRoleOrBuilder>(
+                  systemRoles_,
+                  ((bitField0_ & 0x00000080) != 0),
+                  getParentForChildren(),
+                  isClean());
+          systemRoles_ = null;
+        }
+        return systemRolesBuilder_;
+      }
+
       // @@protoc_insertion_point(builder_scope:message.User)
     }
 
@@ -1417,6 +2169,1470 @@ public final class Common {
 
     @java.lang.Override
     public org.jumpserver.wisp.Common.User getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface OrgRoleOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:message.OrgRole)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string id = 1;</code>
+     * @return The id.
+     */
+    java.lang.String getId();
+    /**
+     * <code>string id = 1;</code>
+     * @return The bytes for id.
+     */
+    com.google.protobuf.ByteString
+        getIdBytes();
+
+    /**
+     * <code>string name = 2;</code>
+     * @return The name.
+     */
+    java.lang.String getName();
+    /**
+     * <code>string name = 2;</code>
+     * @return The bytes for name.
+     */
+    com.google.protobuf.ByteString
+        getNameBytes();
+
+    /**
+     * <code>string display_name = 3;</code>
+     * @return The displayName.
+     */
+    java.lang.String getDisplayName();
+    /**
+     * <code>string display_name = 3;</code>
+     * @return The bytes for displayName.
+     */
+    com.google.protobuf.ByteString
+        getDisplayNameBytes();
+  }
+  /**
+   * Protobuf type {@code message.OrgRole}
+   */
+  public static final class OrgRole extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:message.OrgRole)
+      OrgRoleOrBuilder {
+  private static final long serialVersionUID = 0L;
+    static {
+      com.google.protobuf.RuntimeVersion.validateProtobufGencodeVersion(
+        com.google.protobuf.RuntimeVersion.RuntimeDomain.PUBLIC,
+        /* major= */ 4,
+        /* minor= */ 27,
+        /* patch= */ 2,
+        /* suffix= */ "",
+        OrgRole.class.getName());
+    }
+    // Use OrgRole.newBuilder() to construct.
+    private OrgRole(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+    }
+    private OrgRole() {
+      id_ = "";
+      name_ = "";
+      displayName_ = "";
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return org.jumpserver.wisp.Common.internal_static_message_OrgRole_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return org.jumpserver.wisp.Common.internal_static_message_OrgRole_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              org.jumpserver.wisp.Common.OrgRole.class, org.jumpserver.wisp.Common.OrgRole.Builder.class);
+    }
+
+    public static final int ID_FIELD_NUMBER = 1;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object id_ = "";
+    /**
+     * <code>string id = 1;</code>
+     * @return The id.
+     */
+    @java.lang.Override
+    public java.lang.String getId() {
+      java.lang.Object ref = id_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        id_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string id = 1;</code>
+     * @return The bytes for id.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getIdBytes() {
+      java.lang.Object ref = id_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        id_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int NAME_FIELD_NUMBER = 2;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object name_ = "";
+    /**
+     * <code>string name = 2;</code>
+     * @return The name.
+     */
+    @java.lang.Override
+    public java.lang.String getName() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        name_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string name = 2;</code>
+     * @return The bytes for name.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getNameBytes() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        name_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int DISPLAY_NAME_FIELD_NUMBER = 3;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object displayName_ = "";
+    /**
+     * <code>string display_name = 3;</code>
+     * @return The displayName.
+     */
+    @java.lang.Override
+    public java.lang.String getDisplayName() {
+      java.lang.Object ref = displayName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        displayName_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string display_name = 3;</code>
+     * @return The bytes for displayName.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getDisplayNameBytes() {
+      java.lang.Object ref = displayName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        displayName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!com.google.protobuf.GeneratedMessage.isStringEmpty(id_)) {
+        com.google.protobuf.GeneratedMessage.writeString(output, 1, id_);
+      }
+      if (!com.google.protobuf.GeneratedMessage.isStringEmpty(name_)) {
+        com.google.protobuf.GeneratedMessage.writeString(output, 2, name_);
+      }
+      if (!com.google.protobuf.GeneratedMessage.isStringEmpty(displayName_)) {
+        com.google.protobuf.GeneratedMessage.writeString(output, 3, displayName_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!com.google.protobuf.GeneratedMessage.isStringEmpty(id_)) {
+        size += com.google.protobuf.GeneratedMessage.computeStringSize(1, id_);
+      }
+      if (!com.google.protobuf.GeneratedMessage.isStringEmpty(name_)) {
+        size += com.google.protobuf.GeneratedMessage.computeStringSize(2, name_);
+      }
+      if (!com.google.protobuf.GeneratedMessage.isStringEmpty(displayName_)) {
+        size += com.google.protobuf.GeneratedMessage.computeStringSize(3, displayName_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof org.jumpserver.wisp.Common.OrgRole)) {
+        return super.equals(obj);
+      }
+      org.jumpserver.wisp.Common.OrgRole other = (org.jumpserver.wisp.Common.OrgRole) obj;
+
+      if (!getId()
+          .equals(other.getId())) return false;
+      if (!getName()
+          .equals(other.getName())) return false;
+      if (!getDisplayName()
+          .equals(other.getDisplayName())) return false;
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + ID_FIELD_NUMBER;
+      hash = (53 * hash) + getId().hashCode();
+      hash = (37 * hash) + NAME_FIELD_NUMBER;
+      hash = (53 * hash) + getName().hashCode();
+      hash = (37 * hash) + DISPLAY_NAME_FIELD_NUMBER;
+      hash = (53 * hash) + getDisplayName().hashCode();
+      hash = (29 * hash) + getUnknownFields().hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static org.jumpserver.wisp.Common.OrgRole parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.jumpserver.wisp.Common.OrgRole parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.jumpserver.wisp.Common.OrgRole parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.jumpserver.wisp.Common.OrgRole parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.jumpserver.wisp.Common.OrgRole parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.jumpserver.wisp.Common.OrgRole parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.jumpserver.wisp.Common.OrgRole parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.jumpserver.wisp.Common.OrgRole parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static org.jumpserver.wisp.Common.OrgRole parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+
+    public static org.jumpserver.wisp.Common.OrgRole parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.jumpserver.wisp.Common.OrgRole parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.jumpserver.wisp.Common.OrgRole parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(org.jumpserver.wisp.Common.OrgRole prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code message.OrgRole}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:message.OrgRole)
+        org.jumpserver.wisp.Common.OrgRoleOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return org.jumpserver.wisp.Common.internal_static_message_OrgRole_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return org.jumpserver.wisp.Common.internal_static_message_OrgRole_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                org.jumpserver.wisp.Common.OrgRole.class, org.jumpserver.wisp.Common.OrgRole.Builder.class);
+      }
+
+      // Construct using org.jumpserver.wisp.Common.OrgRole.newBuilder()
+      private Builder() {
+
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        bitField0_ = 0;
+        id_ = "";
+        name_ = "";
+        displayName_ = "";
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return org.jumpserver.wisp.Common.internal_static_message_OrgRole_descriptor;
+      }
+
+      @java.lang.Override
+      public org.jumpserver.wisp.Common.OrgRole getDefaultInstanceForType() {
+        return org.jumpserver.wisp.Common.OrgRole.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public org.jumpserver.wisp.Common.OrgRole build() {
+        org.jumpserver.wisp.Common.OrgRole result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public org.jumpserver.wisp.Common.OrgRole buildPartial() {
+        org.jumpserver.wisp.Common.OrgRole result = new org.jumpserver.wisp.Common.OrgRole(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(org.jumpserver.wisp.Common.OrgRole result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.id_ = id_;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.name_ = name_;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.displayName_ = displayName_;
+        }
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof org.jumpserver.wisp.Common.OrgRole) {
+          return mergeFrom((org.jumpserver.wisp.Common.OrgRole)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(org.jumpserver.wisp.Common.OrgRole other) {
+        if (other == org.jumpserver.wisp.Common.OrgRole.getDefaultInstance()) return this;
+        if (!other.getId().isEmpty()) {
+          id_ = other.id_;
+          bitField0_ |= 0x00000001;
+          onChanged();
+        }
+        if (!other.getName().isEmpty()) {
+          name_ = other.name_;
+          bitField0_ |= 0x00000002;
+          onChanged();
+        }
+        if (!other.getDisplayName().isEmpty()) {
+          displayName_ = other.displayName_;
+          bitField0_ |= 0x00000004;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 10: {
+                id_ = input.readStringRequireUtf8();
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 10
+              case 18: {
+                name_ = input.readStringRequireUtf8();
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 18
+              case 26: {
+                displayName_ = input.readStringRequireUtf8();
+                bitField0_ |= 0x00000004;
+                break;
+              } // case 26
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.unwrapIOException();
+        } finally {
+          onChanged();
+        } // finally
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object id_ = "";
+      /**
+       * <code>string id = 1;</code>
+       * @return The id.
+       */
+      public java.lang.String getId() {
+        java.lang.Object ref = id_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          id_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string id = 1;</code>
+       * @return The bytes for id.
+       */
+      public com.google.protobuf.ByteString
+          getIdBytes() {
+        java.lang.Object ref = id_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          id_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string id = 1;</code>
+       * @param value The id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setId(
+          java.lang.String value) {
+        if (value == null) { throw new NullPointerException(); }
+        id_ = value;
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string id = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearId() {
+        id_ = getDefaultInstance().getId();
+        bitField0_ = (bitField0_ & ~0x00000001);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string id = 1;</code>
+       * @param value The bytes for id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
+        id_ = value;
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object name_ = "";
+      /**
+       * <code>string name = 2;</code>
+       * @return The name.
+       */
+      public java.lang.String getName() {
+        java.lang.Object ref = name_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          name_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string name = 2;</code>
+       * @return The bytes for name.
+       */
+      public com.google.protobuf.ByteString
+          getNameBytes() {
+        java.lang.Object ref = name_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          name_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string name = 2;</code>
+       * @param value The name to set.
+       * @return This builder for chaining.
+       */
+      public Builder setName(
+          java.lang.String value) {
+        if (value == null) { throw new NullPointerException(); }
+        name_ = value;
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string name = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearName() {
+        name_ = getDefaultInstance().getName();
+        bitField0_ = (bitField0_ & ~0x00000002);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string name = 2;</code>
+       * @param value The bytes for name to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
+        name_ = value;
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object displayName_ = "";
+      /**
+       * <code>string display_name = 3;</code>
+       * @return The displayName.
+       */
+      public java.lang.String getDisplayName() {
+        java.lang.Object ref = displayName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          displayName_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string display_name = 3;</code>
+       * @return The bytes for displayName.
+       */
+      public com.google.protobuf.ByteString
+          getDisplayNameBytes() {
+        java.lang.Object ref = displayName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          displayName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string display_name = 3;</code>
+       * @param value The displayName to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDisplayName(
+          java.lang.String value) {
+        if (value == null) { throw new NullPointerException(); }
+        displayName_ = value;
+        bitField0_ |= 0x00000004;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string display_name = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDisplayName() {
+        displayName_ = getDefaultInstance().getDisplayName();
+        bitField0_ = (bitField0_ & ~0x00000004);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string display_name = 3;</code>
+       * @param value The bytes for displayName to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDisplayNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
+        displayName_ = value;
+        bitField0_ |= 0x00000004;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:message.OrgRole)
+    }
+
+    // @@protoc_insertion_point(class_scope:message.OrgRole)
+    private static final org.jumpserver.wisp.Common.OrgRole DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new org.jumpserver.wisp.Common.OrgRole();
+    }
+
+    public static org.jumpserver.wisp.Common.OrgRole getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<OrgRole>
+        PARSER = new com.google.protobuf.AbstractParser<OrgRole>() {
+      @java.lang.Override
+      public OrgRole parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
+      }
+    };
+
+    public static com.google.protobuf.Parser<OrgRole> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<OrgRole> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public org.jumpserver.wisp.Common.OrgRole getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface SystemRoleOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:message.SystemRole)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string id = 1;</code>
+     * @return The id.
+     */
+    java.lang.String getId();
+    /**
+     * <code>string id = 1;</code>
+     * @return The bytes for id.
+     */
+    com.google.protobuf.ByteString
+        getIdBytes();
+
+    /**
+     * <code>string display_name = 2;</code>
+     * @return The displayName.
+     */
+    java.lang.String getDisplayName();
+    /**
+     * <code>string display_name = 2;</code>
+     * @return The bytes for displayName.
+     */
+    com.google.protobuf.ByteString
+        getDisplayNameBytes();
+  }
+  /**
+   * Protobuf type {@code message.SystemRole}
+   */
+  public static final class SystemRole extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:message.SystemRole)
+      SystemRoleOrBuilder {
+  private static final long serialVersionUID = 0L;
+    static {
+      com.google.protobuf.RuntimeVersion.validateProtobufGencodeVersion(
+        com.google.protobuf.RuntimeVersion.RuntimeDomain.PUBLIC,
+        /* major= */ 4,
+        /* minor= */ 27,
+        /* patch= */ 2,
+        /* suffix= */ "",
+        SystemRole.class.getName());
+    }
+    // Use SystemRole.newBuilder() to construct.
+    private SystemRole(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+    }
+    private SystemRole() {
+      id_ = "";
+      displayName_ = "";
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return org.jumpserver.wisp.Common.internal_static_message_SystemRole_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return org.jumpserver.wisp.Common.internal_static_message_SystemRole_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              org.jumpserver.wisp.Common.SystemRole.class, org.jumpserver.wisp.Common.SystemRole.Builder.class);
+    }
+
+    public static final int ID_FIELD_NUMBER = 1;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object id_ = "";
+    /**
+     * <code>string id = 1;</code>
+     * @return The id.
+     */
+    @java.lang.Override
+    public java.lang.String getId() {
+      java.lang.Object ref = id_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        id_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string id = 1;</code>
+     * @return The bytes for id.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getIdBytes() {
+      java.lang.Object ref = id_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        id_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int DISPLAY_NAME_FIELD_NUMBER = 2;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object displayName_ = "";
+    /**
+     * <code>string display_name = 2;</code>
+     * @return The displayName.
+     */
+    @java.lang.Override
+    public java.lang.String getDisplayName() {
+      java.lang.Object ref = displayName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        displayName_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string display_name = 2;</code>
+     * @return The bytes for displayName.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getDisplayNameBytes() {
+      java.lang.Object ref = displayName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        displayName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!com.google.protobuf.GeneratedMessage.isStringEmpty(id_)) {
+        com.google.protobuf.GeneratedMessage.writeString(output, 1, id_);
+      }
+      if (!com.google.protobuf.GeneratedMessage.isStringEmpty(displayName_)) {
+        com.google.protobuf.GeneratedMessage.writeString(output, 2, displayName_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!com.google.protobuf.GeneratedMessage.isStringEmpty(id_)) {
+        size += com.google.protobuf.GeneratedMessage.computeStringSize(1, id_);
+      }
+      if (!com.google.protobuf.GeneratedMessage.isStringEmpty(displayName_)) {
+        size += com.google.protobuf.GeneratedMessage.computeStringSize(2, displayName_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof org.jumpserver.wisp.Common.SystemRole)) {
+        return super.equals(obj);
+      }
+      org.jumpserver.wisp.Common.SystemRole other = (org.jumpserver.wisp.Common.SystemRole) obj;
+
+      if (!getId()
+          .equals(other.getId())) return false;
+      if (!getDisplayName()
+          .equals(other.getDisplayName())) return false;
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + ID_FIELD_NUMBER;
+      hash = (53 * hash) + getId().hashCode();
+      hash = (37 * hash) + DISPLAY_NAME_FIELD_NUMBER;
+      hash = (53 * hash) + getDisplayName().hashCode();
+      hash = (29 * hash) + getUnknownFields().hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static org.jumpserver.wisp.Common.SystemRole parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.jumpserver.wisp.Common.SystemRole parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.jumpserver.wisp.Common.SystemRole parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.jumpserver.wisp.Common.SystemRole parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.jumpserver.wisp.Common.SystemRole parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.jumpserver.wisp.Common.SystemRole parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.jumpserver.wisp.Common.SystemRole parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.jumpserver.wisp.Common.SystemRole parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static org.jumpserver.wisp.Common.SystemRole parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+
+    public static org.jumpserver.wisp.Common.SystemRole parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.jumpserver.wisp.Common.SystemRole parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.jumpserver.wisp.Common.SystemRole parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(org.jumpserver.wisp.Common.SystemRole prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code message.SystemRole}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:message.SystemRole)
+        org.jumpserver.wisp.Common.SystemRoleOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return org.jumpserver.wisp.Common.internal_static_message_SystemRole_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return org.jumpserver.wisp.Common.internal_static_message_SystemRole_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                org.jumpserver.wisp.Common.SystemRole.class, org.jumpserver.wisp.Common.SystemRole.Builder.class);
+      }
+
+      // Construct using org.jumpserver.wisp.Common.SystemRole.newBuilder()
+      private Builder() {
+
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        bitField0_ = 0;
+        id_ = "";
+        displayName_ = "";
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return org.jumpserver.wisp.Common.internal_static_message_SystemRole_descriptor;
+      }
+
+      @java.lang.Override
+      public org.jumpserver.wisp.Common.SystemRole getDefaultInstanceForType() {
+        return org.jumpserver.wisp.Common.SystemRole.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public org.jumpserver.wisp.Common.SystemRole build() {
+        org.jumpserver.wisp.Common.SystemRole result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public org.jumpserver.wisp.Common.SystemRole buildPartial() {
+        org.jumpserver.wisp.Common.SystemRole result = new org.jumpserver.wisp.Common.SystemRole(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(org.jumpserver.wisp.Common.SystemRole result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.id_ = id_;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.displayName_ = displayName_;
+        }
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof org.jumpserver.wisp.Common.SystemRole) {
+          return mergeFrom((org.jumpserver.wisp.Common.SystemRole)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(org.jumpserver.wisp.Common.SystemRole other) {
+        if (other == org.jumpserver.wisp.Common.SystemRole.getDefaultInstance()) return this;
+        if (!other.getId().isEmpty()) {
+          id_ = other.id_;
+          bitField0_ |= 0x00000001;
+          onChanged();
+        }
+        if (!other.getDisplayName().isEmpty()) {
+          displayName_ = other.displayName_;
+          bitField0_ |= 0x00000002;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 10: {
+                id_ = input.readStringRequireUtf8();
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 10
+              case 18: {
+                displayName_ = input.readStringRequireUtf8();
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 18
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.unwrapIOException();
+        } finally {
+          onChanged();
+        } // finally
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object id_ = "";
+      /**
+       * <code>string id = 1;</code>
+       * @return The id.
+       */
+      public java.lang.String getId() {
+        java.lang.Object ref = id_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          id_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string id = 1;</code>
+       * @return The bytes for id.
+       */
+      public com.google.protobuf.ByteString
+          getIdBytes() {
+        java.lang.Object ref = id_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          id_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string id = 1;</code>
+       * @param value The id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setId(
+          java.lang.String value) {
+        if (value == null) { throw new NullPointerException(); }
+        id_ = value;
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string id = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearId() {
+        id_ = getDefaultInstance().getId();
+        bitField0_ = (bitField0_ & ~0x00000001);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string id = 1;</code>
+       * @param value The bytes for id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
+        id_ = value;
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object displayName_ = "";
+      /**
+       * <code>string display_name = 2;</code>
+       * @return The displayName.
+       */
+      public java.lang.String getDisplayName() {
+        java.lang.Object ref = displayName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          displayName_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string display_name = 2;</code>
+       * @return The bytes for displayName.
+       */
+      public com.google.protobuf.ByteString
+          getDisplayNameBytes() {
+        java.lang.Object ref = displayName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          displayName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string display_name = 2;</code>
+       * @param value The displayName to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDisplayName(
+          java.lang.String value) {
+        if (value == null) { throw new NullPointerException(); }
+        displayName_ = value;
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string display_name = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDisplayName() {
+        displayName_ = getDefaultInstance().getDisplayName();
+        bitField0_ = (bitField0_ & ~0x00000002);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string display_name = 2;</code>
+       * @param value The bytes for displayName to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDisplayNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
+        displayName_ = value;
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:message.SystemRole)
+    }
+
+    // @@protoc_insertion_point(class_scope:message.SystemRole)
+    private static final org.jumpserver.wisp.Common.SystemRole DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new org.jumpserver.wisp.Common.SystemRole();
+    }
+
+    public static org.jumpserver.wisp.Common.SystemRole getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<SystemRole>
+        PARSER = new com.google.protobuf.AbstractParser<SystemRole>() {
+      @java.lang.Override
+      public SystemRole parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
+      }
+    };
+
+    public static com.google.protobuf.Parser<SystemRole> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<SystemRole> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public org.jumpserver.wisp.Common.SystemRole getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -28356,6 +30572,16 @@ java.lang.String defaultValue) {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_message_User_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_message_OrgRole_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_message_OrgRole_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_message_SystemRole_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_message_SystemRole_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_message_Account_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -28479,105 +30705,110 @@ java.lang.String defaultValue) {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\014common.proto\022\007message\"e\n\004User\022\n\n\002id\030\001 " +
-      "\001(\t\022\014\n\004name\030\002 \001(\t\022\020\n\010username\030\003 \001(\t\022\014\n\004r" +
-      "ole\030\004 \001(\t\022\020\n\010is_valid\030\005 \001(\010\022\021\n\tis_active" +
-      "\030\006 \001(\010\"n\n\007Account\022\n\n\002id\030\001 \001(\t\022\014\n\004name\030\002 " +
-      "\001(\t\022\020\n\010username\030\004 \001(\t\022\016\n\006secret\030\005 \001(\t\022\'\n" +
-      "\nsecretType\030\006 \001(\0132\023.message.LabelValue\"*" +
-      "\n\nLabelValue\022\r\n\005label\030\001 \001(\t\022\r\n\005value\030\002 \001" +
-      "(\t\"\305\003\n\005Asset\022\n\n\002id\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\017" +
-      "\n\007address\030\003 \001(\t\022\016\n\006org_id\030\004 \001(\t\022\020\n\010org_n" +
-      "ame\030\005 \001(\t\022$\n\tprotocols\030\006 \003(\0132\021.message.P" +
-      "rotocol\022)\n\010specific\030\007 \001(\0132\027.message.Asse" +
-      "t.Specific\032\235\002\n\010Specific\022\017\n\007db_name\030\001 \001(\t" +
-      "\022\017\n\007use_ssl\030\002 \001(\010\022\017\n\007ca_cert\030\003 \001(\t\022\023\n\013cl" +
-      "ient_cert\030\004 \001(\t\022\022\n\nclient_key\030\005 \001(\t\022\032\n\022a" +
-      "llow_invalid_cert\030\006 \001(\010\022\021\n\tauto_fill\030\007 \001" +
-      "(\t\022\031\n\021username_selector\030\010 \001(\t\022\031\n\021passwor" +
-      "d_selector\030\t \001(\t\022\027\n\017submit_selector\030\n \001(" +
-      "\t\022\016\n\006script\030\013 \001(\t\022\022\n\nhttp_proxy\030\014 \001(\t\022\023\n" +
-      "\013pg_ssl_mode\030\r \001(\t\"2\n\010Protocol\022\014\n\004name\030\002" +
-      " \001(\t\022\n\n\002id\030\001 \001(\005\022\014\n\004port\030\003 \001(\005\"\210\001\n\007Gatew" +
-      "ay\022\n\n\002id\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\n\n\002ip\030\003 \001(\t" +
-      "\022\014\n\004port\030\004 \001(\005\022\020\n\010protocol\030\005 \001(\t\022\020\n\010user" +
-      "name\030\006 \001(\t\022\020\n\010password\030\007 \001(\t\022\023\n\013private_" +
-      "key\030\010 \001(\t\"\177\n\nPermission\022\026\n\016enable_connec" +
-      "t\030\001 \001(\010\022\027\n\017enable_download\030\002 \001(\010\022\025\n\renab" +
-      "le_upload\030\003 \001(\010\022\023\n\013enable_copy\030\004 \001(\010\022\024\n\014" +
-      "enable_paste\030\005 \001(\010\"\201\002\n\nCommandACL\022\n\n\002id\030" +
-      "\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\020\n\010priority\030\003 \001(\005\022*\n" +
-      "\006action\030\005 \001(\0162\032.message.CommandACL.Actio" +
-      "n\022\021\n\tis_active\030\006 \001(\010\022-\n\016command_groups\030\007" +
-      " \003(\0132\025.message.CommandGroup\"Y\n\006Action\022\n\n" +
-      "\006Reject\020\000\022\n\n\006Accept\020\001\022\n\n\006Review\020\002\022\013\n\007War" +
-      "ning\020\003\022\021\n\rNotifyWarning\020\004\022\013\n\007Unknown\020\005\"\226" +
-      "\001\n\017DataMaskingRule\022\n\n\002id\030\001 \001(\t\022\014\n\004name\030\002" +
-      " \001(\t\022\020\n\010priority\030\003 \001(\005\022\021\n\tis_active\030\004 \001(" +
-      "\010\022\026\n\016masking_method\030\005 \001(\t\022\024\n\014mask_patter" +
-      "n\030\006 \001(\t\022\026\n\016fields_pattern\030\007 \001(\t\"m\n\014Comma" +
-      "ndGroup\022\n\n\002id\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\017\n\007con" +
-      "tent\030\003 \001(\t\022\014\n\004Type\030\004 \001(\t\022\017\n\007pattern\030\005 \001(" +
-      "\t\022\023\n\013ignore_case\030\006 \001(\010\"\037\n\nExpireInfo\022\021\n\t" +
-      "expire_at\030\001 \001(\003\"\264\002\n\007Session\022\n\n\002id\030\001 \001(\t\022" +
-      "\014\n\004user\030\002 \001(\t\022\r\n\005asset\030\003 \001(\t\022\017\n\007account\030" +
-      "\004 \001(\t\022.\n\nlogin_from\030\005 \001(\0162\032.message.Sess" +
-      "ion.LoginFrom\022\023\n\013remote_addr\030\006 \001(\t\022\020\n\010pr" +
-      "otocol\030\007 \001(\t\022\022\n\ndate_start\030\010 \001(\003\022\016\n\006org_" +
-      "id\030\t \001(\t\022\017\n\007user_id\030\n \001(\t\022\020\n\010asset_id\030\013 " +
-      "\001(\t\022\022\n\naccount_id\030\014 \001(\t\022\020\n\010token_id\030\r \001(" +
-      "\t\"+\n\tLoginFrom\022\006\n\002WT\020\000\022\006\n\002ST\020\001\022\006\n\002RT\020\002\022\006" +
-      "\n\002DT\020\003\"?\n\013TokenStatus\022\014\n\004code\030\001 \001(\t\022\016\n\006d" +
-      "etail\030\002 \001(\t\022\022\n\nis_expired\030\003 \001(\010\"\252\001\n\014Term" +
-      "inalTask\022\n\n\002id\030\001 \001(\t\022#\n\006action\030\002 \001(\0162\023.m" +
-      "essage.TaskAction\022\022\n\nsession_id\030\003 \001(\t\022\025\n" +
-      "\rterminated_by\030\004 \001(\t\022\022\n\ncreated_by\030\005 \001(\t" +
-      "\022*\n\014token_status\030\006 \001(\0132\024.message.TokenSt" +
-      "atus\"\325\003\n\rTokenAuthInfo\022\016\n\006key_id\030\001 \001(\t\022\022" +
-      "\n\nsecrete_id\030\002 \001(\t\022\035\n\005asset\030\003 \001(\0132\016.mess" +
-      "age.Asset\022\033\n\004user\030\004 \001(\0132\r.message.User\022!" +
-      "\n\007account\030\005 \001(\0132\020.message.Account\022\'\n\nper" +
-      "mission\030\006 \001(\0132\023.message.Permission\022(\n\013ex" +
-      "pire_info\030\007 \001(\0132\023.message.ExpireInfo\022)\n\014" +
-      "filter_rules\030\010 \003(\0132\023.message.CommandACL\022" +
-      "\"\n\010gateways\030\t \003(\0132\020.message.Gateway\022*\n\007s" +
-      "etting\030\n \001(\0132\031.message.ComponentSetting\022" +
-      "#\n\010platform\030\013 \001(\0132\021.message.Platform\022\030\n\020" +
-      "FaceMonitorToken\030\014 \001(\t\0224\n\022data_masking_r" +
-      "ules\030\r \003(\0132\030.message.DataMaskingRule\"\203\001\n" +
-      "\010Platform\022\n\n\002id\030\001 \001(\005\022\014\n\004name\030\002 \001(\t\022\020\n\010c" +
-      "ategory\030\003 \001(\t\022\017\n\007charset\030\004 \001(\t\022\014\n\004type\030\005" +
-      " \001(\t\022,\n\tprotocols\030\006 \003(\0132\031.message.Platfo" +
-      "rmProtocol\"\246\001\n\020PlatformProtocol\022\n\n\002id\030\001 " +
-      "\001(\005\022\014\n\004name\030\002 \001(\t\022\014\n\004port\030\003 \001(\005\0229\n\010setti" +
-      "ngs\030\004 \003(\0132\'.message.PlatformProtocol.Set" +
-      "tingsEntry\032/\n\rSettingsEntry\022\013\n\003key\030\001 \001(\t" +
-      "\022\r\n\005value\030\002 \001(\t:\0028\001\"C\n\020ComponentSetting\022" +
-      "\025\n\rmax_idle_time\030\001 \001(\005\022\030\n\020max_session_ti" +
-      "me\030\002 \001(\005\"1\n\007Forward\022\n\n\002id\030\001 \001(\t\022\014\n\004Host\030" +
-      "\002 \001(\t\022\014\n\004port\030\003 \001(\005\"\247\001\n\rPublicSetting\022\025\n" +
-      "\rxpack_enabled\030\001 \001(\010\022\025\n\rvalid_license\030\002 " +
-      "\001(\010\022\024\n\014gpt_base_url\030\003 \001(\t\022\023\n\013gpt_api_key" +
-      "\030\004 \001(\t\022\021\n\tgpt_proxy\030\005 \001(\t\022\021\n\tgpt_model\030\006" +
-      " \001(\t\022\027\n\017license_content\030\007 \001(\t\"%\n\006Cookie\022" +
-      "\014\n\004name\030\001 \001(\t\022\r\n\005value\030\002 \001(\t\"\250\003\n\020Lifecyc" +
-      "leLogData\0223\n\005event\030\001 \001(\0162$.message.Lifec" +
-      "ycleLogData.event_type\022\016\n\006reason\030\002 \001(\t\022\014" +
-      "\n\004user\030\003 \001(\t\"\300\002\n\nevent_type\022\027\n\023AssetConn" +
-      "ectSuccess\020\000\022\030\n\024AssetConnectFinished\020\001\022\023" +
-      "\n\017CreateShareLink\020\002\022\023\n\017UserJoinSession\020\003" +
-      "\022\024\n\020UserLeaveSession\020\004\022\024\n\020AdminJoinMonit" +
-      "or\020\005\022\024\n\020AdminExitMonitor\020\006\022\026\n\022ReplayConv" +
-      "ertStart\020\007\022\030\n\024ReplayConvertSuccess\020\010\022\030\n\024" +
-      "ReplayConvertFailure\020\t\022\025\n\021ReplayUploadSt" +
-      "art\020\n\022\027\n\023ReplayUploadSuccess\020\013\022\027\n\023Replay" +
-      "UploadFailure\020\014*k\n\nTaskAction\022\017\n\013KillSes" +
-      "sion\020\000\022\017\n\013LockSession\020\001\022\021\n\rUnlockSession" +
-      "\020\002\022\024\n\020TokenPermExpired\020\003\022\022\n\016TokenPermVal" +
-      "id\020\004*f\n\tRiskLevel\022\n\n\006Normal\020\000\022\013\n\007Warning" +
-      "\020\001\022\n\n\006Reject\020\002\022\020\n\014ReviewReject\020\003\022\020\n\014Revi" +
-      "ewAccept\020\004\022\020\n\014ReviewCancel\020\005B \n\023org.jump" +
-      "server.wispZ\t/protobufb\006proto3"
+      "\n\014common.proto\022\007message\"\265\001\n\004User\022\n\n\002id\030\001" +
+      " \001(\t\022\014\n\004name\030\002 \001(\t\022\020\n\010username\030\003 \001(\t\022\014\n\004" +
+      "role\030\004 \001(\t\022\020\n\010is_valid\030\005 \001(\010\022\021\n\tis_activ" +
+      "e\030\006 \001(\010\022#\n\torg_roles\030\007 \003(\0132\020.message.Org" +
+      "Role\022)\n\014system_roles\030\010 \003(\0132\023.message.Sys" +
+      "temRole\"9\n\007OrgRole\022\n\n\002id\030\001 \001(\t\022\014\n\004name\030\002" +
+      " \001(\t\022\024\n\014display_name\030\003 \001(\t\".\n\nSystemRole" +
+      "\022\n\n\002id\030\001 \001(\t\022\024\n\014display_name\030\002 \001(\t\"n\n\007Ac" +
+      "count\022\n\n\002id\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\020\n\010usern" +
+      "ame\030\004 \001(\t\022\016\n\006secret\030\005 \001(\t\022\'\n\nsecretType\030" +
+      "\006 \001(\0132\023.message.LabelValue\"*\n\nLabelValue" +
+      "\022\r\n\005label\030\001 \001(\t\022\r\n\005value\030\002 \001(\t\"\305\003\n\005Asset" +
+      "\022\n\n\002id\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\017\n\007address\030\003 " +
+      "\001(\t\022\016\n\006org_id\030\004 \001(\t\022\020\n\010org_name\030\005 \001(\t\022$\n" +
+      "\tprotocols\030\006 \003(\0132\021.message.Protocol\022)\n\010s" +
+      "pecific\030\007 \001(\0132\027.message.Asset.Specific\032\235" +
+      "\002\n\010Specific\022\017\n\007db_name\030\001 \001(\t\022\017\n\007use_ssl\030" +
+      "\002 \001(\010\022\017\n\007ca_cert\030\003 \001(\t\022\023\n\013client_cert\030\004 " +
+      "\001(\t\022\022\n\nclient_key\030\005 \001(\t\022\032\n\022allow_invalid" +
+      "_cert\030\006 \001(\010\022\021\n\tauto_fill\030\007 \001(\t\022\031\n\021userna" +
+      "me_selector\030\010 \001(\t\022\031\n\021password_selector\030\t" +
+      " \001(\t\022\027\n\017submit_selector\030\n \001(\t\022\016\n\006script\030" +
+      "\013 \001(\t\022\022\n\nhttp_proxy\030\014 \001(\t\022\023\n\013pg_ssl_mode" +
+      "\030\r \001(\t\"2\n\010Protocol\022\014\n\004name\030\002 \001(\t\022\n\n\002id\030\001" +
+      " \001(\005\022\014\n\004port\030\003 \001(\005\"\210\001\n\007Gateway\022\n\n\002id\030\001 \001" +
+      "(\t\022\014\n\004name\030\002 \001(\t\022\n\n\002ip\030\003 \001(\t\022\014\n\004port\030\004 \001" +
+      "(\005\022\020\n\010protocol\030\005 \001(\t\022\020\n\010username\030\006 \001(\t\022\020" +
+      "\n\010password\030\007 \001(\t\022\023\n\013private_key\030\010 \001(\t\"\177\n" +
+      "\nPermission\022\026\n\016enable_connect\030\001 \001(\010\022\027\n\017e" +
+      "nable_download\030\002 \001(\010\022\025\n\renable_upload\030\003 " +
+      "\001(\010\022\023\n\013enable_copy\030\004 \001(\010\022\024\n\014enable_paste" +
+      "\030\005 \001(\010\"\201\002\n\nCommandACL\022\n\n\002id\030\001 \001(\t\022\014\n\004nam" +
+      "e\030\002 \001(\t\022\020\n\010priority\030\003 \001(\005\022*\n\006action\030\005 \001(" +
+      "\0162\032.message.CommandACL.Action\022\021\n\tis_acti" +
+      "ve\030\006 \001(\010\022-\n\016command_groups\030\007 \003(\0132\025.messa" +
+      "ge.CommandGroup\"Y\n\006Action\022\n\n\006Reject\020\000\022\n\n" +
+      "\006Accept\020\001\022\n\n\006Review\020\002\022\013\n\007Warning\020\003\022\021\n\rNo" +
+      "tifyWarning\020\004\022\013\n\007Unknown\020\005\"\226\001\n\017DataMaski" +
+      "ngRule\022\n\n\002id\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\020\n\010prio" +
+      "rity\030\003 \001(\005\022\021\n\tis_active\030\004 \001(\010\022\026\n\016masking" +
+      "_method\030\005 \001(\t\022\024\n\014mask_pattern\030\006 \001(\t\022\026\n\016f" +
+      "ields_pattern\030\007 \001(\t\"m\n\014CommandGroup\022\n\n\002i" +
+      "d\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\017\n\007content\030\003 \001(\t\022\014" +
+      "\n\004Type\030\004 \001(\t\022\017\n\007pattern\030\005 \001(\t\022\023\n\013ignore_" +
+      "case\030\006 \001(\010\"\037\n\nExpireInfo\022\021\n\texpire_at\030\001 " +
+      "\001(\003\"\264\002\n\007Session\022\n\n\002id\030\001 \001(\t\022\014\n\004user\030\002 \001(" +
+      "\t\022\r\n\005asset\030\003 \001(\t\022\017\n\007account\030\004 \001(\t\022.\n\nlog" +
+      "in_from\030\005 \001(\0162\032.message.Session.LoginFro" +
+      "m\022\023\n\013remote_addr\030\006 \001(\t\022\020\n\010protocol\030\007 \001(\t" +
+      "\022\022\n\ndate_start\030\010 \001(\003\022\016\n\006org_id\030\t \001(\t\022\017\n\007" +
+      "user_id\030\n \001(\t\022\020\n\010asset_id\030\013 \001(\t\022\022\n\naccou" +
+      "nt_id\030\014 \001(\t\022\020\n\010token_id\030\r \001(\t\"+\n\tLoginFr" +
+      "om\022\006\n\002WT\020\000\022\006\n\002ST\020\001\022\006\n\002RT\020\002\022\006\n\002DT\020\003\"?\n\013To" +
+      "kenStatus\022\014\n\004code\030\001 \001(\t\022\016\n\006detail\030\002 \001(\t\022" +
+      "\022\n\nis_expired\030\003 \001(\010\"\252\001\n\014TerminalTask\022\n\n\002" +
+      "id\030\001 \001(\t\022#\n\006action\030\002 \001(\0162\023.message.TaskA" +
+      "ction\022\022\n\nsession_id\030\003 \001(\t\022\025\n\rterminated_" +
+      "by\030\004 \001(\t\022\022\n\ncreated_by\030\005 \001(\t\022*\n\014token_st" +
+      "atus\030\006 \001(\0132\024.message.TokenStatus\"\325\003\n\rTok" +
+      "enAuthInfo\022\016\n\006key_id\030\001 \001(\t\022\022\n\nsecrete_id" +
+      "\030\002 \001(\t\022\035\n\005asset\030\003 \001(\0132\016.message.Asset\022\033\n" +
+      "\004user\030\004 \001(\0132\r.message.User\022!\n\007account\030\005 " +
+      "\001(\0132\020.message.Account\022\'\n\npermission\030\006 \001(" +
+      "\0132\023.message.Permission\022(\n\013expire_info\030\007 " +
+      "\001(\0132\023.message.ExpireInfo\022)\n\014filter_rules" +
+      "\030\010 \003(\0132\023.message.CommandACL\022\"\n\010gateways\030" +
+      "\t \003(\0132\020.message.Gateway\022*\n\007setting\030\n \001(\013" +
+      "2\031.message.ComponentSetting\022#\n\010platform\030" +
+      "\013 \001(\0132\021.message.Platform\022\030\n\020FaceMonitorT" +
+      "oken\030\014 \001(\t\0224\n\022data_masking_rules\030\r \003(\0132\030" +
+      ".message.DataMaskingRule\"\203\001\n\010Platform\022\n\n" +
+      "\002id\030\001 \001(\005\022\014\n\004name\030\002 \001(\t\022\020\n\010category\030\003 \001(" +
+      "\t\022\017\n\007charset\030\004 \001(\t\022\014\n\004type\030\005 \001(\t\022,\n\tprot" +
+      "ocols\030\006 \003(\0132\031.message.PlatformProtocol\"\246" +
+      "\001\n\020PlatformProtocol\022\n\n\002id\030\001 \001(\005\022\014\n\004name\030" +
+      "\002 \001(\t\022\014\n\004port\030\003 \001(\005\0229\n\010settings\030\004 \003(\0132\'." +
+      "message.PlatformProtocol.SettingsEntry\032/" +
+      "\n\rSettingsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 " +
+      "\001(\t:\0028\001\"C\n\020ComponentSetting\022\025\n\rmax_idle_" +
+      "time\030\001 \001(\005\022\030\n\020max_session_time\030\002 \001(\005\"1\n\007" +
+      "Forward\022\n\n\002id\030\001 \001(\t\022\014\n\004Host\030\002 \001(\t\022\014\n\004por" +
+      "t\030\003 \001(\005\"\247\001\n\rPublicSetting\022\025\n\rxpack_enabl" +
+      "ed\030\001 \001(\010\022\025\n\rvalid_license\030\002 \001(\010\022\024\n\014gpt_b" +
+      "ase_url\030\003 \001(\t\022\023\n\013gpt_api_key\030\004 \001(\t\022\021\n\tgp" +
+      "t_proxy\030\005 \001(\t\022\021\n\tgpt_model\030\006 \001(\t\022\027\n\017lice" +
+      "nse_content\030\007 \001(\t\"%\n\006Cookie\022\014\n\004name\030\001 \001(" +
+      "\t\022\r\n\005value\030\002 \001(\t\"\250\003\n\020LifecycleLogData\0223\n" +
+      "\005event\030\001 \001(\0162$.message.LifecycleLogData." +
+      "event_type\022\016\n\006reason\030\002 \001(\t\022\014\n\004user\030\003 \001(\t" +
+      "\"\300\002\n\nevent_type\022\027\n\023AssetConnectSuccess\020\000" +
+      "\022\030\n\024AssetConnectFinished\020\001\022\023\n\017CreateShar" +
+      "eLink\020\002\022\023\n\017UserJoinSession\020\003\022\024\n\020UserLeav" +
+      "eSession\020\004\022\024\n\020AdminJoinMonitor\020\005\022\024\n\020Admi" +
+      "nExitMonitor\020\006\022\026\n\022ReplayConvertStart\020\007\022\030" +
+      "\n\024ReplayConvertSuccess\020\010\022\030\n\024ReplayConver" +
+      "tFailure\020\t\022\025\n\021ReplayUploadStart\020\n\022\027\n\023Rep" +
+      "layUploadSuccess\020\013\022\027\n\023ReplayUploadFailur" +
+      "e\020\014*k\n\nTaskAction\022\017\n\013KillSession\020\000\022\017\n\013Lo" +
+      "ckSession\020\001\022\021\n\rUnlockSession\020\002\022\024\n\020TokenP" +
+      "ermExpired\020\003\022\022\n\016TokenPermValid\020\004*f\n\tRisk" +
+      "Level\022\n\n\006Normal\020\000\022\013\n\007Warning\020\001\022\n\n\006Reject" +
+      "\020\002\022\020\n\014ReviewReject\020\003\022\020\n\014ReviewAccept\020\004\022\020" +
+      "\n\014ReviewCancel\020\005B \n\023org.jumpserver.wispZ" +
+      "\t/protobufb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -28588,21 +30819,33 @@ java.lang.String defaultValue) {
     internal_static_message_User_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_message_User_descriptor,
-        new java.lang.String[] { "Id", "Name", "Username", "Role", "IsValid", "IsActive", });
-    internal_static_message_Account_descriptor =
+        new java.lang.String[] { "Id", "Name", "Username", "Role", "IsValid", "IsActive", "OrgRoles", "SystemRoles", });
+    internal_static_message_OrgRole_descriptor =
       getDescriptor().getMessageTypes().get(1);
+    internal_static_message_OrgRole_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_message_OrgRole_descriptor,
+        new java.lang.String[] { "Id", "Name", "DisplayName", });
+    internal_static_message_SystemRole_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_message_SystemRole_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_message_SystemRole_descriptor,
+        new java.lang.String[] { "Id", "DisplayName", });
+    internal_static_message_Account_descriptor =
+      getDescriptor().getMessageTypes().get(3);
     internal_static_message_Account_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_message_Account_descriptor,
         new java.lang.String[] { "Id", "Name", "Username", "Secret", "SecretType", });
     internal_static_message_LabelValue_descriptor =
-      getDescriptor().getMessageTypes().get(2);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_message_LabelValue_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_message_LabelValue_descriptor,
         new java.lang.String[] { "Label", "Value", });
     internal_static_message_Asset_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_message_Asset_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_message_Asset_descriptor,
@@ -28614,79 +30857,79 @@ java.lang.String defaultValue) {
         internal_static_message_Asset_Specific_descriptor,
         new java.lang.String[] { "DbName", "UseSsl", "CaCert", "ClientCert", "ClientKey", "AllowInvalidCert", "AutoFill", "UsernameSelector", "PasswordSelector", "SubmitSelector", "Script", "HttpProxy", "PgSslMode", });
     internal_static_message_Protocol_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_message_Protocol_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_message_Protocol_descriptor,
         new java.lang.String[] { "Name", "Id", "Port", });
     internal_static_message_Gateway_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_message_Gateway_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_message_Gateway_descriptor,
         new java.lang.String[] { "Id", "Name", "Ip", "Port", "Protocol", "Username", "Password", "PrivateKey", });
     internal_static_message_Permission_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_message_Permission_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_message_Permission_descriptor,
         new java.lang.String[] { "EnableConnect", "EnableDownload", "EnableUpload", "EnableCopy", "EnablePaste", });
     internal_static_message_CommandACL_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_message_CommandACL_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_message_CommandACL_descriptor,
         new java.lang.String[] { "Id", "Name", "Priority", "Action", "IsActive", "CommandGroups", });
     internal_static_message_DataMaskingRule_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_message_DataMaskingRule_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_message_DataMaskingRule_descriptor,
         new java.lang.String[] { "Id", "Name", "Priority", "IsActive", "MaskingMethod", "MaskPattern", "FieldsPattern", });
     internal_static_message_CommandGroup_descriptor =
-      getDescriptor().getMessageTypes().get(9);
+      getDescriptor().getMessageTypes().get(11);
     internal_static_message_CommandGroup_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_message_CommandGroup_descriptor,
         new java.lang.String[] { "Id", "Name", "Content", "Type", "Pattern", "IgnoreCase", });
     internal_static_message_ExpireInfo_descriptor =
-      getDescriptor().getMessageTypes().get(10);
+      getDescriptor().getMessageTypes().get(12);
     internal_static_message_ExpireInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_message_ExpireInfo_descriptor,
         new java.lang.String[] { "ExpireAt", });
     internal_static_message_Session_descriptor =
-      getDescriptor().getMessageTypes().get(11);
+      getDescriptor().getMessageTypes().get(13);
     internal_static_message_Session_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_message_Session_descriptor,
         new java.lang.String[] { "Id", "User", "Asset", "Account", "LoginFrom", "RemoteAddr", "Protocol", "DateStart", "OrgId", "UserId", "AssetId", "AccountId", "TokenId", });
     internal_static_message_TokenStatus_descriptor =
-      getDescriptor().getMessageTypes().get(12);
+      getDescriptor().getMessageTypes().get(14);
     internal_static_message_TokenStatus_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_message_TokenStatus_descriptor,
         new java.lang.String[] { "Code", "Detail", "IsExpired", });
     internal_static_message_TerminalTask_descriptor =
-      getDescriptor().getMessageTypes().get(13);
+      getDescriptor().getMessageTypes().get(15);
     internal_static_message_TerminalTask_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_message_TerminalTask_descriptor,
         new java.lang.String[] { "Id", "Action", "SessionId", "TerminatedBy", "CreatedBy", "TokenStatus", });
     internal_static_message_TokenAuthInfo_descriptor =
-      getDescriptor().getMessageTypes().get(14);
+      getDescriptor().getMessageTypes().get(16);
     internal_static_message_TokenAuthInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_message_TokenAuthInfo_descriptor,
         new java.lang.String[] { "KeyId", "SecreteId", "Asset", "User", "Account", "Permission", "ExpireInfo", "FilterRules", "Gateways", "Setting", "Platform", "FaceMonitorToken", "DataMaskingRules", });
     internal_static_message_Platform_descriptor =
-      getDescriptor().getMessageTypes().get(15);
+      getDescriptor().getMessageTypes().get(17);
     internal_static_message_Platform_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_message_Platform_descriptor,
         new java.lang.String[] { "Id", "Name", "Category", "Charset", "Type", "Protocols", });
     internal_static_message_PlatformProtocol_descriptor =
-      getDescriptor().getMessageTypes().get(16);
+      getDescriptor().getMessageTypes().get(18);
     internal_static_message_PlatformProtocol_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_message_PlatformProtocol_descriptor,
@@ -28698,31 +30941,31 @@ java.lang.String defaultValue) {
         internal_static_message_PlatformProtocol_SettingsEntry_descriptor,
         new java.lang.String[] { "Key", "Value", });
     internal_static_message_ComponentSetting_descriptor =
-      getDescriptor().getMessageTypes().get(17);
+      getDescriptor().getMessageTypes().get(19);
     internal_static_message_ComponentSetting_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_message_ComponentSetting_descriptor,
         new java.lang.String[] { "MaxIdleTime", "MaxSessionTime", });
     internal_static_message_Forward_descriptor =
-      getDescriptor().getMessageTypes().get(18);
+      getDescriptor().getMessageTypes().get(20);
     internal_static_message_Forward_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_message_Forward_descriptor,
         new java.lang.String[] { "Id", "Host", "Port", });
     internal_static_message_PublicSetting_descriptor =
-      getDescriptor().getMessageTypes().get(19);
+      getDescriptor().getMessageTypes().get(21);
     internal_static_message_PublicSetting_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_message_PublicSetting_descriptor,
         new java.lang.String[] { "XpackEnabled", "ValidLicense", "GptBaseUrl", "GptApiKey", "GptProxy", "GptModel", "LicenseContent", });
     internal_static_message_Cookie_descriptor =
-      getDescriptor().getMessageTypes().get(20);
+      getDescriptor().getMessageTypes().get(22);
     internal_static_message_Cookie_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_message_Cookie_descriptor,
         new java.lang.String[] { "Name", "Value", });
     internal_static_message_LifecycleLogData_descriptor =
-      getDescriptor().getMessageTypes().get(21);
+      getDescriptor().getMessageTypes().get(23);
     internal_static_message_LifecycleLogData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_message_LifecycleLogData_descriptor,

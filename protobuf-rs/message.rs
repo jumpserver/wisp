@@ -14,6 +14,26 @@ pub struct User {
     pub is_valid: bool,
     #[prost(bool, tag="6")]
     pub is_active: bool,
+    #[prost(message, repeated, tag="7")]
+    pub org_roles: ::prost::alloc::vec::Vec<OrgRole>,
+    #[prost(message, repeated, tag="8")]
+    pub system_roles: ::prost::alloc::vec::Vec<SystemRole>,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OrgRole {
+    #[prost(string, tag="1")]
+    pub id: ::prost::alloc::string::String,
+    #[prost(string, tag="2")]
+    pub name: ::prost::alloc::string::String,
+    #[prost(string, tag="3")]
+    pub display_name: ::prost::alloc::string::String,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SystemRole {
+    #[prost(string, tag="1")]
+    pub id: ::prost::alloc::string::String,
+    #[prost(string, tag="2")]
+    pub display_name: ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Account {

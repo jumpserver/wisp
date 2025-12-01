@@ -11,6 +11,19 @@ message User {
   string role = 4;
   bool is_valid = 5;
   bool is_active = 6;
+  repeated OrgRole org_roles = 7;
+  repeated SystemRole system_roles = 8;
+}
+
+message OrgRole {
+  string id = 1;
+  string name = 2;
+  string display_name = 3;
+}
+
+message SystemRole {
+  string id = 1;
+  string display_name = 2;
 }
 
 message Account {
@@ -185,7 +198,7 @@ message TokenAuthInfo {
   ComponentSetting setting = 10;
   Platform platform = 11;
   string FaceMonitorToken = 12;
-  repeated DataMaskingRule data_masking_rules=13;
+  repeated DataMaskingRule data_masking_rules = 13;
 }
 
 message Platform {

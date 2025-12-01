@@ -10,14 +10,41 @@ import (
 )
 
 func ConvertToProtobufUser(user model.User) *pb.User {
+	systemRoles := ConvertToProtobufSystemRoles(user.SystemRoles)
+	orgRoles := ConvertToProtobufOrgRoles(user.OrgRoles)
 	return &pb.User{
-		Id:       user.ID,
-		Name:     user.Name,
-		Username: user.Username,
-		Role:     user.Role,
-		IsValid:  user.IsValid,
-		IsActive: user.IsActive,
+		Id:          user.ID,
+		Name:        user.Name,
+		Username:    user.Username,
+		Role:        user.Role,
+		IsValid:     user.IsValid,
+		IsActive:    user.IsActive,
+		SystemRoles: systemRoles,
+		OrgRoles:    orgRoles,
 	}
+}
+
+func ConvertToProtobufSystemRoles(systemRoles []model.SystemRole) []*pb.SystemRole {
+	ret := make([]*pb.SystemRole, 0, len(systemRoles))
+	for _, role := range systemRoles {
+		ret = append(ret, &pb.SystemRole{
+			Id:          role.ID,
+			DisplayName: role.DisplayName,
+		})
+	}
+	return ret
+}
+
+func ConvertToProtobufOrgRoles(roles []model.OrgRole) []*pb.OrgRole {
+	ret := make([]*pb.OrgRole, 0, len(roles))
+	for _, role := range roles {
+		ret = append(ret, &pb.OrgRole{
+			Id:          role.ID,
+			DisplayName: role.DisplayName,
+			Name:        role.Name,
+		})
+	}
+	return ret
 }
 
 func ConvertToProtobufProtocols(protocol []model.Protocol) []*pb.Protocol {
