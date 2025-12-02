@@ -21,6 +21,8 @@ func ConvertToProtobufUser(user model.User) *pb.User {
 		IsActive:    user.IsActive,
 		SystemRoles: systemRoles,
 		OrgRoles:    orgRoles,
+		IsOrgAdmin:  user.IsOrgAdmin,
+		IsSuperuser: user.IsSuperuser,
 	}
 }
 

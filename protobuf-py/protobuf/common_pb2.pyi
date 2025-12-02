@@ -35,7 +35,7 @@ ReviewAccept: RiskLevel
 ReviewCancel: RiskLevel
 
 class User(_message.Message):
-    __slots__ = ("id", "name", "username", "role", "is_valid", "is_active", "org_roles", "system_roles")
+    __slots__ = ("id", "name", "username", "role", "is_valid", "is_active", "org_roles", "system_roles", "is_superuser", "is_org_admin")
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     USERNAME_FIELD_NUMBER: _ClassVar[int]
@@ -44,6 +44,8 @@ class User(_message.Message):
     IS_ACTIVE_FIELD_NUMBER: _ClassVar[int]
     ORG_ROLES_FIELD_NUMBER: _ClassVar[int]
     SYSTEM_ROLES_FIELD_NUMBER: _ClassVar[int]
+    IS_SUPERUSER_FIELD_NUMBER: _ClassVar[int]
+    IS_ORG_ADMIN_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
     username: str
@@ -52,7 +54,9 @@ class User(_message.Message):
     is_active: bool
     org_roles: _containers.RepeatedCompositeFieldContainer[OrgRole]
     system_roles: _containers.RepeatedCompositeFieldContainer[SystemRole]
-    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., username: _Optional[str] = ..., role: _Optional[str] = ..., is_valid: bool = ..., is_active: bool = ..., org_roles: _Optional[_Iterable[_Union[OrgRole, _Mapping]]] = ..., system_roles: _Optional[_Iterable[_Union[SystemRole, _Mapping]]] = ...) -> None: ...
+    is_superuser: bool
+    is_org_admin: bool
+    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., username: _Optional[str] = ..., role: _Optional[str] = ..., is_valid: bool = ..., is_active: bool = ..., org_roles: _Optional[_Iterable[_Union[OrgRole, _Mapping]]] = ..., system_roles: _Optional[_Iterable[_Union[SystemRole, _Mapping]]] = ..., is_superuser: bool = ..., is_org_admin: bool = ...) -> None: ...
 
 class OrgRole(_message.Message):
     __slots__ = ("id", "name", "display_name")

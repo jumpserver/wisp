@@ -13,6 +13,8 @@ message User {
   bool is_active = 6;
   repeated OrgRole org_roles = 7;
   repeated SystemRole system_roles = 8;
+  bool is_superuser = 9;
+  bool is_org_admin = 10;
 }
 
 message OrgRole {

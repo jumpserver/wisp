@@ -433,6 +433,18 @@ public final class Common {
      */
     org.jumpserver.wisp.Common.SystemRoleOrBuilder getSystemRolesOrBuilder(
         int index);
+
+    /**
+     * <code>bool is_superuser = 9;</code>
+     * @return The isSuperuser.
+     */
+    boolean getIsSuperuser();
+
+    /**
+     * <code>bool is_org_admin = 10;</code>
+     * @return The isOrgAdmin.
+     */
+    boolean getIsOrgAdmin();
   }
   /**
    * Protobuf type {@code message.User}
@@ -737,6 +749,28 @@ public final class Common {
       return systemRoles_.get(index);
     }
 
+    public static final int IS_SUPERUSER_FIELD_NUMBER = 9;
+    private boolean isSuperuser_ = false;
+    /**
+     * <code>bool is_superuser = 9;</code>
+     * @return The isSuperuser.
+     */
+    @java.lang.Override
+    public boolean getIsSuperuser() {
+      return isSuperuser_;
+    }
+
+    public static final int IS_ORG_ADMIN_FIELD_NUMBER = 10;
+    private boolean isOrgAdmin_ = false;
+    /**
+     * <code>bool is_org_admin = 10;</code>
+     * @return The isOrgAdmin.
+     */
+    @java.lang.Override
+    public boolean getIsOrgAdmin() {
+      return isOrgAdmin_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -775,6 +809,12 @@ public final class Common {
       for (int i = 0; i < systemRoles_.size(); i++) {
         output.writeMessage(8, systemRoles_.get(i));
       }
+      if (isSuperuser_ != false) {
+        output.writeBool(9, isSuperuser_);
+      }
+      if (isOrgAdmin_ != false) {
+        output.writeBool(10, isOrgAdmin_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -812,6 +852,14 @@ public final class Common {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(8, systemRoles_.get(i));
       }
+      if (isSuperuser_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(9, isSuperuser_);
+      }
+      if (isOrgAdmin_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(10, isOrgAdmin_);
+      }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
@@ -843,6 +891,10 @@ public final class Common {
           .equals(other.getOrgRolesList())) return false;
       if (!getSystemRolesList()
           .equals(other.getSystemRolesList())) return false;
+      if (getIsSuperuser()
+          != other.getIsSuperuser()) return false;
+      if (getIsOrgAdmin()
+          != other.getIsOrgAdmin()) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -876,6 +928,12 @@ public final class Common {
         hash = (37 * hash) + SYSTEM_ROLES_FIELD_NUMBER;
         hash = (53 * hash) + getSystemRolesList().hashCode();
       }
+      hash = (37 * hash) + IS_SUPERUSER_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getIsSuperuser());
+      hash = (37 * hash) + IS_ORG_ADMIN_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getIsOrgAdmin());
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1027,6 +1085,8 @@ public final class Common {
           systemRolesBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000080);
+        isSuperuser_ = false;
+        isOrgAdmin_ = false;
         return this;
       }
 
@@ -1099,6 +1159,12 @@ public final class Common {
         }
         if (((from_bitField0_ & 0x00000020) != 0)) {
           result.isActive_ = isActive_;
+        }
+        if (((from_bitField0_ & 0x00000100) != 0)) {
+          result.isSuperuser_ = isSuperuser_;
+        }
+        if (((from_bitField0_ & 0x00000200) != 0)) {
+          result.isOrgAdmin_ = isOrgAdmin_;
         }
       }
 
@@ -1192,6 +1258,12 @@ public final class Common {
             }
           }
         }
+        if (other.getIsSuperuser() != false) {
+          setIsSuperuser(other.getIsSuperuser());
+        }
+        if (other.getIsOrgAdmin() != false) {
+          setIsOrgAdmin(other.getIsOrgAdmin());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
@@ -1274,6 +1346,16 @@ public final class Common {
                 }
                 break;
               } // case 66
+              case 72: {
+                isSuperuser_ = input.readBool();
+                bitField0_ |= 0x00000100;
+                break;
+              } // case 72
+              case 80: {
+                isOrgAdmin_ = input.readBool();
+                bitField0_ |= 0x00000200;
+                break;
+              } // case 80
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -2121,6 +2203,70 @@ public final class Common {
           systemRoles_ = null;
         }
         return systemRolesBuilder_;
+      }
+
+      private boolean isSuperuser_ ;
+      /**
+       * <code>bool is_superuser = 9;</code>
+       * @return The isSuperuser.
+       */
+      @java.lang.Override
+      public boolean getIsSuperuser() {
+        return isSuperuser_;
+      }
+      /**
+       * <code>bool is_superuser = 9;</code>
+       * @param value The isSuperuser to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIsSuperuser(boolean value) {
+
+        isSuperuser_ = value;
+        bitField0_ |= 0x00000100;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool is_superuser = 9;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearIsSuperuser() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        isSuperuser_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean isOrgAdmin_ ;
+      /**
+       * <code>bool is_org_admin = 10;</code>
+       * @return The isOrgAdmin.
+       */
+      @java.lang.Override
+      public boolean getIsOrgAdmin() {
+        return isOrgAdmin_;
+      }
+      /**
+       * <code>bool is_org_admin = 10;</code>
+       * @param value The isOrgAdmin to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIsOrgAdmin(boolean value) {
+
+        isOrgAdmin_ = value;
+        bitField0_ |= 0x00000200;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool is_org_admin = 10;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearIsOrgAdmin() {
+        bitField0_ = (bitField0_ & ~0x00000200);
+        isOrgAdmin_ = false;
+        onChanged();
+        return this;
       }
 
       // @@protoc_insertion_point(builder_scope:message.User)
@@ -30705,110 +30851,111 @@ java.lang.String defaultValue) {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\014common.proto\022\007message\"\265\001\n\004User\022\n\n\002id\030\001" +
+      "\n\014common.proto\022\007message\"\341\001\n\004User\022\n\n\002id\030\001" +
       " \001(\t\022\014\n\004name\030\002 \001(\t\022\020\n\010username\030\003 \001(\t\022\014\n\004" +
       "role\030\004 \001(\t\022\020\n\010is_valid\030\005 \001(\010\022\021\n\tis_activ" +
       "e\030\006 \001(\010\022#\n\torg_roles\030\007 \003(\0132\020.message.Org" +
       "Role\022)\n\014system_roles\030\010 \003(\0132\023.message.Sys" +
-      "temRole\"9\n\007OrgRole\022\n\n\002id\030\001 \001(\t\022\014\n\004name\030\002" +
-      " \001(\t\022\024\n\014display_name\030\003 \001(\t\".\n\nSystemRole" +
-      "\022\n\n\002id\030\001 \001(\t\022\024\n\014display_name\030\002 \001(\t\"n\n\007Ac" +
-      "count\022\n\n\002id\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\020\n\010usern" +
-      "ame\030\004 \001(\t\022\016\n\006secret\030\005 \001(\t\022\'\n\nsecretType\030" +
-      "\006 \001(\0132\023.message.LabelValue\"*\n\nLabelValue" +
-      "\022\r\n\005label\030\001 \001(\t\022\r\n\005value\030\002 \001(\t\"\305\003\n\005Asset" +
-      "\022\n\n\002id\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\017\n\007address\030\003 " +
-      "\001(\t\022\016\n\006org_id\030\004 \001(\t\022\020\n\010org_name\030\005 \001(\t\022$\n" +
-      "\tprotocols\030\006 \003(\0132\021.message.Protocol\022)\n\010s" +
-      "pecific\030\007 \001(\0132\027.message.Asset.Specific\032\235" +
-      "\002\n\010Specific\022\017\n\007db_name\030\001 \001(\t\022\017\n\007use_ssl\030" +
-      "\002 \001(\010\022\017\n\007ca_cert\030\003 \001(\t\022\023\n\013client_cert\030\004 " +
-      "\001(\t\022\022\n\nclient_key\030\005 \001(\t\022\032\n\022allow_invalid" +
-      "_cert\030\006 \001(\010\022\021\n\tauto_fill\030\007 \001(\t\022\031\n\021userna" +
-      "me_selector\030\010 \001(\t\022\031\n\021password_selector\030\t" +
-      " \001(\t\022\027\n\017submit_selector\030\n \001(\t\022\016\n\006script\030" +
-      "\013 \001(\t\022\022\n\nhttp_proxy\030\014 \001(\t\022\023\n\013pg_ssl_mode" +
-      "\030\r \001(\t\"2\n\010Protocol\022\014\n\004name\030\002 \001(\t\022\n\n\002id\030\001" +
-      " \001(\005\022\014\n\004port\030\003 \001(\005\"\210\001\n\007Gateway\022\n\n\002id\030\001 \001" +
-      "(\t\022\014\n\004name\030\002 \001(\t\022\n\n\002ip\030\003 \001(\t\022\014\n\004port\030\004 \001" +
-      "(\005\022\020\n\010protocol\030\005 \001(\t\022\020\n\010username\030\006 \001(\t\022\020" +
-      "\n\010password\030\007 \001(\t\022\023\n\013private_key\030\010 \001(\t\"\177\n" +
-      "\nPermission\022\026\n\016enable_connect\030\001 \001(\010\022\027\n\017e" +
-      "nable_download\030\002 \001(\010\022\025\n\renable_upload\030\003 " +
-      "\001(\010\022\023\n\013enable_copy\030\004 \001(\010\022\024\n\014enable_paste" +
-      "\030\005 \001(\010\"\201\002\n\nCommandACL\022\n\n\002id\030\001 \001(\t\022\014\n\004nam" +
-      "e\030\002 \001(\t\022\020\n\010priority\030\003 \001(\005\022*\n\006action\030\005 \001(" +
-      "\0162\032.message.CommandACL.Action\022\021\n\tis_acti" +
-      "ve\030\006 \001(\010\022-\n\016command_groups\030\007 \003(\0132\025.messa" +
-      "ge.CommandGroup\"Y\n\006Action\022\n\n\006Reject\020\000\022\n\n" +
-      "\006Accept\020\001\022\n\n\006Review\020\002\022\013\n\007Warning\020\003\022\021\n\rNo" +
-      "tifyWarning\020\004\022\013\n\007Unknown\020\005\"\226\001\n\017DataMaski" +
-      "ngRule\022\n\n\002id\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\020\n\010prio" +
-      "rity\030\003 \001(\005\022\021\n\tis_active\030\004 \001(\010\022\026\n\016masking" +
-      "_method\030\005 \001(\t\022\024\n\014mask_pattern\030\006 \001(\t\022\026\n\016f" +
-      "ields_pattern\030\007 \001(\t\"m\n\014CommandGroup\022\n\n\002i" +
-      "d\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\017\n\007content\030\003 \001(\t\022\014" +
-      "\n\004Type\030\004 \001(\t\022\017\n\007pattern\030\005 \001(\t\022\023\n\013ignore_" +
-      "case\030\006 \001(\010\"\037\n\nExpireInfo\022\021\n\texpire_at\030\001 " +
-      "\001(\003\"\264\002\n\007Session\022\n\n\002id\030\001 \001(\t\022\014\n\004user\030\002 \001(" +
-      "\t\022\r\n\005asset\030\003 \001(\t\022\017\n\007account\030\004 \001(\t\022.\n\nlog" +
-      "in_from\030\005 \001(\0162\032.message.Session.LoginFro" +
-      "m\022\023\n\013remote_addr\030\006 \001(\t\022\020\n\010protocol\030\007 \001(\t" +
-      "\022\022\n\ndate_start\030\010 \001(\003\022\016\n\006org_id\030\t \001(\t\022\017\n\007" +
-      "user_id\030\n \001(\t\022\020\n\010asset_id\030\013 \001(\t\022\022\n\naccou" +
-      "nt_id\030\014 \001(\t\022\020\n\010token_id\030\r \001(\t\"+\n\tLoginFr" +
-      "om\022\006\n\002WT\020\000\022\006\n\002ST\020\001\022\006\n\002RT\020\002\022\006\n\002DT\020\003\"?\n\013To" +
-      "kenStatus\022\014\n\004code\030\001 \001(\t\022\016\n\006detail\030\002 \001(\t\022" +
-      "\022\n\nis_expired\030\003 \001(\010\"\252\001\n\014TerminalTask\022\n\n\002" +
-      "id\030\001 \001(\t\022#\n\006action\030\002 \001(\0162\023.message.TaskA" +
-      "ction\022\022\n\nsession_id\030\003 \001(\t\022\025\n\rterminated_" +
-      "by\030\004 \001(\t\022\022\n\ncreated_by\030\005 \001(\t\022*\n\014token_st" +
-      "atus\030\006 \001(\0132\024.message.TokenStatus\"\325\003\n\rTok" +
-      "enAuthInfo\022\016\n\006key_id\030\001 \001(\t\022\022\n\nsecrete_id" +
-      "\030\002 \001(\t\022\035\n\005asset\030\003 \001(\0132\016.message.Asset\022\033\n" +
-      "\004user\030\004 \001(\0132\r.message.User\022!\n\007account\030\005 " +
-      "\001(\0132\020.message.Account\022\'\n\npermission\030\006 \001(" +
-      "\0132\023.message.Permission\022(\n\013expire_info\030\007 " +
-      "\001(\0132\023.message.ExpireInfo\022)\n\014filter_rules" +
-      "\030\010 \003(\0132\023.message.CommandACL\022\"\n\010gateways\030" +
-      "\t \003(\0132\020.message.Gateway\022*\n\007setting\030\n \001(\013" +
-      "2\031.message.ComponentSetting\022#\n\010platform\030" +
-      "\013 \001(\0132\021.message.Platform\022\030\n\020FaceMonitorT" +
-      "oken\030\014 \001(\t\0224\n\022data_masking_rules\030\r \003(\0132\030" +
-      ".message.DataMaskingRule\"\203\001\n\010Platform\022\n\n" +
-      "\002id\030\001 \001(\005\022\014\n\004name\030\002 \001(\t\022\020\n\010category\030\003 \001(" +
-      "\t\022\017\n\007charset\030\004 \001(\t\022\014\n\004type\030\005 \001(\t\022,\n\tprot" +
-      "ocols\030\006 \003(\0132\031.message.PlatformProtocol\"\246" +
-      "\001\n\020PlatformProtocol\022\n\n\002id\030\001 \001(\005\022\014\n\004name\030" +
-      "\002 \001(\t\022\014\n\004port\030\003 \001(\005\0229\n\010settings\030\004 \003(\0132\'." +
-      "message.PlatformProtocol.SettingsEntry\032/" +
-      "\n\rSettingsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 " +
-      "\001(\t:\0028\001\"C\n\020ComponentSetting\022\025\n\rmax_idle_" +
-      "time\030\001 \001(\005\022\030\n\020max_session_time\030\002 \001(\005\"1\n\007" +
-      "Forward\022\n\n\002id\030\001 \001(\t\022\014\n\004Host\030\002 \001(\t\022\014\n\004por" +
-      "t\030\003 \001(\005\"\247\001\n\rPublicSetting\022\025\n\rxpack_enabl" +
-      "ed\030\001 \001(\010\022\025\n\rvalid_license\030\002 \001(\010\022\024\n\014gpt_b" +
-      "ase_url\030\003 \001(\t\022\023\n\013gpt_api_key\030\004 \001(\t\022\021\n\tgp" +
-      "t_proxy\030\005 \001(\t\022\021\n\tgpt_model\030\006 \001(\t\022\027\n\017lice" +
-      "nse_content\030\007 \001(\t\"%\n\006Cookie\022\014\n\004name\030\001 \001(" +
-      "\t\022\r\n\005value\030\002 \001(\t\"\250\003\n\020LifecycleLogData\0223\n" +
-      "\005event\030\001 \001(\0162$.message.LifecycleLogData." +
-      "event_type\022\016\n\006reason\030\002 \001(\t\022\014\n\004user\030\003 \001(\t" +
-      "\"\300\002\n\nevent_type\022\027\n\023AssetConnectSuccess\020\000" +
-      "\022\030\n\024AssetConnectFinished\020\001\022\023\n\017CreateShar" +
-      "eLink\020\002\022\023\n\017UserJoinSession\020\003\022\024\n\020UserLeav" +
-      "eSession\020\004\022\024\n\020AdminJoinMonitor\020\005\022\024\n\020Admi" +
-      "nExitMonitor\020\006\022\026\n\022ReplayConvertStart\020\007\022\030" +
-      "\n\024ReplayConvertSuccess\020\010\022\030\n\024ReplayConver" +
-      "tFailure\020\t\022\025\n\021ReplayUploadStart\020\n\022\027\n\023Rep" +
-      "layUploadSuccess\020\013\022\027\n\023ReplayUploadFailur" +
-      "e\020\014*k\n\nTaskAction\022\017\n\013KillSession\020\000\022\017\n\013Lo" +
-      "ckSession\020\001\022\021\n\rUnlockSession\020\002\022\024\n\020TokenP" +
-      "ermExpired\020\003\022\022\n\016TokenPermValid\020\004*f\n\tRisk" +
-      "Level\022\n\n\006Normal\020\000\022\013\n\007Warning\020\001\022\n\n\006Reject" +
-      "\020\002\022\020\n\014ReviewReject\020\003\022\020\n\014ReviewAccept\020\004\022\020" +
-      "\n\014ReviewCancel\020\005B \n\023org.jumpserver.wispZ" +
-      "\t/protobufb\006proto3"
+      "temRole\022\024\n\014is_superuser\030\t \001(\010\022\024\n\014is_org_" +
+      "admin\030\n \001(\010\"9\n\007OrgRole\022\n\n\002id\030\001 \001(\t\022\014\n\004na" +
+      "me\030\002 \001(\t\022\024\n\014display_name\030\003 \001(\t\".\n\nSystem" +
+      "Role\022\n\n\002id\030\001 \001(\t\022\024\n\014display_name\030\002 \001(\t\"n" +
+      "\n\007Account\022\n\n\002id\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\020\n\010u" +
+      "sername\030\004 \001(\t\022\016\n\006secret\030\005 \001(\t\022\'\n\nsecretT" +
+      "ype\030\006 \001(\0132\023.message.LabelValue\"*\n\nLabelV" +
+      "alue\022\r\n\005label\030\001 \001(\t\022\r\n\005value\030\002 \001(\t\"\305\003\n\005A" +
+      "sset\022\n\n\002id\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\017\n\007addres" +
+      "s\030\003 \001(\t\022\016\n\006org_id\030\004 \001(\t\022\020\n\010org_name\030\005 \001(" +
+      "\t\022$\n\tprotocols\030\006 \003(\0132\021.message.Protocol\022" +
+      ")\n\010specific\030\007 \001(\0132\027.message.Asset.Specif" +
+      "ic\032\235\002\n\010Specific\022\017\n\007db_name\030\001 \001(\t\022\017\n\007use_" +
+      "ssl\030\002 \001(\010\022\017\n\007ca_cert\030\003 \001(\t\022\023\n\013client_cer" +
+      "t\030\004 \001(\t\022\022\n\nclient_key\030\005 \001(\t\022\032\n\022allow_inv" +
+      "alid_cert\030\006 \001(\010\022\021\n\tauto_fill\030\007 \001(\t\022\031\n\021us" +
+      "ername_selector\030\010 \001(\t\022\031\n\021password_select" +
+      "or\030\t \001(\t\022\027\n\017submit_selector\030\n \001(\t\022\016\n\006scr" +
+      "ipt\030\013 \001(\t\022\022\n\nhttp_proxy\030\014 \001(\t\022\023\n\013pg_ssl_" +
+      "mode\030\r \001(\t\"2\n\010Protocol\022\014\n\004name\030\002 \001(\t\022\n\n\002" +
+      "id\030\001 \001(\005\022\014\n\004port\030\003 \001(\005\"\210\001\n\007Gateway\022\n\n\002id" +
+      "\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\n\n\002ip\030\003 \001(\t\022\014\n\004port" +
+      "\030\004 \001(\005\022\020\n\010protocol\030\005 \001(\t\022\020\n\010username\030\006 \001" +
+      "(\t\022\020\n\010password\030\007 \001(\t\022\023\n\013private_key\030\010 \001(" +
+      "\t\"\177\n\nPermission\022\026\n\016enable_connect\030\001 \001(\010\022" +
+      "\027\n\017enable_download\030\002 \001(\010\022\025\n\renable_uploa" +
+      "d\030\003 \001(\010\022\023\n\013enable_copy\030\004 \001(\010\022\024\n\014enable_p" +
+      "aste\030\005 \001(\010\"\201\002\n\nCommandACL\022\n\n\002id\030\001 \001(\t\022\014\n" +
+      "\004name\030\002 \001(\t\022\020\n\010priority\030\003 \001(\005\022*\n\006action\030" +
+      "\005 \001(\0162\032.message.CommandACL.Action\022\021\n\tis_" +
+      "active\030\006 \001(\010\022-\n\016command_groups\030\007 \003(\0132\025.m" +
+      "essage.CommandGroup\"Y\n\006Action\022\n\n\006Reject\020" +
+      "\000\022\n\n\006Accept\020\001\022\n\n\006Review\020\002\022\013\n\007Warning\020\003\022\021" +
+      "\n\rNotifyWarning\020\004\022\013\n\007Unknown\020\005\"\226\001\n\017DataM" +
+      "askingRule\022\n\n\002id\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\020\n\010" +
+      "priority\030\003 \001(\005\022\021\n\tis_active\030\004 \001(\010\022\026\n\016mas" +
+      "king_method\030\005 \001(\t\022\024\n\014mask_pattern\030\006 \001(\t\022" +
+      "\026\n\016fields_pattern\030\007 \001(\t\"m\n\014CommandGroup\022" +
+      "\n\n\002id\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\017\n\007content\030\003 \001" +
+      "(\t\022\014\n\004Type\030\004 \001(\t\022\017\n\007pattern\030\005 \001(\t\022\023\n\013ign" +
+      "ore_case\030\006 \001(\010\"\037\n\nExpireInfo\022\021\n\texpire_a" +
+      "t\030\001 \001(\003\"\264\002\n\007Session\022\n\n\002id\030\001 \001(\t\022\014\n\004user\030" +
+      "\002 \001(\t\022\r\n\005asset\030\003 \001(\t\022\017\n\007account\030\004 \001(\t\022.\n" +
+      "\nlogin_from\030\005 \001(\0162\032.message.Session.Logi" +
+      "nFrom\022\023\n\013remote_addr\030\006 \001(\t\022\020\n\010protocol\030\007" +
+      " \001(\t\022\022\n\ndate_start\030\010 \001(\003\022\016\n\006org_id\030\t \001(\t" +
+      "\022\017\n\007user_id\030\n \001(\t\022\020\n\010asset_id\030\013 \001(\t\022\022\n\na" +
+      "ccount_id\030\014 \001(\t\022\020\n\010token_id\030\r \001(\t\"+\n\tLog" +
+      "inFrom\022\006\n\002WT\020\000\022\006\n\002ST\020\001\022\006\n\002RT\020\002\022\006\n\002DT\020\003\"?" +
+      "\n\013TokenStatus\022\014\n\004code\030\001 \001(\t\022\016\n\006detail\030\002 " +
+      "\001(\t\022\022\n\nis_expired\030\003 \001(\010\"\252\001\n\014TerminalTask" +
+      "\022\n\n\002id\030\001 \001(\t\022#\n\006action\030\002 \001(\0162\023.message.T" +
+      "askAction\022\022\n\nsession_id\030\003 \001(\t\022\025\n\rtermina" +
+      "ted_by\030\004 \001(\t\022\022\n\ncreated_by\030\005 \001(\t\022*\n\014toke" +
+      "n_status\030\006 \001(\0132\024.message.TokenStatus\"\325\003\n" +
+      "\rTokenAuthInfo\022\016\n\006key_id\030\001 \001(\t\022\022\n\nsecret" +
+      "e_id\030\002 \001(\t\022\035\n\005asset\030\003 \001(\0132\016.message.Asse" +
+      "t\022\033\n\004user\030\004 \001(\0132\r.message.User\022!\n\007accoun" +
+      "t\030\005 \001(\0132\020.message.Account\022\'\n\npermission\030" +
+      "\006 \001(\0132\023.message.Permission\022(\n\013expire_inf" +
+      "o\030\007 \001(\0132\023.message.ExpireInfo\022)\n\014filter_r" +
+      "ules\030\010 \003(\0132\023.message.CommandACL\022\"\n\010gatew" +
+      "ays\030\t \003(\0132\020.message.Gateway\022*\n\007setting\030\n" +
+      " \001(\0132\031.message.ComponentSetting\022#\n\010platf" +
+      "orm\030\013 \001(\0132\021.message.Platform\022\030\n\020FaceMoni" +
+      "torToken\030\014 \001(\t\0224\n\022data_masking_rules\030\r \003" +
+      "(\0132\030.message.DataMaskingRule\"\203\001\n\010Platfor" +
+      "m\022\n\n\002id\030\001 \001(\005\022\014\n\004name\030\002 \001(\t\022\020\n\010category\030" +
+      "\003 \001(\t\022\017\n\007charset\030\004 \001(\t\022\014\n\004type\030\005 \001(\t\022,\n\t" +
+      "protocols\030\006 \003(\0132\031.message.PlatformProtoc" +
+      "ol\"\246\001\n\020PlatformProtocol\022\n\n\002id\030\001 \001(\005\022\014\n\004n" +
+      "ame\030\002 \001(\t\022\014\n\004port\030\003 \001(\005\0229\n\010settings\030\004 \003(" +
+      "\0132\'.message.PlatformProtocol.SettingsEnt" +
+      "ry\032/\n\rSettingsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005valu" +
+      "e\030\002 \001(\t:\0028\001\"C\n\020ComponentSetting\022\025\n\rmax_i" +
+      "dle_time\030\001 \001(\005\022\030\n\020max_session_time\030\002 \001(\005" +
+      "\"1\n\007Forward\022\n\n\002id\030\001 \001(\t\022\014\n\004Host\030\002 \001(\t\022\014\n" +
+      "\004port\030\003 \001(\005\"\247\001\n\rPublicSetting\022\025\n\rxpack_e" +
+      "nabled\030\001 \001(\010\022\025\n\rvalid_license\030\002 \001(\010\022\024\n\014g" +
+      "pt_base_url\030\003 \001(\t\022\023\n\013gpt_api_key\030\004 \001(\t\022\021" +
+      "\n\tgpt_proxy\030\005 \001(\t\022\021\n\tgpt_model\030\006 \001(\t\022\027\n\017" +
+      "license_content\030\007 \001(\t\"%\n\006Cookie\022\014\n\004name\030" +
+      "\001 \001(\t\022\r\n\005value\030\002 \001(\t\"\250\003\n\020LifecycleLogDat" +
+      "a\0223\n\005event\030\001 \001(\0162$.message.LifecycleLogD" +
+      "ata.event_type\022\016\n\006reason\030\002 \001(\t\022\014\n\004user\030\003" +
+      " \001(\t\"\300\002\n\nevent_type\022\027\n\023AssetConnectSucce" +
+      "ss\020\000\022\030\n\024AssetConnectFinished\020\001\022\023\n\017Create" +
+      "ShareLink\020\002\022\023\n\017UserJoinSession\020\003\022\024\n\020User" +
+      "LeaveSession\020\004\022\024\n\020AdminJoinMonitor\020\005\022\024\n\020" +
+      "AdminExitMonitor\020\006\022\026\n\022ReplayConvertStart" +
+      "\020\007\022\030\n\024ReplayConvertSuccess\020\010\022\030\n\024ReplayCo" +
+      "nvertFailure\020\t\022\025\n\021ReplayUploadStart\020\n\022\027\n" +
+      "\023ReplayUploadSuccess\020\013\022\027\n\023ReplayUploadFa" +
+      "ilure\020\014*k\n\nTaskAction\022\017\n\013KillSession\020\000\022\017" +
+      "\n\013LockSession\020\001\022\021\n\rUnlockSession\020\002\022\024\n\020To" +
+      "kenPermExpired\020\003\022\022\n\016TokenPermValid\020\004*f\n\t" +
+      "RiskLevel\022\n\n\006Normal\020\000\022\013\n\007Warning\020\001\022\n\n\006Re" +
+      "ject\020\002\022\020\n\014ReviewReject\020\003\022\020\n\014ReviewAccept" +
+      "\020\004\022\020\n\014ReviewCancel\020\005B \n\023org.jumpserver.w" +
+      "ispZ\t/protobufb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -30819,7 +30966,7 @@ java.lang.String defaultValue) {
     internal_static_message_User_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_message_User_descriptor,
-        new java.lang.String[] { "Id", "Name", "Username", "Role", "IsValid", "IsActive", "OrgRoles", "SystemRoles", });
+        new java.lang.String[] { "Id", "Name", "Username", "Role", "IsValid", "IsActive", "OrgRoles", "SystemRoles", "IsSuperuser", "IsOrgAdmin", });
     internal_static_message_OrgRole_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_message_OrgRole_fieldAccessorTable = new

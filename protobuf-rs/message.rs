@@ -18,6 +18,10 @@ pub struct User {
     pub org_roles: ::prost::alloc::vec::Vec<OrgRole>,
     #[prost(message, repeated, tag="8")]
     pub system_roles: ::prost::alloc::vec::Vec<SystemRole>,
+    #[prost(bool, tag="9")]
+    pub is_superuser: bool,
+    #[prost(bool, tag="10")]
+    pub is_org_admin: bool,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OrgRole {
