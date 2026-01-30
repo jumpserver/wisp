@@ -12,6 +12,7 @@ import (
 	modelCommon "github.com/jumpserver-dev/sdk-go/common"
 	"github.com/jumpserver-dev/sdk-go/model"
 	"github.com/jumpserver-dev/sdk-go/service"
+	"github.com/jumpserver-dev/sdk-go/storage"
 	"github.com/jumpserver/wisp/pkg/logger"
 )
 
@@ -71,12 +72,12 @@ func (u *UploaderService) updateBackendCfg(termCfg *model.TerminalConfig) {
 	u.terminalCfg.Store(termCfg)
 }
 
-func (u *UploaderService) getCommandBackend() CommandStorage {
-	cfg := u.commandCfg.Load().(model.CommandConfig)
+func (u *UploaderService) getCommandBackend() storage.CommandStorage {
+	cfg := u.terminalCfg.Load().(model.TerminalConfig)
 	return NewCommandBackend(u.apiClient, &cfg)
 }
 
-func (u *UploaderService) getReplayBackend() ReplayStorage {
+func (u *UploaderService) getReplayBackend() storage.ReplayStorage {
 	cfg := u.replayCfg.Load().(model.ReplayConfig)
 	return NewReplayBackend(u.apiClient, &cfg)
 }
