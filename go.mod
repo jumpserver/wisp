@@ -4,7 +4,7 @@ go 1.24.6
 
 require (
 	github.com/gorilla/websocket v1.5.3
-	github.com/jumpserver-dev/sdk-go v0.0.0-20260130073417-a608248623a4
+	github.com/jumpserver-dev/sdk-go v0.0.0-20260303030710-709165abd15f
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.10.1
 	github.com/spf13/viper v1.21.0
