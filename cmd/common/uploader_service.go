@@ -73,8 +73,8 @@ func (u *UploaderService) updateBackendCfg(termCfg *model.TerminalConfig) {
 }
 
 func (u *UploaderService) getCommandBackend() storage.CommandStorage {
-	cfg := u.terminalCfg.Load().(model.TerminalConfig)
-	return NewCommandBackend(u.apiClient, &cfg)
+	cfg := u.terminalCfg.Load().(*model.TerminalConfig)
+	return NewCommandBackend(u.apiClient, cfg)
 }
 
 func (u *UploaderService) getReplayBackend() storage.ReplayStorage {
