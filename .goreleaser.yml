@@ -1,0 +1,97 @@
+version: 2
+
+project_name: wisp
+
+builds:
+  - id: archives-unix
+    main: .
+    binary: wisp
+  - flags:
+      - -trimpath
+    ldflags:
+      - -w -s
+      - -X 'github.com/jumpserver/wisp/cmd.Version={{ .Tag }}'
+      - -X 'github.com/jumpserver/wisp/cmd.BuildTime={{ .Date }}'
+      - -X 'github.com/jumpserver/wisp/cmd.GitCommit={{ .ShortCommit }}'
+      - -X 'github.com/jumpserver/wisp/cmd.GoVersion={{ .Env.GOVERSION }}'
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+      - freebsd
+      - openbsd
+      - netbsd
+    goarch:
+      - amd64
+      - arm64
+      - mips64le
+      - ppc64le
+      - s390x
+      - riscv64
+      - loong64
+
+  - id: linux-deb
+    main: .
+    binary: wisp
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+    goarch:
+      - amd64
+      - arm64
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+      - -X 'github.com/jumpserver/wisp/cmd.Version={{ .Tag }}'
+      - -X 'github.com/jumpserver/wisp/cmd.BuildTime={{ .Date }}'
+      - -X 'github.com/jumpserver/wisp/cmd.GitCommit={{ .ShortCommit }}'
+      - -X 'github.com/jumpserver/wisp/cmd.GoVersion={{ .Env.GOVERSION }}'
+
+    hooks:
+      post:
+        - cmd: >-
+            {{- if eq .Arch "arm64" -}}
+            aarch64-linux-gnu-objcopy --remove-section .go.buildinfo "{{ .Path }}"
+            {{- else -}}
+            objcopy --remove-section .go.buildinfo "{{ .Path }}"
+            {{- end -}}
+          output: true
+
+archives:
+  - id: tarballs
+    ids:
+      - archives-unix
+    formats:
+      - tar.gz
+    name_template: >-
+      {{ .ProjectName }}-{{ .Version }}-{{ .Os }}-{{ .Arch }}
+    files:
+      - config_example.yml
+    # use zip for windows archives
+    format_overrides:
+      - goos: windows
+        format: zip
+
+nfpms:
+  - id: linux-packages
+    ids:
+      - linux-deb
+    package_name: wisp
+    formats:
+      - deb
+    file_name_template: >-
+      {{ .PackageName }}_linux_{{ .Arch }}
+    bindir: /usr/local/bin
+    maintainer: JumpServer Dev <support@jumpserver.org>
+    description: Wisp is the communication component between JumpServer terminal services and the Core API.
+    homepage: https://github.com/jumpserver/wisp
+
+checksum:
+  name_template: checksums.txt
+
+changelog:
+  disable: true
