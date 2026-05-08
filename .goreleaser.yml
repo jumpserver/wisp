@@ -10,10 +10,10 @@ builds:
       - -trimpath
     ldflags:
       - -w -s
-      - -X 'github.com/jumpserver/wisp/cmd.Version={{ .Tag }}'
-      - -X 'github.com/jumpserver/wisp/cmd.BuildTime={{ .Date }}'
-      - -X 'github.com/jumpserver/wisp/cmd.GitCommit={{ .ShortCommit }}'
-      - -X 'github.com/jumpserver/wisp/cmd.GoVersion={{ .Env.GOVERSION }}'
+      - -X github.com/jumpserver/wisp/cmd.Version={{ .Tag }}
+      - -X github.com/jumpserver/wisp/cmd.BuildTime={{ .Date }}
+      - -X github.com/jumpserver/wisp/cmd.GitCommit={{ .ShortCommit }}
+      - -X github.com/jumpserver/wisp/cmd.GoVersion={{ .Env.GOVERSION }}
     env:
       - CGO_ENABLED=0
     goos:
@@ -46,10 +46,10 @@ builds:
       - -trimpath
     ldflags:
       - -s -w
-      - -X 'github.com/jumpserver/wisp/cmd.Version={{ .Tag }}'
-      - -X 'github.com/jumpserver/wisp/cmd.BuildTime={{ .Date }}'
-      - -X 'github.com/jumpserver/wisp/cmd.GitCommit={{ .ShortCommit }}'
-      - -X 'github.com/jumpserver/wisp/cmd.GoVersion={{ .Env.GOVERSION }}'
+      - -X github.com/jumpserver/wisp/cmd.Version={{ .Tag }}
+      - -X github.com/jumpserver/wisp/cmd.BuildTime={{ .Date }}
+      - -X github.com/jumpserver/wisp/cmd.GitCommit={{ .ShortCommit }}
+      - -X github.com/jumpserver/wisp/cmd.GoVersion={{ .Env.GOVERSION }}
 
     hooks:
       post:
