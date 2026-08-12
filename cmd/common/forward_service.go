@@ -68,7 +68,7 @@ func FindAvailableDomainGateway(domain *model.Domain) (*ssh.Client, error) {
 		logger.Infof("Domain %s use gateway %s failed: %s",
 			domain.Name, gateway.Name, err)
 	}
-	logger.Errorf("Domain %s find available gateway failed: %s", domain.Name)
+	logger.Errorf("Domain %s find available gateway failed: %s", domain.Name, ErrNoAvailable)
 	return nil, ErrNoAvailable
 }
 
