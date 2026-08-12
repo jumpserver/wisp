@@ -11,6 +11,7 @@ import (
 	"github.com/jumpserver-dev/sdk-go/model"
 	"github.com/jumpserver-dev/sdk-go/service"
 	"github.com/jumpserver/wisp/cmd/common"
+	"github.com/jumpserver/wisp/pkg/config"
 	"github.com/jumpserver/wisp/pkg/forward"
 	"github.com/jumpserver/wisp/pkg/logger"
 	pb "github.com/jumpserver/wisp/protobuf-go/protobuf"
@@ -18,11 +19,16 @@ import (
 
 func NewJMServer(apiClient *service.JMService, uploader *common.UploaderService,
 	beat *common.BeatService) *JMServer {
+	conf := config.Get()
 	return &JMServer{
-		apiClient:    apiClient,
-		uploader:     uploader,
-		beat:         beat,
-		forwardStore: common.NewForwardCache(),
+		apiClient:     apiClient,
+		uploader:      uploader,
+		beat:          beat,
+		forwardStore:  common.NewForwardCache(),
+		agentSessions: newAgentSessionRegistry(),
+		agentLimiter: newAgentRequestLimiter(
+			conf.AIMaxConcurrent, conf.AIRequestQueueSize,
+		),
 	}
 }
 
@@ -33,7 +39,9 @@ type JMServer struct {
 	uploader *common.UploaderService
 	beat     *common.BeatService
 
-	forwardStore *common.ForwardCache
+	forwardStore  *common.ForwardCache
+	agentSessions *agentSessionRegistry
+	agentLimiter  *agentRequestLimiter
 }
 
 func (j *JMServer) GetTokenAuthInfo(ctx context.Context, req *pb.TokenRequest) (*pb.TokenResponse, error) {
@@ -122,6 +130,7 @@ func (j *JMServer) FinishSession(ctx context.Context, req *pb.SessionFinishReque
 		return &pb.SessionFinishResp{Status: &status}, nil
 	}
 	status.Ok = true
+	j.agentSessions.close(req.Id)
 	j.beat.RemoveSessionId(req.Id)
 	logger.Debugf("Finish Session %s", req.Id)
 	return &pb.SessionFinishResp{Status: &status}, nil
@@ -159,10 +168,10 @@ func (j *JMServer) DispatchTask(stream pb.Service_DispatchTaskServer) error {
 		if err != nil {
 			msg := fmt.Sprintf("Dispatch Task streaming err: %v", err)
 			if err == io.EOF {
-				logger.Infof(msg)
+				logger.Infof("%s", msg)
 				return nil
 			}
-			logger.Errorf(msg)
+			logger.Errorf("%s", msg)
 			return err
 		}
 		j.handleTerminalTask(taskReq)

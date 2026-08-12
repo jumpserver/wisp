@@ -14,15 +14,18 @@ import (
 )
 
 type Config struct {
-	ComponentName  string `mapstructure:"COMPONENT_NAME"`
-	Name           string `mapstructure:"NAME"`
-	CoreHost       string `mapstructure:"CORE_HOST"`
-	BootstrapToken string `mapstructure:"BOOTSTRAP_TOKEN"`
-	BindHost       string `mapstructure:"BIND_HOST"`
-	BindPort       string `mapstructure:"BIND_PORT"`
-	LogLevel       string `mapstructure:"LOG_LEVEL"`
-	RootPath       string `mapstructure:"WORK_DIR"`
-	ExecuteProgram string `mapstructure:"EXECUTE_PROGRAM"`
+	ComponentName      string `mapstructure:"COMPONENT_NAME"`
+	Name               string `mapstructure:"NAME"`
+	CoreHost           string `mapstructure:"CORE_HOST"`
+	BootstrapToken     string `mapstructure:"BOOTSTRAP_TOKEN"`
+	BindHost           string `mapstructure:"BIND_HOST"`
+	BindPort           string `mapstructure:"BIND_PORT"`
+	LogLevel           string `mapstructure:"LOG_LEVEL"`
+	RootPath           string `mapstructure:"WORK_DIR"`
+	ExecuteProgram     string `mapstructure:"EXECUTE_PROGRAM"`
+	AIAuditEnabled     bool   `mapstructure:"AI_AUDIT_ENABLED"`
+	AIMaxConcurrent    int    `mapstructure:"AI_MAX_CONCURRENT_REQUESTS"`
+	AIRequestQueueSize int    `mapstructure:"AI_REQUEST_QUEUE_SIZE"`
 
 	DataFolderPath    string
 	LogFolderPath     string
@@ -81,11 +84,12 @@ func Setup(configPath string) {
 
 func getDefaultConfig() Config {
 	return Config{
-		CoreHost:       "http://localhost:8080",
-		BootstrapToken: "",
-		BindHost:       "0.0.0.0",
-		BindPort:       "9090",
-		LogLevel:       "INFO",
+		CoreHost:           "http://localhost:8080",
+		BootstrapToken:     "",
+		BindHost:           "0.0.0.0",
+		BindPort:           "9090",
+		LogLevel:           "INFO",
+		AIRequestQueueSize: 100,
 	}
 
 }

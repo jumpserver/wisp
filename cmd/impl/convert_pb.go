@@ -191,6 +191,8 @@ func ConvertToProtobufSession(sess model.Session) *pb.Session {
 		OrgId:      sess.OrgID,
 		UserId:     sess.UserID,
 		AssetId:    sess.AssetID,
+		AccountId:  sess.AccountID,
+		TokenId:    sess.TokenId,
 	}
 }
 

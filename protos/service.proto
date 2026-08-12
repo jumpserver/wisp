@@ -35,6 +35,7 @@ service Service {
   rpc JoinFaceMonitor(JoinFaceMonitorRequest)returns(JoinFaceMonitorResponse){};
   rpc GetAccountChat(Empty) returns (AccountDetailResponse) {};
   rpc CallAPI(HTTPRequest) returns (HTTPResponse) {}
+  rpc AgentSession(stream AgentClientEvent) returns (stream AgentServerEvent) {}
 }
 
 
@@ -306,4 +307,80 @@ message HTTPRequest {
 message HTTPResponse {
   Status status = 1;
   bytes body = 2;
+}
+
+// AgentSession is a component-to-Wisp session stream. Each Chen JMS session
+// owns one independent stream while all streams share the existing HTTP/2
+// channel. JSON payloads deliberately keep the UI chat and surface context
+// independently evolvable from this transport contract.
+message AgentSessionOpen {
+  string session_id = 1;
+  string user_id = 2;
+  string organization_id = 3;
+  string asset_id = 4;
+  string account_id = 5;
+  string protocol = 6;
+  string language = 7;
+  string surface = 8;
+}
+
+message AgentRequest {
+  string id = 1;
+  string operation = 2;
+  string question = 3;
+  string context_json = 4;
+}
+
+message AgentToolResult {
+  string id = 1;
+  string result_json = 2;
+  string error = 3;
+}
+
+message AgentCancel {
+  string request_id = 1;
+}
+
+message AgentClientEvent {
+  oneof event {
+    AgentSessionOpen open = 1;
+    AgentRequest request = 2;
+    AgentToolResult tool_result = 3;
+    AgentCancel cancel = 4;
+    Empty close = 5;
+  }
+}
+
+message AgentReady {
+  bool enabled = 1;
+  string reason = 2;
+  string session_id = 3;
+  string surface = 4;
+  string provider = 5;
+  string model = 6;
+}
+
+message AgentChatMessage {
+  string message_json = 1;
+}
+
+message AgentToolCall {
+  string id = 1;
+  string name = 2;
+  string arguments_json = 3;
+}
+
+message AgentError {
+  string code = 1;
+  string message = 2;
+  string request_id = 3;
+}
+
+message AgentServerEvent {
+  oneof event {
+    AgentReady ready = 1;
+    AgentChatMessage chat = 2;
+    AgentToolCall tool_call = 3;
+    AgentError error = 4;
+  }
 }

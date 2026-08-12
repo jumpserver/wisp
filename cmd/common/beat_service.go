@@ -148,6 +148,16 @@ func (b *BeatService) GetSessions() []*SessionToken {
 	return sids
 }
 
+func (b *BeatService) GetSession(id string) (SessionToken, bool) {
+	b.Lock()
+	defer b.Unlock()
+	session, ok := b.sessMap[id]
+	if !ok || session == nil {
+		return SessionToken{}, false
+	}
+	return *session, true
+}
+
 func (b *BeatService) RemoveSessionId(sid string) {
 	b.Lock()
 	defer b.Unlock()
