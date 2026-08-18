@@ -154,12 +154,92 @@ func TestSQLSurfaceAllowsOnlyMetadataAndValidationTools(t *testing.T) {
 }
 
 func TestSQLSurfaceModelOnlySeesBatchedMetadataTool(t *testing.T) {
-	tool := sqlAssistantActionTool()
+	tool := sqlAssistantActionTool(false)
 	properties := tool.Parameters["properties"].(map[string]any)
 	toolName := properties["toolName"].(map[string]any)
 	names := toolName["enum"].([]string)
 	if len(names) != 2 || names[0] != "" || names[1] != "inspect_schema" {
 		t.Fatalf("model tool names = %#v, want only batched metadata inspection", names)
+	}
+}
+
+func TestSQLSurfaceDisablesMetadataToolAfterDuplicateCall(t *testing.T) {
+	surface := NewSQLSurface()
+	state := SurfaceState{ToolResults: []SurfaceToolResult{{
+		Name:      "inspect_schema",
+		Arguments: json.RawMessage(`{"schema":"public","query":"users"}`),
+		Result:    json.RawMessage(`{"tables":[]}`),
+	}}}
+	decision := surface.EvaluateToolCall(
+		SurfaceRequest{Operation: "generate"},
+		state,
+		SurfaceToolCall{
+			Name:      "INSPECT_SCHEMA",
+			Arguments: json.RawMessage(` { "query": "users", "schema": "public" } `),
+		},
+	)
+	if !decision.Blocked || !decision.DisableFurtherTools ||
+		decision.Outcome != "duplicate_tool_blocked" {
+		t.Fatalf("duplicate policy decision = %#v", decision)
+	}
+}
+
+func TestSQLSurfaceHasIndependentSchemaInspectionBudget(t *testing.T) {
+	surface := NewSQLSurface()
+	results := []SurfaceToolResult{{
+		Name: "validate_sql", Arguments: json.RawMessage(`{"sql":"SELECT 1"}`),
+		Result: json.RawMessage(`{"valid":true}`),
+	}}
+	for _, query := range []string{"users", "orders", "events"} {
+		arguments, err := json.Marshal(sqlToolArguments{Query: query})
+		if err != nil {
+			t.Fatal(err)
+		}
+		results = append(results, SurfaceToolResult{
+			Name: "inspect_schema", Arguments: arguments, Result: json.RawMessage(`{}`),
+		})
+	}
+	thirdCallDecision := surface.EvaluateToolCall(
+		SurfaceRequest{Operation: "generate"},
+		SurfaceState{ToolResults: results[:3]},
+		SurfaceToolCall{Name: "inspect_schema", Arguments: results[3].Arguments},
+	)
+	if thirdCallDecision.Blocked {
+		t.Fatalf("third schema inspection was blocked: %#v", thirdCallDecision)
+	}
+	newArguments, err := json.Marshal(sqlToolArguments{Query: "sessions"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	decision := surface.EvaluateToolCall(
+		SurfaceRequest{Operation: "generate"},
+		SurfaceState{ToolResults: results},
+		SurfaceToolCall{Name: "inspect_schema", Arguments: newArguments},
+	)
+	if !decision.Blocked || !decision.DisableFurtherTools ||
+		decision.Outcome != "schema_budget_exhausted" {
+		t.Fatalf("schema budget decision = %#v", decision)
+	}
+}
+
+func TestSQLSurfaceRemovesModelToolsAfterSchemaPolicyStopsInspection(t *testing.T) {
+	surface := NewSQLSurface()
+	completion := surface.CompletionRequest(
+		SurfaceRequest{Operation: "generate", Context: json.RawMessage(`{}`)},
+		SurfaceState{Round: 2, ToolCallsDisabled: true},
+		"full",
+	)
+	properties := completion.Tool.Parameters["properties"].(map[string]any)
+	kinds := properties["kind"].(map[string]any)["enum"].([]string)
+	toolNames := properties["toolName"].(map[string]any)["enum"].([]string)
+	if len(kinds) != 2 || kinds[0] != "answer" || kinds[1] != "proposal" {
+		t.Fatalf("disabled action kinds = %#v", kinds)
+	}
+	if len(toolNames) != 1 || toolNames[0] != "" {
+		t.Fatalf("disabled tool names = %#v", toolNames)
+	}
+	if !strings.Contains(completion.System, "Metadata tools are no longer available") {
+		t.Fatal("tool-disabled completion is missing final-response guidance")
 	}
 }
 
@@ -208,5 +288,77 @@ func TestSQLSurfaceDisablesReasoningAfterFirstModelRound(t *testing.T) {
 	}
 	if second.ReasoningMode != "off" {
 		t.Fatalf("second round reasoning mode = %q, want off", second.ReasoningMode)
+	}
+}
+
+func TestSQLSurfaceGenerateAddsIntentAnswerGuidance(t *testing.T) {
+	surface := NewSQLSurface()
+	completion := surface.CompletionRequest(
+		SurfaceRequest{Operation: "generate", Context: json.RawMessage(`{}`)},
+		SurfaceState{Round: 1},
+		"full",
+	)
+	for _, expected := range []string{
+		"For Operation=generate only",
+		"perform the resulting action in this same sql_assistant response",
+		"return kind=answer immediately",
+		"exactly one concise clarification question",
+		"Missing table or column metadata",
+		"always use resolvedSchema",
+		"restriction never prevents you from drafting a SELECT",
+		"query or browse all rows of a named table",
+	} {
+		if !strings.Contains(completion.System, expected) {
+			t.Fatalf("generate system prompt does not contain %q", expected)
+		}
+	}
+}
+
+func TestSQLSurfaceIntentAnswerGuidanceOnlyAppliesToGenerate(t *testing.T) {
+	surface := NewSQLSurface()
+	for _, operation := range []string{"explain", "repair"} {
+		completion := surface.CompletionRequest(
+			SurfaceRequest{Operation: operation, Context: json.RawMessage(`{}`)},
+			SurfaceState{Round: 1},
+			"full",
+		)
+		if strings.Contains(completion.System, "For Operation=generate only") {
+			t.Fatalf("%s system prompt unexpectedly contains generate intent guidance", operation)
+		}
+	}
+}
+
+func TestSQLSurfaceGenerateAnswerSkipsSQLReviewAndEmitsTextOnly(t *testing.T) {
+	surface := NewSQLSurface()
+	request := SurfaceRequest{
+		Operation: "generate",
+		Context:   json.RawMessage(`{"dialect":"postgresql","database":"app"}`),
+	}
+	action, err := surface.DecodeAction(`{
+		"kind":"answer","message":"当前为 PostgreSQL，数据库名为 app。","thoughtSummary":"",
+		"toolName":"","toolArguments":{"query":"","schema":"","tables":[],"sql":""},
+		"sql":"","proposalExplanation":"",
+		"analysis":{"valid":false,"statementType":"UNKNOWN","riskLevel":0,
+		"riskReason":"模型未验证","tables":[],"columns":[],"errors":["虚假的分析"]}
+	}`)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	review, err := surface.Review(request, SurfaceState{}, action)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if review.Tool != nil || review.Correction != "" {
+		t.Fatalf("generate answer review = %#v, want immediate finalization", review)
+	}
+
+	parts, err := surface.FinalParts(request, SurfaceState{}, action)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(parts) != 1 || parts[0].Type != "text" ||
+		parts[0].Text != "当前为 PostgreSQL，数据库名为 app。" {
+		t.Fatalf("generate answer parts = %#v, want one text part", parts)
 	}
 }

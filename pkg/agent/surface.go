@@ -48,11 +48,12 @@ type SurfaceToolResult struct {
 }
 
 type SurfaceState struct {
-	History      string              `json:"history,omitempty"`
-	ToolResults  []SurfaceToolResult `json:"toolResults,omitempty"`
-	Correction   string              `json:"correction,omitempty"`
-	Round        int                 `json:"round"`
-	MaximumRound int                 `json:"maximumRound"`
+	History           string              `json:"history,omitempty"`
+	ToolResults       []SurfaceToolResult `json:"toolResults,omitempty"`
+	Correction        string              `json:"correction,omitempty"`
+	Round             int                 `json:"round"`
+	MaximumRound      int                 `json:"maximumRound"`
+	ToolCallsDisabled bool                `json:"-"`
 }
 
 type SurfaceAction struct {
@@ -90,14 +91,36 @@ type SurfaceInitializer interface {
 	InitialTools(SurfaceRequest) ([]SurfaceToolCall, error)
 }
 
+type SurfaceToolCallPolicyResult struct {
+	Blocked             bool
+	DisableFurtherTools bool
+	Correction          string
+	Outcome             string
+}
+
+// SurfaceToolCallPolicy lets a surface stop domain-specific no-progress tool
+// loops before they consume the shared runtime tool-call budget.
+type SurfaceToolCallPolicy interface {
+	EvaluateToolCall(SurfaceRequest, SurfaceState, SurfaceToolCall) SurfaceToolCallPolicyResult
+}
+
+// SurfaceToolCallFallback supplies final user-visible content when a model
+// ignores a tool-disabled correction or returns invalid structured output.
+type SurfaceToolCallFallback interface {
+	ToolCallsDisabledAction(SurfaceRequest, SurfaceState) (SurfaceAction, error)
+}
+
 type surfaceRequestMetrics struct {
-	started       time.Time
-	rounds        int
-	modelRequests int
-	toolCalls     int
-	modelDuration time.Duration
-	toolDuration  time.Duration
-	queueDuration time.Duration
+	started               time.Time
+	rounds                int
+	modelRequests         int
+	toolCalls             int
+	duplicateToolBlocked  int
+	schemaBudgetExhausted int
+	forcedClarifications  int
+	modelDuration         time.Duration
+	toolDuration          time.Duration
+	queueDuration         time.Duration
 }
 
 func newSurfaceRequestMetrics() *surfaceRequestMetrics {
@@ -109,13 +132,16 @@ func (m *surfaceRequestMetrics) data() map[string]any {
 		return map[string]any{}
 	}
 	return map[string]any{
-		"durationMs":      durationMilliseconds(time.Since(m.started)),
-		"rounds":          m.rounds,
-		"modelRequests":   m.modelRequests,
-		"modelDurationMs": durationMilliseconds(m.modelDuration),
-		"toolCalls":       m.toolCalls,
-		"toolDurationMs":  durationMilliseconds(m.toolDuration),
-		"queueDurationMs": durationMilliseconds(m.queueDuration),
+		"durationMs":            durationMilliseconds(time.Since(m.started)),
+		"rounds":                m.rounds,
+		"modelRequests":         m.modelRequests,
+		"modelDurationMs":       durationMilliseconds(m.modelDuration),
+		"toolCalls":             m.toolCalls,
+		"duplicateToolBlocked":  m.duplicateToolBlocked,
+		"schemaBudgetExhausted": m.schemaBudgetExhausted,
+		"forcedClarifications":  m.forcedClarifications,
+		"toolDurationMs":        durationMilliseconds(m.toolDuration),
+		"queueDurationMs":       durationMilliseconds(m.queueDuration),
 	}
 }
 
@@ -295,18 +321,43 @@ func (s *SurfaceSession) run(ctx context.Context, request SurfaceRequest) {
 		}
 		action, err := s.surface.DecodeAction(content)
 		if err != nil {
-			state.Correction = err.Error()
-			s.writeAudit("surface_output_repair", map[string]any{
-				"requestId": request.ID, "round": round, "error": err.Error(),
-			})
-			continue
+			if state.ToolCallsDisabled {
+				action, err = s.toolCallsDisabledAction(request, state, metrics, "invalid_output")
+				if err != nil {
+					s.finishWithError(request.ID, err, metrics)
+					return
+				}
+			} else {
+				state.Correction = err.Error()
+				s.writeAudit("surface_output_repair", map[string]any{
+					"requestId": request.ID, "round": round, "error": err.Error(),
+				})
+				continue
+			}
+		}
+		state.Correction = ""
+		if action.Tool != nil {
+			if state.ToolCallsDisabled {
+				action, err = s.toolCallsDisabledAction(request, state, metrics, "tool_requested_while_disabled")
+				if err != nil {
+					s.finishWithError(request.ID, err, metrics)
+					return
+				}
+			} else if policy, ok := s.surface.(SurfaceToolCallPolicy); ok {
+				decision := policy.EvaluateToolCall(request, state, *action.Tool)
+				if decision.Blocked {
+					state.Correction = strings.TrimSpace(decision.Correction)
+					state.ToolCallsDisabled = decision.DisableFurtherTools
+					s.recordToolPolicy(request.ID, decision.Outcome, *action.Tool, metrics)
+					continue
+				}
+			}
 		}
 		thought := visibleThoughtSummary(action.Thought)
 		if thought != "" && thought != lastThought {
 			s.emitData("data-thought-summary", map[string]any{"text": thought}, "process", request.ID)
 			lastThought = thought
 		}
-		state.Correction = ""
 		if action.Tool != nil {
 			if err = s.callTool(ctx, request.ID, &state, *action.Tool, metrics); err != nil {
 				s.finishWithError(request.ID, err, metrics)
@@ -374,6 +425,53 @@ func (s *SurfaceSession) run(ctx context.Context, request SurfaceRequest) {
 	s.finishWithError(request.ID, fmt.Errorf("agent surface reached the maximum reasoning rounds"), metrics)
 }
 
+func (s *SurfaceSession) toolCallsDisabledAction(
+	request SurfaceRequest,
+	state SurfaceState,
+	metrics *surfaceRequestMetrics,
+	reason string,
+) (SurfaceAction, error) {
+	fallback, ok := s.surface.(SurfaceToolCallFallback)
+	if !ok {
+		return SurfaceAction{}, fmt.Errorf("agent surface requested a tool after tools were disabled")
+	}
+	action, err := fallback.ToolCallsDisabledAction(request, state)
+	if err != nil {
+		return SurfaceAction{}, err
+	}
+	metrics.forcedClarifications++
+	logger.Infof(
+		"Agent timing surface=%s request=%s stage=tool_policy outcome=forced_clarification reason=%s",
+		s.surface.Name(), request.ID, reason,
+	)
+	s.writeAudit("surface_tool_policy", map[string]any{
+		"requestId": request.ID, "outcome": "forced_clarification", "reason": reason,
+	})
+	return action, nil
+}
+
+func (s *SurfaceSession) recordToolPolicy(
+	requestID, outcome string,
+	call SurfaceToolCall,
+	metrics *surfaceRequestMetrics,
+) {
+	switch outcome {
+	case "duplicate_tool_blocked":
+		metrics.duplicateToolBlocked++
+	case "schema_budget_exhausted":
+		metrics.schemaBudgetExhausted++
+	default:
+		outcome = "tool_call_blocked"
+	}
+	logger.Infof(
+		"Agent timing surface=%s request=%s stage=tool_policy tool=%s outcome=%s",
+		s.surface.Name(), requestID, call.Name, outcome,
+	)
+	s.writeAudit("surface_tool_policy", map[string]any{
+		"requestId": requestID, "tool": call.Name, "outcome": outcome,
+	})
+}
+
 func visibleThoughtSummary(value string) string {
 	value = strings.TrimSpace(strings.ToValidUTF8(value, "\uFFFD"))
 	runes := []rune(value)
@@ -381,6 +479,19 @@ func visibleThoughtSummary(value string) string {
 		return value
 	}
 	return strings.TrimSpace(string(runes[:maxSurfaceThoughtRunes])) + "…"
+}
+
+func canonicalSurfaceToolFingerprint(call SurfaceToolCall) string {
+	name := strings.ToLower(strings.TrimSpace(call.Name))
+	var arguments any
+	if err := json.Unmarshal(call.Arguments, &arguments); err != nil {
+		return name + "\x00" + strings.TrimSpace(string(call.Arguments))
+	}
+	canonical, err := json.Marshal(arguments)
+	if err != nil {
+		return name + "\x00" + strings.TrimSpace(string(call.Arguments))
+	}
+	return name + "\x00" + string(canonical)
 }
 
 func (s *SurfaceSession) complete(
@@ -609,10 +720,11 @@ func (s *SurfaceSession) logTiming(
 	metrics *surfaceRequestMetrics,
 ) {
 	logger.Infof(
-		"Agent timing surface=%s request=%s stage=request duration_ms=%.3f model_requests=%d model_ms=%.3f tool_calls=%d tool_ms=%.3f queue_ms=%.3f outcome=%s",
+		"Agent timing surface=%s request=%s stage=request duration_ms=%.3f model_requests=%d model_ms=%.3f tool_calls=%d tool_ms=%.3f queue_ms=%.3f duplicate_tool_blocked=%d schema_budget_exhausted=%d forced_clarifications=%d outcome=%s",
 		s.surface.Name(), requestID, durationMilliseconds(time.Since(metrics.started)),
 		metrics.modelRequests, durationMilliseconds(metrics.modelDuration), metrics.toolCalls,
-		durationMilliseconds(metrics.toolDuration), durationMilliseconds(metrics.queueDuration), outcome,
+		durationMilliseconds(metrics.toolDuration), durationMilliseconds(metrics.queueDuration),
+		metrics.duplicateToolBlocked, metrics.schemaBudgetExhausted, metrics.forcedClarifications, outcome,
 	)
 }
 
