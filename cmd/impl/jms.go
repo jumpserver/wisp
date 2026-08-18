@@ -23,6 +23,7 @@ func NewJMServer(apiClient *service.JMService, uploader *common.UploaderService,
 		uploader:     uploader,
 		beat:         beat,
 		forwardStore: common.NewForwardCache(),
+		tokenTickets: common.NewTokenTicketCache(),
 	}
 }
 
@@ -34,6 +35,7 @@ type JMServer struct {
 	beat     *common.BeatService
 
 	forwardStore *common.ForwardCache
+	tokenTickets *common.TokenTicketCache
 }
 
 func (j *JMServer) GetTokenAuthInfo(ctx context.Context, req *pb.TokenRequest) (*pb.TokenResponse, error) {
@@ -47,6 +49,11 @@ func (j *JMServer) GetTokenAuthInfo(ctx context.Context, req *pb.TokenRequest) (
 	}
 	if tokenAuthInfo.Gateway != nil {
 		gateways = append(gateways, *tokenAuthInfo.Gateway)
+	}
+	if tokenAuthInfo.Ticket != nil {
+		j.tokenTickets.Store(tokenAuthInfo.Id, tokenAuthInfo.Ticket.ID, int64(tokenAuthInfo.ExpireAt))
+	} else {
+		j.tokenTickets.Delete(tokenAuthInfo.Id)
 	}
 	setting := j.uploader.GetTerminalSetting()
 	dbTokenInfo := pb.TokenAuthInfo{
@@ -99,6 +106,13 @@ func (j *JMServer) CreateSession(ctx context.Context, req *pb.SessionCreateReque
 		logger.Errorf("Create session failed: %s", err.Error())
 		status.Err = err.Error()
 		return &pb.SessionCreateResponse{Status: &status}, nil
+	}
+	if ticketID, ok := j.tokenTickets.Take(req.Data.TokenId); ok {
+		msg := fmt.Sprintf("Create session %s ticket %s relation", apiResp.ID, ticketID)
+		logger.Info(msg)
+		if err = j.apiClient.CreateSessionTicketRelation(apiResp.ID, ticketID); err != nil {
+			logger.Errorf("%s failed: %s", msg, err)
+		}
 	}
 	status.Ok = true
 	sessionToken := common.SessionToken{
