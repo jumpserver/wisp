@@ -104,6 +104,12 @@ type SurfaceToolCallPolicy interface {
 	EvaluateToolCall(SurfaceRequest, SurfaceState, SurfaceToolCall) SurfaceToolCallPolicyResult
 }
 
+// SurfaceToolResultPolicy lets a surface stop retrying a tool after a result
+// proves that further calls cannot make progress for the current request.
+type SurfaceToolResultPolicy interface {
+	EvaluateToolResult(SurfaceState, SurfaceToolResult) SurfaceToolCallPolicyResult
+}
+
 // SurfaceToolCallFallback supplies final user-visible content when a model
 // ignores a tool-disabled correction or returns invalid structured output.
 type SurfaceToolCallFallback interface {
@@ -460,6 +466,7 @@ func (s *SurfaceSession) recordToolPolicy(
 		metrics.duplicateToolBlocked++
 	case "schema_budget_exhausted":
 		metrics.schemaBudgetExhausted++
+	case "metadata_tool_failed":
 	default:
 		outcome = "tool_call_blocked"
 	}
@@ -610,6 +617,18 @@ func (s *SurfaceSession) callTool(
 	}
 	state.ToolResults = append(state.ToolResults, toolResult)
 	s.writeAudit("surface_tool_result", toolResult)
+	if policy, ok := s.surface.(SurfaceToolResultPolicy); ok {
+		decision := policy.EvaluateToolResult(*state, toolResult)
+		if decision.DisableFurtherTools {
+			state.ToolCallsDisabled = true
+		}
+		if correction := strings.TrimSpace(decision.Correction); correction != "" {
+			state.Correction = correction
+		}
+		if strings.TrimSpace(decision.Outcome) != "" {
+			s.recordToolPolicy(requestID, decision.Outcome, call, metrics)
+		}
+	}
 	return nil
 }
 

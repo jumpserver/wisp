@@ -243,6 +243,26 @@ func TestSQLSurfaceRemovesModelToolsAfterSchemaPolicyStopsInspection(t *testing.
 	}
 }
 
+func TestSQLSurfaceDisablesMetadataToolsAfterInspectionFailure(t *testing.T) {
+	surface := NewSQLSurface()
+	decision := surface.EvaluateToolResult(SurfaceState{}, SurfaceToolResult{
+		Name:  "inspect_schema",
+		Error: "Invalid database metadata request",
+	})
+	if !decision.DisableFurtherTools || decision.Outcome != "metadata_tool_failed" ||
+		!strings.Contains(decision.Correction, "Do not request another metadata tool") {
+		t.Fatalf("failed metadata policy decision = %#v", decision)
+	}
+
+	decision = surface.EvaluateToolResult(SurfaceState{}, SurfaceToolResult{
+		Name:   "inspect_schema",
+		Result: json.RawMessage(`{"objects":[]}`),
+	})
+	if decision.DisableFurtherTools || decision.Outcome != "" {
+		t.Fatalf("successful metadata policy decision = %#v", decision)
+	}
+}
+
 func TestSQLSurfaceDecodeRejectsIncompleteToolAction(t *testing.T) {
 	surface := NewSQLSurface()
 	_, err := surface.DecodeAction(`{
@@ -254,6 +274,23 @@ func TestSQLSurfaceDecodeRejectsIncompleteToolAction(t *testing.T) {
 	}`)
 	if err == nil || !strings.Contains(err.Error(), "schema inspection query or tables are required") {
 		t.Fatalf("DecodeAction error = %v, want missing schema inspection target", err)
+	}
+}
+
+func TestSQLSurfaceDecodeAllowsBoundedTableDiscovery(t *testing.T) {
+	surface := NewSQLSurface()
+	action, err := surface.DecodeAction(`{
+		"kind":"tool","message":"","thoughtSummary":"Discovering tables","toolName":"inspect_schema",
+		"toolArguments":{"query":"*","schema":"public","tables":[],"sql":""},
+		"sql":"","proposalExplanation":"",
+		"analysis":{"valid":false,"statementType":"","riskLevel":0,
+		"riskReason":"","tables":[],"columns":[],"errors":[]}
+	}`)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if action.Tool == nil || !strings.Contains(string(action.Tool.Arguments), `"query":"*"`) {
+		t.Fatalf("discovery action = %#v", action)
 	}
 }
 
@@ -307,6 +344,11 @@ func TestSQLSurfaceGenerateAddsIntentAnswerGuidance(t *testing.T) {
 		"always use resolvedSchema",
 		"restriction never prevents you from drafting a SELECT",
 		"query or browse all rows of a named table",
+		"query=\"*\"",
+		"bounded current-schema business object list",
+		"does not expose table row counts",
+		"must never target information_schema",
+		"bounded set of business tables",
 	} {
 		if !strings.Contains(completion.System, expected) {
 			t.Fatalf("generate system prompt does not contain %q", expected)

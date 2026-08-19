@@ -3,6 +3,7 @@ package agent
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"strings"
 	"testing"
 
@@ -69,6 +70,15 @@ type countingSurfaceTools struct {
 func (t *countingSurfaceTools) Call(context.Context, SurfaceToolCall) (json.RawMessage, error) {
 	t.calls++
 	return json.RawMessage(`{"tables":[]}`), nil
+}
+
+type failingSurfaceTools struct {
+	calls int
+}
+
+func (t *failingSurfaceTools) Call(context.Context, SurfaceToolCall) (json.RawMessage, error) {
+	t.calls++
+	return nil, errors.New("Invalid database metadata request")
 }
 
 func TestSurfaceSessionEmitsOnlyVisibleThoughtSummary(t *testing.T) {
@@ -170,5 +180,38 @@ func TestSurfaceSessionStopsRepeatedSQLToolLoop(t *testing.T) {
 		timing["schemaBudgetExhausted"] != 0 ||
 		timing["forcedClarifications"] != 1 {
 		t.Fatalf("loop protection timing = %#v", timing)
+	}
+}
+
+func TestSurfaceSessionStopsAfterSQLMetadataToolFailure(t *testing.T) {
+	model := &repeatingSQLToolProvider{}
+	tools := &failingSurfaceTools{}
+	surface := NewSQLSurface()
+	surface.SetLanguage("zh-CN")
+	var messages []ChatMessage
+	session := &SurfaceSession{
+		sessionID: "session-tool-error",
+		provider:  model,
+		surface:   surface,
+		tools:     tools,
+		emit:      func(message ChatMessage) { messages = append(messages, message) },
+	}
+	session.run(context.Background(), SurfaceRequest{
+		ID: "request-tool-error", Operation: "generate", Question: "哪个表数据最多",
+		Context: json.RawMessage(`{}`),
+	})
+
+	if model.calls != 2 {
+		t.Fatalf("model calls = %d, want 2", model.calls)
+	}
+	if tools.calls != 1 {
+		t.Fatalf("tool calls = %d, want one failed call", tools.calls)
+	}
+	for _, message := range messages {
+		for _, part := range message.Parts {
+			if part.Type == "data-error" {
+				t.Fatalf("tool failure fallback emitted data-error: %#v", part.Data)
+			}
+		}
 	}
 }
