@@ -322,6 +322,7 @@ message AgentSessionOpen {
   string protocol = 6;
   string language = 7;
   string surface = 8;
+  bool chat_ai_enabled = 9;
 }
 
 message AgentRequest {

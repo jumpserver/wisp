@@ -21,6 +21,8 @@ type agentRequestLimiter struct {
 	waiting  atomic.Int64
 }
 
+const chatAIDisabledReason = "Chat AI is disabled"
+
 func newAgentRequestLimiter(maxConcurrent, maxQueue int) *agentRequestLimiter {
 	if maxConcurrent <= 0 {
 		return nil
@@ -236,6 +238,13 @@ func (j *JMServer) AgentSession(stream pb.Service_AgentSessionServer) error {
 		return nil
 	}
 
+	if !open.ChatAiEnabled {
+		_ = sender.ready(&pb.AgentReady{
+			Enabled: false, Reason: chatAIDisabledReason, SessionId: open.SessionId,
+			Surface: open.Surface,
+		})
+		return nil
+	}
 	termConfig := j.uploader.GetTerminalSetting()
 	localConfig := appconfig.Get()
 	agentConfig := agent.NewConfigWithDataRoot(

@@ -24,3 +24,19 @@ func TestConvertToProtobufSessionPreservesIdentity(t *testing.T) {
 		t.Fatalf("token id = %q, want %q", converted.GetTokenId(), session.TokenId)
 	}
 }
+
+func TestConvertToPbSettingPreservesChatAIGate(t *testing.T) {
+	converted := ConvertToPbSetting(&model.TerminalConfig{}, true)
+	if !converted.GetChatAiEnabled() {
+		t.Fatal("chat AI feature gate was not preserved")
+	}
+}
+
+func TestChatAIEnabledByURL(t *testing.T) {
+	if chatAIEnabledByURL(model.TerminalConfig{GptBaseUrl: " \t "}) {
+		t.Fatal("chat AI must remain disabled when GPT_BASE_URL is empty")
+	}
+	if !chatAIEnabledByURL(model.TerminalConfig{GptBaseUrl: "  https://ai.example.test/v1  "}) {
+		t.Fatal("chat AI must be enabled when GPT_BASE_URL is configured")
+	}
+}

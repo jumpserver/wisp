@@ -6,6 +6,7 @@ import (
 	"io"
 	"net"
 	"strconv"
+	"strings"
 
 	modelCommon "github.com/jumpserver-dev/sdk-go/common"
 	"github.com/jumpserver-dev/sdk-go/model"
@@ -45,6 +46,13 @@ type JMServer struct {
 	agentLimiter  *agentRequestLimiter
 }
 
+// chatAIEnabledByURL is temporary compatibility for Core versions that do
+// not expose CHAT_AI_ENABLED. Use model.TerminalConfig.ChatAIEnabled once the
+// SDK provides it.
+func chatAIEnabledByURL(setting model.TerminalConfig) bool {
+	return strings.TrimSpace(setting.GptBaseUrl) != ""
+}
+
 func (j *JMServer) GetTokenAuthInfo(ctx context.Context, req *pb.TokenRequest) (*pb.TokenResponse, error) {
 	var status pb.Status
 	var gateways []model.Gateway
@@ -73,7 +81,7 @@ func (j *JMServer) GetTokenAuthInfo(ctx context.Context, req *pb.TokenRequest) (
 		Permission:       ConvertToProtobufPermission(tokenAuthInfo.Actions),
 		ExpireInfo:       ConvertToProtobufExpireInfo(tokenAuthInfo.ExpireAt),
 		Gateways:         ConvertToProtobufGateways(gateways),
-		Setting:          ConvertToPbSetting(&setting),
+		Setting:          ConvertToPbSetting(&setting, chatAIEnabledByURL(setting)),
 		Platform:         ConvertToPbPlatform(&tokenAuthInfo.Platform),
 		DataMaskingRules: ConvertToDataMaskingRules(tokenAuthInfo.DataMaskingRules),
 		FaceMonitorToken: tokenAuthInfo.FaceMonitorToken,

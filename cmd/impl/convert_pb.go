@@ -238,10 +238,11 @@ var pbTicketMap = map[string]pb.TicketState_State{
 	model.TicketClosed:   pb.TicketState_Closed,
 }
 
-func ConvertToPbSetting(setting *model.TerminalConfig) *pb.ComponentSetting {
+func ConvertToPbSetting(setting *model.TerminalConfig, chatAIEnabled bool) *pb.ComponentSetting {
 	return &pb.ComponentSetting{
 		MaxIdleTime:    int32(setting.MaxIdleTime),
 		MaxSessionTime: int32(setting.MaxSessionTime),
+		ChatAiEnabled:  chatAIEnabled,
 	}
 }
 
