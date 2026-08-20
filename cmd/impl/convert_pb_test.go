@@ -32,11 +32,28 @@ func TestConvertToPbSettingPreservesChatAIGate(t *testing.T) {
 	}
 }
 
-func TestChatAIEnabledByURL(t *testing.T) {
-	if chatAIEnabledByURL(model.TerminalConfig{GptBaseUrl: " \t "}) {
-		t.Fatal("chat AI must remain disabled when GPT_BASE_URL is empty")
+func TestChatAIEnabledByModelConfig(t *testing.T) {
+	tests := []struct {
+		name    string
+		setting model.TerminalConfig
+		enabled bool
+	}{
+		{name: "missing configuration"},
+		{name: "missing model", setting: model.TerminalConfig{GptApiKey: "key"}},
+		{name: "missing api key", setting: model.TerminalConfig{GptModel: "model"}},
+		{
+			name: "configured without base url",
+			setting: model.TerminalConfig{
+				GptApiKey: " key ", GptModel: " model ",
+			},
+			enabled: true,
+		},
 	}
-	if !chatAIEnabledByURL(model.TerminalConfig{GptBaseUrl: "  https://ai.example.test/v1  "}) {
-		t.Fatal("chat AI must be enabled when GPT_BASE_URL is configured")
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			if got := chatAIEnabledByModelConfig(test.setting); got != test.enabled {
+				t.Fatalf("enabled = %t, want %t", got, test.enabled)
+			}
+		})
 	}
 }

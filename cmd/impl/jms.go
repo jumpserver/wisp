@@ -46,11 +46,12 @@ type JMServer struct {
 	agentLimiter  *agentRequestLimiter
 }
 
-// chatAIEnabledByURL is temporary compatibility for Core versions that do
-// not expose CHAT_AI_ENABLED. Use model.TerminalConfig.ChatAIEnabled once the
-// SDK provides it.
-func chatAIEnabledByURL(setting model.TerminalConfig) bool {
-	return strings.TrimSpace(setting.GptBaseUrl) != ""
+// chatAIEnabledByModelConfig mirrors Koko new_terminal while Core versions do
+// not expose CHAT_AI_ENABLED. The provider URL is optional and may use its
+// default; both the API key and model are required.
+func chatAIEnabledByModelConfig(setting model.TerminalConfig) bool {
+	return strings.TrimSpace(setting.GptApiKey) != "" &&
+		strings.TrimSpace(setting.GptModel) != ""
 }
 
 func (j *JMServer) GetTokenAuthInfo(ctx context.Context, req *pb.TokenRequest) (*pb.TokenResponse, error) {
@@ -81,7 +82,7 @@ func (j *JMServer) GetTokenAuthInfo(ctx context.Context, req *pb.TokenRequest) (
 		Permission:       ConvertToProtobufPermission(tokenAuthInfo.Actions),
 		ExpireInfo:       ConvertToProtobufExpireInfo(tokenAuthInfo.ExpireAt),
 		Gateways:         ConvertToProtobufGateways(gateways),
-		Setting:          ConvertToPbSetting(&setting, chatAIEnabledByURL(setting)),
+		Setting:          ConvertToPbSetting(&setting, chatAIEnabledByModelConfig(setting)),
 		Platform:         ConvertToPbPlatform(&tokenAuthInfo.Platform),
 		DataMaskingRules: ConvertToDataMaskingRules(tokenAuthInfo.DataMaskingRules),
 		FaceMonitorToken: tokenAuthInfo.FaceMonitorToken,
