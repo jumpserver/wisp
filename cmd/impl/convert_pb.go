@@ -1,6 +1,7 @@
 package impl
 
 import (
+	"encoding/json"
 	"fmt"
 	"sort"
 	"strconv"
@@ -241,6 +242,28 @@ func ConvertToPbSetting(setting *model.TerminalConfig) *pb.ComponentSetting {
 		MaxIdleTime:    int32(setting.MaxIdleTime),
 		MaxSessionTime: int32(setting.MaxSessionTime),
 	}
+}
+
+func ConvertToPbConnectOptions(options model.ConnectOptions) *pb.ConnectOptions {
+	settings := make(map[string]string)
+	data, err := json.Marshal(options)
+	if err != nil {
+		return &pb.ConnectOptions{Settings: settings}
+	}
+	rawOptions := make(map[string]json.RawMessage)
+	if err = json.Unmarshal(data, &rawOptions); err != nil {
+		return &pb.ConnectOptions{Settings: settings}
+	}
+	settings = make(map[string]string, len(rawOptions))
+	for key, value := range rawOptions {
+		var stringValue string
+		if err := json.Unmarshal(value, &stringValue); err == nil {
+			settings[key] = stringValue
+			continue
+		}
+		settings[key] = string(value)
+	}
+	return &pb.ConnectOptions{Settings: settings}
 }
 
 func ConvertToPbPlatform(platform *model.Platform) *pb.Platform {
