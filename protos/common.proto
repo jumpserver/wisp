@@ -172,6 +172,10 @@ enum RiskLevel {
   ReviewCancel = 5;
 }
 
+message ConnectOptions {
+  bool use_sysdba = 1;
+}
+
 message TokenAuthInfo {
   string key_id = 1;
   string secrete_id = 2;
@@ -186,6 +190,7 @@ message TokenAuthInfo {
   Platform platform = 11;
   string FaceMonitorToken = 12;
   repeated DataMaskingRule data_masking_rules=13;
+  ConnectOptions connect_options = 14;
 }
 
 message Platform {

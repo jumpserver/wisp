@@ -74,6 +74,8 @@ github.com/jmespath/go-jmespath/internal/testify v1.5.1/go.mod h1:L3OGu8Wl2/fWfC
 github.com/juju/gnuflag v0.0.0-20171113085948-2ce1bb71843d/go.mod h1:2PavIy+JPciBPrBUjwbNvtwB6RQlve+hkpll6QSNmOE=
 github.com/jumpserver-dev/sdk-go v0.0.0-20260727030641-b0cef8e97370 h1:6QDjMGSy908FCCaJsr1dqSECV51ZskWK5n/Glb4dsH8=
 github.com/jumpserver-dev/sdk-go v0.0.0-20260727030641-b0cef8e97370/go.mod h1:QmnL7BRb74/XY1nu8kWQWs6DHXt3uIaWkDCkQSRyZlM=
+github.com/jumpserver-dev/sdk-go v0.0.0-20260821024754-b30076cff41d h1:oNOuExZJ/KL5lnn8y5duKYF6LrUp7lK/5DHKTPxyI/8=
+github.com/jumpserver-dev/sdk-go v0.0.0-20260821024754-b30076cff41d/go.mod h1:QmnL7BRb74/XY1nu8kWQWs6DHXt3uIaWkDCkQSRyZlM=
 github.com/kr/pretty v0.2.1/go.mod h1:ipq/a2n7PKx3OHsz4KJII5eveXtPO4qwEXGdVfWzfnI=
 github.com/kr/pretty v0.3.1 h1:flRD4NNwYAUpkphVc1HcthR4KEIFJ65n8Mw5qdRn3LE=
 github.com/kr/pretty v0.3.1/go.mod h1:hoEshYVHaxMs3cyo3Yncou5ZscifuDolrwPKZanG3xk=

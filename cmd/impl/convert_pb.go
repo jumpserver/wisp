@@ -243,6 +243,10 @@ func ConvertToPbSetting(setting *model.TerminalConfig) *pb.ComponentSetting {
 	}
 }
 
+func ConvertToPbConnectOptions(options model.ConnectOptions) *pb.ConnectOptions {
+	return &pb.ConnectOptions{UseSysdba: options.UseSysDBA}
+}
+
 func ConvertToPbPlatform(platform *model.Platform) *pb.Platform {
 	return &pb.Platform{
 		Id:        int32(platform.ID),

@@ -299,8 +299,14 @@ class TerminalTask(_message.Message):
     token_status: TokenStatus
     def __init__(self, id: _Optional[str] = ..., action: _Optional[_Union[TaskAction, str]] = ..., session_id: _Optional[str] = ..., terminated_by: _Optional[str] = ..., created_by: _Optional[str] = ..., token_status: _Optional[_Union[TokenStatus, _Mapping]] = ...) -> None: ...
 
+class ConnectOptions(_message.Message):
+    __slots__ = ("use_sysdba",)
+    USE_SYSDBA_FIELD_NUMBER: _ClassVar[int]
+    use_sysdba: bool
+    def __init__(self, use_sysdba: bool = ...) -> None: ...
+
 class TokenAuthInfo(_message.Message):
-    __slots__ = ("key_id", "secrete_id", "asset", "user", "account", "permission", "expire_info", "filter_rules", "gateways", "setting", "platform", "FaceMonitorToken", "data_masking_rules")
+    __slots__ = ("key_id", "secrete_id", "asset", "user", "account", "permission", "expire_info", "filter_rules", "gateways", "setting", "platform", "FaceMonitorToken", "data_masking_rules", "connect_options")
     KEY_ID_FIELD_NUMBER: _ClassVar[int]
     SECRETE_ID_FIELD_NUMBER: _ClassVar[int]
     ASSET_FIELD_NUMBER: _ClassVar[int]
@@ -314,6 +320,7 @@ class TokenAuthInfo(_message.Message):
     PLATFORM_FIELD_NUMBER: _ClassVar[int]
     FACEMONITORTOKEN_FIELD_NUMBER: _ClassVar[int]
     DATA_MASKING_RULES_FIELD_NUMBER: _ClassVar[int]
+    CONNECT_OPTIONS_FIELD_NUMBER: _ClassVar[int]
     key_id: str
     secrete_id: str
     asset: Asset
@@ -327,7 +334,8 @@ class TokenAuthInfo(_message.Message):
     platform: Platform
     FaceMonitorToken: str
     data_masking_rules: _containers.RepeatedCompositeFieldContainer[DataMaskingRule]
-    def __init__(self, key_id: _Optional[str] = ..., secrete_id: _Optional[str] = ..., asset: _Optional[_Union[Asset, _Mapping]] = ..., user: _Optional[_Union[User, _Mapping]] = ..., account: _Optional[_Union[Account, _Mapping]] = ..., permission: _Optional[_Union[Permission, _Mapping]] = ..., expire_info: _Optional[_Union[ExpireInfo, _Mapping]] = ..., filter_rules: _Optional[_Iterable[_Union[CommandACL, _Mapping]]] = ..., gateways: _Optional[_Iterable[_Union[Gateway, _Mapping]]] = ..., setting: _Optional[_Union[ComponentSetting, _Mapping]] = ..., platform: _Optional[_Union[Platform, _Mapping]] = ..., FaceMonitorToken: _Optional[str] = ..., data_masking_rules: _Optional[_Iterable[_Union[DataMaskingRule, _Mapping]]] = ...) -> None: ...
+    connect_options: ConnectOptions
+    def __init__(self, key_id: _Optional[str] = ..., secrete_id: _Optional[str] = ..., asset: _Optional[_Union[Asset, _Mapping]] = ..., user: _Optional[_Union[User, _Mapping]] = ..., account: _Optional[_Union[Account, _Mapping]] = ..., permission: _Optional[_Union[Permission, _Mapping]] = ..., expire_info: _Optional[_Union[ExpireInfo, _Mapping]] = ..., filter_rules: _Optional[_Iterable[_Union[CommandACL, _Mapping]]] = ..., gateways: _Optional[_Iterable[_Union[Gateway, _Mapping]]] = ..., setting: _Optional[_Union[ComponentSetting, _Mapping]] = ..., platform: _Optional[_Union[Platform, _Mapping]] = ..., FaceMonitorToken: _Optional[str] = ..., data_masking_rules: _Optional[_Iterable[_Union[DataMaskingRule, _Mapping]]] = ..., connect_options: _Optional[_Union[ConnectOptions, _Mapping]] = ...) -> None: ...
 
 class Platform(_message.Message):
     __slots__ = ("id", "name", "category", "charset", "type", "protocols")

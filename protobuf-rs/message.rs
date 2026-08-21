@@ -306,6 +306,11 @@ pub struct TerminalTask {
     #[prost(message, optional, tag="6")]
     pub token_status: ::core::option::Option<TokenStatus>,
 }
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ConnectOptions {
+    #[prost(bool, tag="1")]
+    pub use_sysdba: bool,
+}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TokenAuthInfo {
     #[prost(string, tag="1")]
@@ -334,6 +339,8 @@ pub struct TokenAuthInfo {
     pub face_monitor_token: ::prost::alloc::string::String,
     #[prost(message, repeated, tag="13")]
     pub data_masking_rules: ::prost::alloc::vec::Vec<DataMaskingRule>,
+    #[prost(message, optional, tag="14")]
+    pub connect_options: ::core::option::Option<ConnectOptions>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Platform {
