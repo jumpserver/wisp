@@ -306,10 +306,10 @@ pub struct TerminalTask {
     #[prost(message, optional, tag="6")]
     pub token_status: ::core::option::Option<TokenStatus>,
 }
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConnectOptions {
-    #[prost(bool, tag="1")]
-    pub use_sysdba: bool,
+    #[prost(map="string, string", tag="1")]
+    pub settings: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TokenAuthInfo {

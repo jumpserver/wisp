@@ -300,10 +300,17 @@ class TerminalTask(_message.Message):
     def __init__(self, id: _Optional[str] = ..., action: _Optional[_Union[TaskAction, str]] = ..., session_id: _Optional[str] = ..., terminated_by: _Optional[str] = ..., created_by: _Optional[str] = ..., token_status: _Optional[_Union[TokenStatus, _Mapping]] = ...) -> None: ...
 
 class ConnectOptions(_message.Message):
-    __slots__ = ("use_sysdba",)
-    USE_SYSDBA_FIELD_NUMBER: _ClassVar[int]
-    use_sysdba: bool
-    def __init__(self, use_sysdba: bool = ...) -> None: ...
+    __slots__ = ("settings",)
+    class SettingsEntry(_message.Message):
+        __slots__ = ("key", "value")
+        KEY_FIELD_NUMBER: _ClassVar[int]
+        VALUE_FIELD_NUMBER: _ClassVar[int]
+        key: str
+        value: str
+        def __init__(self, key: _Optional[str] = ..., value: _Optional[str] = ...) -> None: ...
+    SETTINGS_FIELD_NUMBER: _ClassVar[int]
+    settings: _containers.ScalarMap[str, str]
+    def __init__(self, settings: _Optional[_Mapping[str, str]] = ...) -> None: ...
 
 class TokenAuthInfo(_message.Message):
     __slots__ = ("key_id", "secrete_id", "asset", "user", "account", "permission", "expire_info", "filter_rules", "gateways", "setting", "platform", "FaceMonitorToken", "data_masking_rules", "connect_options")

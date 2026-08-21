@@ -173,7 +173,7 @@ enum RiskLevel {
 }
 
 message ConnectOptions {
-  bool use_sysdba = 1;
+  map<string, string> settings = 1;
 }
 
 message TokenAuthInfo {
