@@ -6,6 +6,14 @@
 # BIND_PORT: 9090
 # LOG_LEVEL: INFO
 
+# AI 审计默认关闭；启用后会把模型请求、工具调用和 SQL 提案写入 WORK_DIR/data/agent/audit。
+# AI_AUDIT_ENABLED: false
+
+# 0 表示不设置 Wisp 全局模型请求并发上限。大于 0 时，超额请求进入等待队列。
+# AI_MAX_CONCURRENT_REQUESTS: 0
+# 等待队列默认 100；设置为 0 时，超过并发上限的请求立即返回繁忙。
+# AI_REQUEST_QUEUE_SIZE: 100
+
 # 默认是启动程序的当前目录
 # WORK_DIR:
 
