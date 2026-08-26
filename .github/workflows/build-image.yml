@@ -5,6 +5,11 @@ name: Create and publish a Docker image
 on:
   workflow_dispatch:
     inputs:
+      branch:
+        description: 'Branch to build'
+        required: true
+        default: 'master'
+        type: string
       tag:
         description: 'Tag to build'
         required: true
@@ -35,6 +40,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
       - uses: actions/setup-go@v5
         with:
           go-version: 'stable' # The Go version to download (if necessary) and use.
