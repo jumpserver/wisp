@@ -86,6 +86,7 @@ func (j *JMServer) GetTokenAuthInfo(ctx context.Context, req *pb.TokenRequest) (
 		Platform:         ConvertToPbPlatform(&tokenAuthInfo.Platform),
 		DataMaskingRules: ConvertToDataMaskingRules(tokenAuthInfo.DataMaskingRules),
 		FaceMonitorToken: tokenAuthInfo.FaceMonitorToken,
+		ConnectOptions:   ConvertToPbConnectOptions(tokenAuthInfo.ConnectOptions),
 	}
 	status.Ok = true
 	logger.Debugf("Get database auth info success by token: %s", req.Token)

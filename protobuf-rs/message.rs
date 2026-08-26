@@ -307,6 +307,11 @@ pub struct TerminalTask {
     pub token_status: ::core::option::Option<TokenStatus>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConnectOptions {
+    #[prost(map="string, string", tag="1")]
+    pub settings: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TokenAuthInfo {
     #[prost(string, tag="1")]
     pub key_id: ::prost::alloc::string::String,
@@ -334,6 +339,8 @@ pub struct TokenAuthInfo {
     pub face_monitor_token: ::prost::alloc::string::String,
     #[prost(message, repeated, tag="13")]
     pub data_masking_rules: ::prost::alloc::vec::Vec<DataMaskingRule>,
+    #[prost(message, optional, tag="14")]
+    pub connect_options: ::core::option::Option<ConnectOptions>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Platform {
