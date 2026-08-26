@@ -1,6 +1,7 @@
 NAME=wisp
 BUILDDIR=build
 VERSION ?=Unknown
+PYTHON ?=python3
 BuildTime:=$(shell date -u '+%Y-%m-%d %I:%M:%S%p')
 COMMIT:=$(shell git rev-parse HEAD)
 GOVERSION:=$(shell go version)
@@ -77,7 +78,9 @@ proto_go_dir=./protobuf-go
 protobuf_py_dir=./protobuf-py/protobuf
 
 .PHONY: proto
-proto: proto-go proto-java proto-rust proto-py
+# Go and Java are the protobuf SDKs tracked by this repository.
+# Python and Rust remain available as explicit, on-demand targets.
+proto: proto-go proto-java
 
 .PHONY: proto-go
 proto-go:
@@ -91,10 +94,12 @@ proto-go:
 
 .PHONY: proto-py
 proto-py:
-	@mkdir -p ./protobuf-py/protobuf
-	python -m grpc_tools.protoc --proto_path=${proto_path} --python_out=./protobuf-py/protobuf \
-	--pyi_out=./protobuf-py/protobuf \
-	--grpc_python_out=./protobuf-py/protobuf \
+	@mkdir -p ${protobuf_py_dir}
+	protoc --proto_path=${proto_path} --python_out=${protobuf_py_dir} \
+	--pyi_out=${protobuf_py_dir} \
+	${proto_files}
+	${PYTHON} -m grpc_tools.protoc --proto_path=${proto_path} \
+	--grpc_python_out=${protobuf_py_dir} \
 	${proto_files}
 
 .PHONY: proto-java

@@ -47,3 +47,7 @@ release
 *.json
 !test_example.json
 **/example/
+
+# Python and Rust protobuf SDKs are generated on demand and are not tracked.
+/protobuf-py/protobuf/
+/protobuf-rs/
