@@ -46,12 +46,10 @@ type JMServer struct {
 	agentLimiter  *agentRequestLimiter
 }
 
-// chatAIEnabledByModelConfig mirrors Koko new_terminal while Core versions do
-// not expose CHAT_AI_ENABLED. The provider URL is optional and may use its
-// default; both the API key and model are required.
 func chatAIEnabledByModelConfig(setting model.TerminalConfig) bool {
-	return strings.TrimSpace(setting.GptApiKey) != "" &&
-		strings.TrimSpace(setting.GptModel) != ""
+	return setting.ChatAIEnabled &&
+		strings.TrimSpace(setting.ChatAIApiKey) != "" &&
+		strings.TrimSpace(setting.ChatAIModel) != ""
 }
 
 func (j *JMServer) GetTokenAuthInfo(ctx context.Context, req *pb.TokenRequest) (*pb.TokenResponse, error) {
@@ -414,10 +412,10 @@ func (j *JMServer) GetPublicSetting(ctx context.Context, empty *pb.Empty) (*pb.P
 	pbSetting := pb.PublicSetting{
 		XpackEnabled:   data.XpackEnabled,
 		ValidLicense:   data.ValidLicense,
-		GptBaseUrl:     setting.GptBaseUrl,
-		GptApiKey:      setting.GptApiKey,
-		GptProxy:       setting.GptProxy,
-		GptModel:       setting.GptModel,
+		ChatAiBaseUrl:  setting.ChatAIBaseUrl,
+		ChatAiApiKey:   setting.ChatAIApiKey,
+		ChatAiProxy:    setting.ChatAIProxy,
+		ChatAiModel:    setting.ChatAIModel,
 		LicenseContent: setting.LicenseContent,
 	}
 	return &pb.PublicSettingResponse{Status: &status, Data: &pbSetting}, nil

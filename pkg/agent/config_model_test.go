@@ -7,11 +7,11 @@ import (
 	"github.com/jumpserver/wisp/pkg/agent/provider"
 )
 
-func TestConfigPrefersChatAIType(t *testing.T) {
+func TestConfigPrefersChatAIProvider(t *testing.T) {
 	t.Setenv(providerEnvName, provider.NameOpenAI)
-	config := NewConfig(model.TerminalConfig{ChatAIType: provider.NameDeepSeek})
+	config := NewConfig(model.TerminalConfig{ChatAIProvider: provider.NameDeepSeek})
 	if config.Provider.Name != provider.NameDeepSeek {
-		t.Fatalf("provider = %q, want ChatAIType", config.Provider.Name)
+		t.Fatalf("provider = %q, want ChatAIProvider", config.Provider.Name)
 	}
 	config = NewConfig(model.TerminalConfig{})
 	if config.Provider.Name != provider.NameOpenAI {

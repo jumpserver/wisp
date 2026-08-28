@@ -7,9 +7,9 @@ import (
 )
 
 const (
-	NameGPT      = "gpt"
-	NameOpenAI   = "openai"
-	NameDeepSeek = "deep-seek"
+	NameOpenAICompatible = "openai_compatible"
+	NameOpenAI           = "openai"
+	NameDeepSeek         = "deep-seek"
 
 	ToolCallAuto     = "auto"
 	ToolCallEnabled  = "true"

@@ -39,12 +39,29 @@ func TestChatAIEnabledByModelConfig(t *testing.T) {
 		enabled bool
 	}{
 		{name: "missing configuration"},
-		{name: "missing model", setting: model.TerminalConfig{GptApiKey: "key"}},
-		{name: "missing api key", setting: model.TerminalConfig{GptModel: "model"}},
+		{
+			name: "disabled with complete configuration",
+			setting: model.TerminalConfig{
+				ChatAIApiKey: "key", ChatAIModel: "model",
+			},
+		},
+		{
+			name: "missing model",
+			setting: model.TerminalConfig{
+				ChatAIEnabled: true, ChatAIApiKey: "key",
+			},
+		},
+		{
+			name: "missing api key",
+			setting: model.TerminalConfig{
+				ChatAIEnabled: true, ChatAIModel: "model",
+			},
+		},
 		{
 			name: "configured without base url",
 			setting: model.TerminalConfig{
-				GptApiKey: " key ", GptModel: " model ",
+				ChatAIEnabled: true,
+				ChatAIApiKey:  " key ", ChatAIModel: " model ",
 			},
 			enabled: true,
 		},
