@@ -15,7 +15,7 @@ func TestProviderRoutingAndModelLimits(t *testing.T) {
 		name      string
 		transport string
 	}{
-		{NameGPT, "chat-completions"},
+		{NameOpenAICompatible, "chat-completions"},
 		{NameOpenAI, "responses"},
 		{NameDeepSeek, "deepseek-chat-completions"},
 		{"custom", "chat-completions"},

@@ -4,7 +4,7 @@ go 1.25.0
 
 require (
 	github.com/gorilla/websocket v1.5.3
-	github.com/jumpserver-dev/sdk-go v0.0.0-20260821083952-82cf2e23d207
+	github.com/jumpserver-dev/sdk-go v0.0.0-20260828033126-f4e075c4714b
 	github.com/openai/openai-go/v3 v3.46.0
 	github.com/sirupsen/logrus v1.9.4
 	github.com/spf13/cobra v1.10.1

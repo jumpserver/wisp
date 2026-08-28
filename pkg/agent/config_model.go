@@ -32,17 +32,17 @@ func NewConfigWithDataRoot(
 	dataRoot string,
 	auditEnabled bool,
 ) Config {
-	name := strings.TrimSpace(modelConfig.ChatAIType)
+	name := strings.TrimSpace(modelConfig.ChatAIProvider)
 	if name == "" {
 		name = strings.TrimSpace(os.Getenv(providerEnvName))
 	}
 	if name == "" {
-		name = provider.NameGPT
+		name = provider.NameOpenAICompatible
 	}
 	providerConfig := provider.NormalizeConfig(provider.Config{
-		Name: name, APIKey: modelConfig.GptApiKey,
-		BaseURL: modelConfig.GptBaseUrl, Model: modelConfig.GptModel,
-		Proxy: modelConfig.GptProxy, ToolCallMode: os.Getenv(toolCallEnvName),
+		Name: name, APIKey: modelConfig.ChatAIApiKey,
+		BaseURL: modelConfig.ChatAIBaseUrl, Model: modelConfig.ChatAIModel,
+		Proxy: modelConfig.ChatAIProxy, ToolCallMode: os.Getenv(toolCallEnvName),
 		ReasoningMode: provider.ReasoningAuto,
 		Store:         false, NativeCompaction: false,
 		ContextSoftLimitPercent: 80, RequestTimeout: 5 * time.Minute,

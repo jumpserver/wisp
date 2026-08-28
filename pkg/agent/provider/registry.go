@@ -13,7 +13,7 @@ var registry = struct {
 }{factories: make(map[string]Factory)}
 
 func init() {
-	mustRegister(NameGPT, newCompatibleProvider)
+	mustRegister(NameOpenAICompatible, newCompatibleProvider)
 	mustRegister(NameOpenAI, newOpenAIProvider)
 	mustRegister(NameDeepSeek, newDeepSeekProvider)
 	mustRegister("deepseek", newDeepSeekProvider)
@@ -64,7 +64,7 @@ func NormalizeName(name string) string {
 func NormalizeConfig(config Config) Config {
 	config.Name = NormalizeName(config.Name)
 	if config.Name == "" {
-		config.Name = NameGPT
+		config.Name = NameOpenAICompatible
 	}
 	config.Model = strings.TrimSpace(config.Model)
 	config.BaseURL = strings.TrimSpace(config.BaseURL)
