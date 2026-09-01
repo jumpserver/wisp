@@ -47,7 +47,6 @@ type ServiceClient interface {
 	JoinFaceMonitor(ctx context.Context, in *JoinFaceMonitorRequest, opts ...grpc.CallOption) (*JoinFaceMonitorResponse, error)
 	GetAccountChat(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*AccountDetailResponse, error)
 	CallAPI(ctx context.Context, in *HTTPRequest, opts ...grpc.CallOption) (*HTTPResponse, error)
-	AgentSession(ctx context.Context, opts ...grpc.CallOption) (Service_AgentSessionClient, error)
 }
 
 type serviceClient struct {
@@ -305,37 +304,6 @@ func (c *serviceClient) CallAPI(ctx context.Context, in *HTTPRequest, opts ...gr
 	return out, nil
 }
 
-func (c *serviceClient) AgentSession(ctx context.Context, opts ...grpc.CallOption) (Service_AgentSessionClient, error) {
-	stream, err := c.cc.NewStream(ctx, &Service_ServiceDesc.Streams[1], "/message.Service/AgentSession", opts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &serviceAgentSessionClient{stream}
-	return x, nil
-}
-
-type Service_AgentSessionClient interface {
-	Send(*AgentClientEvent) error
-	Recv() (*AgentServerEvent, error)
-	grpc.ClientStream
-}
-
-type serviceAgentSessionClient struct {
-	grpc.ClientStream
-}
-
-func (x *serviceAgentSessionClient) Send(m *AgentClientEvent) error {
-	return x.ClientStream.SendMsg(m)
-}
-
-func (x *serviceAgentSessionClient) Recv() (*AgentServerEvent, error) {
-	m := new(AgentServerEvent)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
 // ServiceServer is the server API for Service service.
 // All implementations must embed UnimplementedServiceServer
 // for forward compatibility
@@ -365,7 +333,6 @@ type ServiceServer interface {
 	JoinFaceMonitor(context.Context, *JoinFaceMonitorRequest) (*JoinFaceMonitorResponse, error)
 	GetAccountChat(context.Context, *Empty) (*AccountDetailResponse, error)
 	CallAPI(context.Context, *HTTPRequest) (*HTTPResponse, error)
-	AgentSession(Service_AgentSessionServer) error
 	mustEmbedUnimplementedServiceServer()
 }
 
@@ -447,9 +414,6 @@ func (UnimplementedServiceServer) GetAccountChat(context.Context, *Empty) (*Acco
 }
 func (UnimplementedServiceServer) CallAPI(context.Context, *HTTPRequest) (*HTTPResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CallAPI not implemented")
-}
-func (UnimplementedServiceServer) AgentSession(Service_AgentSessionServer) error {
-	return status.Errorf(codes.Unimplemented, "method AgentSession not implemented")
 }
 func (UnimplementedServiceServer) mustEmbedUnimplementedServiceServer() {}
 
@@ -922,32 +886,6 @@ func _Service_CallAPI_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Service_AgentSession_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(ServiceServer).AgentSession(&serviceAgentSessionServer{stream})
-}
-
-type Service_AgentSessionServer interface {
-	Send(*AgentServerEvent) error
-	Recv() (*AgentClientEvent, error)
-	grpc.ServerStream
-}
-
-type serviceAgentSessionServer struct {
-	grpc.ServerStream
-}
-
-func (x *serviceAgentSessionServer) Send(m *AgentServerEvent) error {
-	return x.ServerStream.SendMsg(m)
-}
-
-func (x *serviceAgentSessionServer) Recv() (*AgentClientEvent, error) {
-	m := new(AgentClientEvent)
-	if err := x.ServerStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
 // Service_ServiceDesc is the grpc.ServiceDesc for Service service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1056,12 +994,6 @@ var Service_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "DispatchTask",
 			Handler:       _Service_DispatchTask_Handler,
-			ServerStreams: true,
-			ClientStreams: true,
-		},
-		{
-			StreamName:    "AgentSession",
-			Handler:       _Service_AgentSession_Handler,
 			ServerStreams: true,
 			ClientStreams: true,
 		},
