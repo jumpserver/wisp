@@ -212,7 +212,8 @@ message PlatformProtocol {
 message ComponentSetting {
   int32 max_idle_time = 1;
   int32 max_session_time = 2;
-  bool chat_ai_enabled = 3;
+  reserved 3;
+  reserved "chat_ai_enabled";
 }
 
 message Forward {

@@ -2903,794 +2903,6 @@ func (x *HTTPResponse) GetBody() []byte {
 	return nil
 }
 
-// AgentSession is a component-to-Wisp session stream. Each Chen JMS session
-// owns one independent stream while all streams share the existing HTTP/2
-// channel. JSON payloads deliberately keep the UI chat and surface context
-// independently evolvable from this transport contract.
-type AgentSessionOpen struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	SessionId      string `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
-	UserId         string `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	OrganizationId string `protobuf:"bytes,3,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
-	AssetId        string `protobuf:"bytes,4,opt,name=asset_id,json=assetId,proto3" json:"asset_id,omitempty"`
-	AccountId      string `protobuf:"bytes,5,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
-	Protocol       string `protobuf:"bytes,6,opt,name=protocol,proto3" json:"protocol,omitempty"`
-	Language       string `protobuf:"bytes,7,opt,name=language,proto3" json:"language,omitempty"`
-	Surface        string `protobuf:"bytes,8,opt,name=surface,proto3" json:"surface,omitempty"`
-	ChatAiEnabled  bool   `protobuf:"varint,9,opt,name=chat_ai_enabled,json=chatAiEnabled,proto3" json:"chat_ai_enabled,omitempty"`
-}
-
-func (x *AgentSessionOpen) Reset() {
-	*x = AgentSessionOpen{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_service_proto_msgTypes[48]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *AgentSessionOpen) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AgentSessionOpen) ProtoMessage() {}
-
-func (x *AgentSessionOpen) ProtoReflect() protoreflect.Message {
-	mi := &file_service_proto_msgTypes[48]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AgentSessionOpen.ProtoReflect.Descriptor instead.
-func (*AgentSessionOpen) Descriptor() ([]byte, []int) {
-	return file_service_proto_rawDescGZIP(), []int{48}
-}
-
-func (x *AgentSessionOpen) GetSessionId() string {
-	if x != nil {
-		return x.SessionId
-	}
-	return ""
-}
-
-func (x *AgentSessionOpen) GetUserId() string {
-	if x != nil {
-		return x.UserId
-	}
-	return ""
-}
-
-func (x *AgentSessionOpen) GetOrganizationId() string {
-	if x != nil {
-		return x.OrganizationId
-	}
-	return ""
-}
-
-func (x *AgentSessionOpen) GetAssetId() string {
-	if x != nil {
-		return x.AssetId
-	}
-	return ""
-}
-
-func (x *AgentSessionOpen) GetAccountId() string {
-	if x != nil {
-		return x.AccountId
-	}
-	return ""
-}
-
-func (x *AgentSessionOpen) GetProtocol() string {
-	if x != nil {
-		return x.Protocol
-	}
-	return ""
-}
-
-func (x *AgentSessionOpen) GetLanguage() string {
-	if x != nil {
-		return x.Language
-	}
-	return ""
-}
-
-func (x *AgentSessionOpen) GetSurface() string {
-	if x != nil {
-		return x.Surface
-	}
-	return ""
-}
-
-func (x *AgentSessionOpen) GetChatAiEnabled() bool {
-	if x != nil {
-		return x.ChatAiEnabled
-	}
-	return false
-}
-
-type AgentRequest struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Id          string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Operation   string `protobuf:"bytes,2,opt,name=operation,proto3" json:"operation,omitempty"`
-	Question    string `protobuf:"bytes,3,opt,name=question,proto3" json:"question,omitempty"`
-	ContextJson string `protobuf:"bytes,4,opt,name=context_json,json=contextJson,proto3" json:"context_json,omitempty"`
-}
-
-func (x *AgentRequest) Reset() {
-	*x = AgentRequest{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_service_proto_msgTypes[49]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *AgentRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AgentRequest) ProtoMessage() {}
-
-func (x *AgentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_proto_msgTypes[49]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AgentRequest.ProtoReflect.Descriptor instead.
-func (*AgentRequest) Descriptor() ([]byte, []int) {
-	return file_service_proto_rawDescGZIP(), []int{49}
-}
-
-func (x *AgentRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-func (x *AgentRequest) GetOperation() string {
-	if x != nil {
-		return x.Operation
-	}
-	return ""
-}
-
-func (x *AgentRequest) GetQuestion() string {
-	if x != nil {
-		return x.Question
-	}
-	return ""
-}
-
-func (x *AgentRequest) GetContextJson() string {
-	if x != nil {
-		return x.ContextJson
-	}
-	return ""
-}
-
-type AgentToolResult struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Id         string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	ResultJson string `protobuf:"bytes,2,opt,name=result_json,json=resultJson,proto3" json:"result_json,omitempty"`
-	Error      string `protobuf:"bytes,3,opt,name=error,proto3" json:"error,omitempty"`
-}
-
-func (x *AgentToolResult) Reset() {
-	*x = AgentToolResult{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_service_proto_msgTypes[50]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *AgentToolResult) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AgentToolResult) ProtoMessage() {}
-
-func (x *AgentToolResult) ProtoReflect() protoreflect.Message {
-	mi := &file_service_proto_msgTypes[50]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AgentToolResult.ProtoReflect.Descriptor instead.
-func (*AgentToolResult) Descriptor() ([]byte, []int) {
-	return file_service_proto_rawDescGZIP(), []int{50}
-}
-
-func (x *AgentToolResult) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-func (x *AgentToolResult) GetResultJson() string {
-	if x != nil {
-		return x.ResultJson
-	}
-	return ""
-}
-
-func (x *AgentToolResult) GetError() string {
-	if x != nil {
-		return x.Error
-	}
-	return ""
-}
-
-type AgentCancel struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	RequestId string `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
-}
-
-func (x *AgentCancel) Reset() {
-	*x = AgentCancel{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_service_proto_msgTypes[51]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *AgentCancel) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AgentCancel) ProtoMessage() {}
-
-func (x *AgentCancel) ProtoReflect() protoreflect.Message {
-	mi := &file_service_proto_msgTypes[51]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AgentCancel.ProtoReflect.Descriptor instead.
-func (*AgentCancel) Descriptor() ([]byte, []int) {
-	return file_service_proto_rawDescGZIP(), []int{51}
-}
-
-func (x *AgentCancel) GetRequestId() string {
-	if x != nil {
-		return x.RequestId
-	}
-	return ""
-}
-
-type AgentClientEvent struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	// Types that are assignable to Event:
-	//
-	//	*AgentClientEvent_Open
-	//	*AgentClientEvent_Request
-	//	*AgentClientEvent_ToolResult
-	//	*AgentClientEvent_Cancel
-	//	*AgentClientEvent_Close
-	Event isAgentClientEvent_Event `protobuf_oneof:"event"`
-}
-
-func (x *AgentClientEvent) Reset() {
-	*x = AgentClientEvent{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_service_proto_msgTypes[52]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *AgentClientEvent) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AgentClientEvent) ProtoMessage() {}
-
-func (x *AgentClientEvent) ProtoReflect() protoreflect.Message {
-	mi := &file_service_proto_msgTypes[52]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AgentClientEvent.ProtoReflect.Descriptor instead.
-func (*AgentClientEvent) Descriptor() ([]byte, []int) {
-	return file_service_proto_rawDescGZIP(), []int{52}
-}
-
-func (m *AgentClientEvent) GetEvent() isAgentClientEvent_Event {
-	if m != nil {
-		return m.Event
-	}
-	return nil
-}
-
-func (x *AgentClientEvent) GetOpen() *AgentSessionOpen {
-	if x, ok := x.GetEvent().(*AgentClientEvent_Open); ok {
-		return x.Open
-	}
-	return nil
-}
-
-func (x *AgentClientEvent) GetRequest() *AgentRequest {
-	if x, ok := x.GetEvent().(*AgentClientEvent_Request); ok {
-		return x.Request
-	}
-	return nil
-}
-
-func (x *AgentClientEvent) GetToolResult() *AgentToolResult {
-	if x, ok := x.GetEvent().(*AgentClientEvent_ToolResult); ok {
-		return x.ToolResult
-	}
-	return nil
-}
-
-func (x *AgentClientEvent) GetCancel() *AgentCancel {
-	if x, ok := x.GetEvent().(*AgentClientEvent_Cancel); ok {
-		return x.Cancel
-	}
-	return nil
-}
-
-func (x *AgentClientEvent) GetClose() *Empty {
-	if x, ok := x.GetEvent().(*AgentClientEvent_Close); ok {
-		return x.Close
-	}
-	return nil
-}
-
-type isAgentClientEvent_Event interface {
-	isAgentClientEvent_Event()
-}
-
-type AgentClientEvent_Open struct {
-	Open *AgentSessionOpen `protobuf:"bytes,1,opt,name=open,proto3,oneof"`
-}
-
-type AgentClientEvent_Request struct {
-	Request *AgentRequest `protobuf:"bytes,2,opt,name=request,proto3,oneof"`
-}
-
-type AgentClientEvent_ToolResult struct {
-	ToolResult *AgentToolResult `protobuf:"bytes,3,opt,name=tool_result,json=toolResult,proto3,oneof"`
-}
-
-type AgentClientEvent_Cancel struct {
-	Cancel *AgentCancel `protobuf:"bytes,4,opt,name=cancel,proto3,oneof"`
-}
-
-type AgentClientEvent_Close struct {
-	Close *Empty `protobuf:"bytes,5,opt,name=close,proto3,oneof"`
-}
-
-func (*AgentClientEvent_Open) isAgentClientEvent_Event() {}
-
-func (*AgentClientEvent_Request) isAgentClientEvent_Event() {}
-
-func (*AgentClientEvent_ToolResult) isAgentClientEvent_Event() {}
-
-func (*AgentClientEvent_Cancel) isAgentClientEvent_Event() {}
-
-func (*AgentClientEvent_Close) isAgentClientEvent_Event() {}
-
-type AgentReady struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Enabled   bool   `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
-	Reason    string `protobuf:"bytes,2,opt,name=reason,proto3" json:"reason,omitempty"`
-	SessionId string `protobuf:"bytes,3,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
-	Surface   string `protobuf:"bytes,4,opt,name=surface,proto3" json:"surface,omitempty"`
-	Provider  string `protobuf:"bytes,5,opt,name=provider,proto3" json:"provider,omitempty"`
-	Model     string `protobuf:"bytes,6,opt,name=model,proto3" json:"model,omitempty"`
-}
-
-func (x *AgentReady) Reset() {
-	*x = AgentReady{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_service_proto_msgTypes[53]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *AgentReady) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AgentReady) ProtoMessage() {}
-
-func (x *AgentReady) ProtoReflect() protoreflect.Message {
-	mi := &file_service_proto_msgTypes[53]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AgentReady.ProtoReflect.Descriptor instead.
-func (*AgentReady) Descriptor() ([]byte, []int) {
-	return file_service_proto_rawDescGZIP(), []int{53}
-}
-
-func (x *AgentReady) GetEnabled() bool {
-	if x != nil {
-		return x.Enabled
-	}
-	return false
-}
-
-func (x *AgentReady) GetReason() string {
-	if x != nil {
-		return x.Reason
-	}
-	return ""
-}
-
-func (x *AgentReady) GetSessionId() string {
-	if x != nil {
-		return x.SessionId
-	}
-	return ""
-}
-
-func (x *AgentReady) GetSurface() string {
-	if x != nil {
-		return x.Surface
-	}
-	return ""
-}
-
-func (x *AgentReady) GetProvider() string {
-	if x != nil {
-		return x.Provider
-	}
-	return ""
-}
-
-func (x *AgentReady) GetModel() string {
-	if x != nil {
-		return x.Model
-	}
-	return ""
-}
-
-type AgentChatMessage struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	MessageJson string `protobuf:"bytes,1,opt,name=message_json,json=messageJson,proto3" json:"message_json,omitempty"`
-}
-
-func (x *AgentChatMessage) Reset() {
-	*x = AgentChatMessage{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_service_proto_msgTypes[54]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *AgentChatMessage) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AgentChatMessage) ProtoMessage() {}
-
-func (x *AgentChatMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_service_proto_msgTypes[54]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AgentChatMessage.ProtoReflect.Descriptor instead.
-func (*AgentChatMessage) Descriptor() ([]byte, []int) {
-	return file_service_proto_rawDescGZIP(), []int{54}
-}
-
-func (x *AgentChatMessage) GetMessageJson() string {
-	if x != nil {
-		return x.MessageJson
-	}
-	return ""
-}
-
-type AgentToolCall struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Id            string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name          string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	ArgumentsJson string `protobuf:"bytes,3,opt,name=arguments_json,json=argumentsJson,proto3" json:"arguments_json,omitempty"`
-}
-
-func (x *AgentToolCall) Reset() {
-	*x = AgentToolCall{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_service_proto_msgTypes[55]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *AgentToolCall) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AgentToolCall) ProtoMessage() {}
-
-func (x *AgentToolCall) ProtoReflect() protoreflect.Message {
-	mi := &file_service_proto_msgTypes[55]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AgentToolCall.ProtoReflect.Descriptor instead.
-func (*AgentToolCall) Descriptor() ([]byte, []int) {
-	return file_service_proto_rawDescGZIP(), []int{55}
-}
-
-func (x *AgentToolCall) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-func (x *AgentToolCall) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *AgentToolCall) GetArgumentsJson() string {
-	if x != nil {
-		return x.ArgumentsJson
-	}
-	return ""
-}
-
-type AgentError struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Code      string `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
-	Message   string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-	RequestId string `protobuf:"bytes,3,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
-}
-
-func (x *AgentError) Reset() {
-	*x = AgentError{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_service_proto_msgTypes[56]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *AgentError) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AgentError) ProtoMessage() {}
-
-func (x *AgentError) ProtoReflect() protoreflect.Message {
-	mi := &file_service_proto_msgTypes[56]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AgentError.ProtoReflect.Descriptor instead.
-func (*AgentError) Descriptor() ([]byte, []int) {
-	return file_service_proto_rawDescGZIP(), []int{56}
-}
-
-func (x *AgentError) GetCode() string {
-	if x != nil {
-		return x.Code
-	}
-	return ""
-}
-
-func (x *AgentError) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
-}
-
-func (x *AgentError) GetRequestId() string {
-	if x != nil {
-		return x.RequestId
-	}
-	return ""
-}
-
-type AgentServerEvent struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	// Types that are assignable to Event:
-	//
-	//	*AgentServerEvent_Ready
-	//	*AgentServerEvent_Chat
-	//	*AgentServerEvent_ToolCall
-	//	*AgentServerEvent_Error
-	Event isAgentServerEvent_Event `protobuf_oneof:"event"`
-}
-
-func (x *AgentServerEvent) Reset() {
-	*x = AgentServerEvent{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_service_proto_msgTypes[57]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *AgentServerEvent) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AgentServerEvent) ProtoMessage() {}
-
-func (x *AgentServerEvent) ProtoReflect() protoreflect.Message {
-	mi := &file_service_proto_msgTypes[57]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AgentServerEvent.ProtoReflect.Descriptor instead.
-func (*AgentServerEvent) Descriptor() ([]byte, []int) {
-	return file_service_proto_rawDescGZIP(), []int{57}
-}
-
-func (m *AgentServerEvent) GetEvent() isAgentServerEvent_Event {
-	if m != nil {
-		return m.Event
-	}
-	return nil
-}
-
-func (x *AgentServerEvent) GetReady() *AgentReady {
-	if x, ok := x.GetEvent().(*AgentServerEvent_Ready); ok {
-		return x.Ready
-	}
-	return nil
-}
-
-func (x *AgentServerEvent) GetChat() *AgentChatMessage {
-	if x, ok := x.GetEvent().(*AgentServerEvent_Chat); ok {
-		return x.Chat
-	}
-	return nil
-}
-
-func (x *AgentServerEvent) GetToolCall() *AgentToolCall {
-	if x, ok := x.GetEvent().(*AgentServerEvent_ToolCall); ok {
-		return x.ToolCall
-	}
-	return nil
-}
-
-func (x *AgentServerEvent) GetError() *AgentError {
-	if x, ok := x.GetEvent().(*AgentServerEvent_Error); ok {
-		return x.Error
-	}
-	return nil
-}
-
-type isAgentServerEvent_Event interface {
-	isAgentServerEvent_Event()
-}
-
-type AgentServerEvent_Ready struct {
-	Ready *AgentReady `protobuf:"bytes,1,opt,name=ready,proto3,oneof"`
-}
-
-type AgentServerEvent_Chat struct {
-	Chat *AgentChatMessage `protobuf:"bytes,2,opt,name=chat,proto3,oneof"`
-}
-
-type AgentServerEvent_ToolCall struct {
-	ToolCall *AgentToolCall `protobuf:"bytes,3,opt,name=tool_call,json=toolCall,proto3,oneof"`
-}
-
-type AgentServerEvent_Error struct {
-	Error *AgentError `protobuf:"bytes,4,opt,name=error,proto3,oneof"`
-}
-
-func (*AgentServerEvent_Ready) isAgentServerEvent_Event() {}
-
-func (*AgentServerEvent_Chat) isAgentServerEvent_Event() {}
-
-func (*AgentServerEvent_ToolCall) isAgentServerEvent_Event() {}
-
-func (*AgentServerEvent_Error) isAgentServerEvent_Event() {}
-
 var File_service_proto protoreflect.FileDescriptor
 
 var file_service_proto_rawDesc = []byte{
@@ -4021,99 +3233,7 @@ var file_service_proto_rawDesc = []byte{
 	0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0f, 0x2e, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67,
 	0x65, 0x2e, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73,
 	0x12, 0x12, 0x0a, 0x04, 0x62, 0x6f, 0x64, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x04,
-	0x62, 0x6f, 0x64, 0x79, 0x22, 0xa7, 0x02, 0x0a, 0x10, 0x41, 0x67, 0x65, 0x6e, 0x74, 0x53, 0x65,
-	0x73, 0x73, 0x69, 0x6f, 0x6e, 0x4f, 0x70, 0x65, 0x6e, 0x12, 0x1d, 0x0a, 0x0a, 0x73, 0x65, 0x73,
-	0x73, 0x69, 0x6f, 0x6e, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x73,
-	0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x12, 0x17, 0x0a, 0x07, 0x75, 0x73, 0x65, 0x72,
-	0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49,
-	0x64, 0x12, 0x27, 0x0a, 0x0f, 0x6f, 0x72, 0x67, 0x61, 0x6e, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f,
-	0x6e, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0e, 0x6f, 0x72, 0x67, 0x61,
-	0x6e, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x12, 0x19, 0x0a, 0x08, 0x61, 0x73,
-	0x73, 0x65, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x61, 0x73,
-	0x73, 0x65, 0x74, 0x49, 0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74,
-	0x5f, 0x69, 0x64, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x61, 0x63, 0x63, 0x6f, 0x75,
-	0x6e, 0x74, 0x49, 0x64, 0x12, 0x1a, 0x0a, 0x08, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c,
-	0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c,
-	0x12, 0x1a, 0x0a, 0x08, 0x6c, 0x61, 0x6e, 0x67, 0x75, 0x61, 0x67, 0x65, 0x18, 0x07, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x08, 0x6c, 0x61, 0x6e, 0x67, 0x75, 0x61, 0x67, 0x65, 0x12, 0x18, 0x0a, 0x07,
-	0x73, 0x75, 0x72, 0x66, 0x61, 0x63, 0x65, 0x18, 0x08, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x73,
-	0x75, 0x72, 0x66, 0x61, 0x63, 0x65, 0x12, 0x26, 0x0a, 0x0f, 0x63, 0x68, 0x61, 0x74, 0x5f, 0x61,
-	0x69, 0x5f, 0x65, 0x6e, 0x61, 0x62, 0x6c, 0x65, 0x64, 0x18, 0x09, 0x20, 0x01, 0x28, 0x08, 0x52,
-	0x0d, 0x63, 0x68, 0x61, 0x74, 0x41, 0x69, 0x45, 0x6e, 0x61, 0x62, 0x6c, 0x65, 0x64, 0x22, 0x7b,
-	0x0a, 0x0c, 0x41, 0x67, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e,
-	0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x1c,
-	0x0a, 0x09, 0x6f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x09, 0x6f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x1a, 0x0a, 0x08,
-	0x71, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08,
-	0x71, 0x75, 0x65, 0x73, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x21, 0x0a, 0x0c, 0x63, 0x6f, 0x6e, 0x74,
-	0x65, 0x78, 0x74, 0x5f, 0x6a, 0x73, 0x6f, 0x6e, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b,
-	0x63, 0x6f, 0x6e, 0x74, 0x65, 0x78, 0x74, 0x4a, 0x73, 0x6f, 0x6e, 0x22, 0x58, 0x0a, 0x0f, 0x41,
-	0x67, 0x65, 0x6e, 0x74, 0x54, 0x6f, 0x6f, 0x6c, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x12, 0x0e,
-	0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x1f,
-	0x0a, 0x0b, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x5f, 0x6a, 0x73, 0x6f, 0x6e, 0x18, 0x02, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x0a, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x4a, 0x73, 0x6f, 0x6e, 0x12,
-	0x14, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05,
-	0x65, 0x72, 0x72, 0x6f, 0x72, 0x22, 0x2c, 0x0a, 0x0b, 0x41, 0x67, 0x65, 0x6e, 0x74, 0x43, 0x61,
-	0x6e, 0x63, 0x65, 0x6c, 0x12, 0x1d, 0x0a, 0x0a, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x5f,
-	0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x49, 0x64, 0x22, 0x94, 0x02, 0x0a, 0x10, 0x41, 0x67, 0x65, 0x6e, 0x74, 0x43, 0x6c, 0x69,
-	0x65, 0x6e, 0x74, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x12, 0x2f, 0x0a, 0x04, 0x6f, 0x70, 0x65, 0x6e,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65,
-	0x2e, 0x41, 0x67, 0x65, 0x6e, 0x74, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x4f, 0x70, 0x65,
-	0x6e, 0x48, 0x00, 0x52, 0x04, 0x6f, 0x70, 0x65, 0x6e, 0x12, 0x31, 0x0a, 0x07, 0x72, 0x65, 0x71,
-	0x75, 0x65, 0x73, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x15, 0x2e, 0x6d, 0x65, 0x73,
-	0x73, 0x61, 0x67, 0x65, 0x2e, 0x41, 0x67, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x48, 0x00, 0x52, 0x07, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x3b, 0x0a, 0x0b,
-	0x74, 0x6f, 0x6f, 0x6c, 0x5f, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28,
-	0x0b, 0x32, 0x18, 0x2e, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x2e, 0x41, 0x67, 0x65, 0x6e,
-	0x74, 0x54, 0x6f, 0x6f, 0x6c, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x48, 0x00, 0x52, 0x0a, 0x74,
-	0x6f, 0x6f, 0x6c, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x12, 0x2e, 0x0a, 0x06, 0x63, 0x61, 0x6e,
-	0x63, 0x65, 0x6c, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x14, 0x2e, 0x6d, 0x65, 0x73, 0x73,
-	0x61, 0x67, 0x65, 0x2e, 0x41, 0x67, 0x65, 0x6e, 0x74, 0x43, 0x61, 0x6e, 0x63, 0x65, 0x6c, 0x48,
-	0x00, 0x52, 0x06, 0x63, 0x61, 0x6e, 0x63, 0x65, 0x6c, 0x12, 0x26, 0x0a, 0x05, 0x63, 0x6c, 0x6f,
-	0x73, 0x65, 0x18, 0x05, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0e, 0x2e, 0x6d, 0x65, 0x73, 0x73, 0x61,
-	0x67, 0x65, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x48, 0x00, 0x52, 0x05, 0x63, 0x6c, 0x6f, 0x73,
-	0x65, 0x42, 0x07, 0x0a, 0x05, 0x65, 0x76, 0x65, 0x6e, 0x74, 0x22, 0xa9, 0x01, 0x0a, 0x0a, 0x41,
-	0x67, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x61, 0x64, 0x79, 0x12, 0x18, 0x0a, 0x07, 0x65, 0x6e, 0x61,
-	0x62, 0x6c, 0x65, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x07, 0x65, 0x6e, 0x61, 0x62,
-	0x6c, 0x65, 0x64, 0x12, 0x16, 0x0a, 0x06, 0x72, 0x65, 0x61, 0x73, 0x6f, 0x6e, 0x18, 0x02, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x06, 0x72, 0x65, 0x61, 0x73, 0x6f, 0x6e, 0x12, 0x1d, 0x0a, 0x0a, 0x73,
-	0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x09, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x73, 0x75,
-	0x72, 0x66, 0x61, 0x63, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x73, 0x75, 0x72,
-	0x66, 0x61, 0x63, 0x65, 0x12, 0x1a, 0x0a, 0x08, 0x70, 0x72, 0x6f, 0x76, 0x69, 0x64, 0x65, 0x72,
-	0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x70, 0x72, 0x6f, 0x76, 0x69, 0x64, 0x65, 0x72,
-	0x12, 0x14, 0x0a, 0x05, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x05, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x22, 0x35, 0x0a, 0x10, 0x41, 0x67, 0x65, 0x6e, 0x74, 0x43,
-	0x68, 0x61, 0x74, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x21, 0x0a, 0x0c, 0x6d, 0x65,
-	0x73, 0x73, 0x61, 0x67, 0x65, 0x5f, 0x6a, 0x73, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x0b, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x4a, 0x73, 0x6f, 0x6e, 0x22, 0x5a, 0x0a,
-	0x0d, 0x41, 0x67, 0x65, 0x6e, 0x74, 0x54, 0x6f, 0x6f, 0x6c, 0x43, 0x61, 0x6c, 0x6c, 0x12, 0x0e,
-	0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x12,
-	0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61,
-	0x6d, 0x65, 0x12, 0x25, 0x0a, 0x0e, 0x61, 0x72, 0x67, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x5f,
-	0x6a, 0x73, 0x6f, 0x6e, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0d, 0x61, 0x72, 0x67, 0x75,
-	0x6d, 0x65, 0x6e, 0x74, 0x73, 0x4a, 0x73, 0x6f, 0x6e, 0x22, 0x59, 0x0a, 0x0a, 0x41, 0x67, 0x65,
-	0x6e, 0x74, 0x45, 0x72, 0x72, 0x6f, 0x72, 0x12, 0x12, 0x0a, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x6d,
-	0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65,
-	0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x1d, 0x0a, 0x0a, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x72, 0x65, 0x71, 0x75, 0x65,
-	0x73, 0x74, 0x49, 0x64, 0x22, 0xdd, 0x01, 0x0a, 0x10, 0x41, 0x67, 0x65, 0x6e, 0x74, 0x53, 0x65,
-	0x72, 0x76, 0x65, 0x72, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x12, 0x2b, 0x0a, 0x05, 0x72, 0x65, 0x61,
-	0x64, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x13, 0x2e, 0x6d, 0x65, 0x73, 0x73, 0x61,
-	0x67, 0x65, 0x2e, 0x41, 0x67, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x61, 0x64, 0x79, 0x48, 0x00, 0x52,
-	0x05, 0x72, 0x65, 0x61, 0x64, 0x79, 0x12, 0x2f, 0x0a, 0x04, 0x63, 0x68, 0x61, 0x74, 0x18, 0x02,
-	0x20, 0x01, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x2e, 0x41,
-	0x67, 0x65, 0x6e, 0x74, 0x43, 0x68, 0x61, 0x74, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x48,
-	0x00, 0x52, 0x04, 0x63, 0x68, 0x61, 0x74, 0x12, 0x35, 0x0a, 0x09, 0x74, 0x6f, 0x6f, 0x6c, 0x5f,
-	0x63, 0x61, 0x6c, 0x6c, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x16, 0x2e, 0x6d, 0x65, 0x73,
-	0x73, 0x61, 0x67, 0x65, 0x2e, 0x41, 0x67, 0x65, 0x6e, 0x74, 0x54, 0x6f, 0x6f, 0x6c, 0x43, 0x61,
-	0x6c, 0x6c, 0x48, 0x00, 0x52, 0x08, 0x74, 0x6f, 0x6f, 0x6c, 0x43, 0x61, 0x6c, 0x6c, 0x12, 0x2b,
-	0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x13, 0x2e,
-	0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x2e, 0x41, 0x67, 0x65, 0x6e, 0x74, 0x45, 0x72, 0x72,
-	0x6f, 0x72, 0x48, 0x00, 0x52, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x42, 0x07, 0x0a, 0x05, 0x65,
-	0x76, 0x65, 0x6e, 0x74, 0x32, 0xf1, 0x0f, 0x0a, 0x07, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
+	0x62, 0x6f, 0x64, 0x79, 0x32, 0xa5, 0x0f, 0x0a, 0x07, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
 	0x12, 0x43, 0x0a, 0x10, 0x47, 0x65, 0x74, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x41, 0x75, 0x74, 0x68,
 	0x49, 0x6e, 0x66, 0x6f, 0x12, 0x15, 0x2e, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x2e, 0x54,
 	0x6f, 0x6b, 0x65, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e, 0x6d, 0x65,
@@ -4235,15 +3355,10 @@ var file_service_proto_rawDesc = []byte{
 	0x22, 0x00, 0x12, 0x38, 0x0a, 0x07, 0x43, 0x61, 0x6c, 0x6c, 0x41, 0x50, 0x49, 0x12, 0x14, 0x2e,
 	0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x2e, 0x48, 0x54, 0x54, 0x50, 0x52, 0x65, 0x71, 0x75,
 	0x65, 0x73, 0x74, 0x1a, 0x15, 0x2e, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x2e, 0x48, 0x54,
-	0x54, 0x50, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x4a, 0x0a, 0x0c,
-	0x41, 0x67, 0x65, 0x6e, 0x74, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x19, 0x2e, 0x6d,
-	0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x2e, 0x41, 0x67, 0x65, 0x6e, 0x74, 0x43, 0x6c, 0x69, 0x65,
-	0x6e, 0x74, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x1a, 0x19, 0x2e, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67,
-	0x65, 0x2e, 0x41, 0x67, 0x65, 0x6e, 0x74, 0x53, 0x65, 0x72, 0x76, 0x65, 0x72, 0x45, 0x76, 0x65,
-	0x6e, 0x74, 0x22, 0x00, 0x28, 0x01, 0x30, 0x01, 0x42, 0x20, 0x0a, 0x13, 0x6f, 0x72, 0x67, 0x2e,
-	0x6a, 0x75, 0x6d, 0x70, 0x73, 0x65, 0x72, 0x76, 0x65, 0x72, 0x2e, 0x77, 0x69, 0x73, 0x70, 0x5a,
-	0x09, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x33,
+	0x54, 0x50, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x20, 0x0a, 0x13,
+	0x6f, 0x72, 0x67, 0x2e, 0x6a, 0x75, 0x6d, 0x70, 0x73, 0x65, 0x72, 0x76, 0x65, 0x72, 0x2e, 0x77,
+	0x69, 0x73, 0x70, 0x5a, 0x09, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x62, 0x06,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -4259,7 +3374,7 @@ func file_service_proto_rawDescGZIP() []byte {
 }
 
 var file_service_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_service_proto_msgTypes = make([]protoimpl.MessageInfo, 60)
+var file_service_proto_msgTypes = make([]protoimpl.MessageInfo, 50)
 var file_service_proto_goTypes = []any{
 	(TicketState_State)(0),                    // 0: message.TicketState.State
 	(SessionLifecycleLogRequest_EventType)(0), // 1: message.SessionLifecycleLogRequest.EventType
@@ -4311,28 +3426,18 @@ var file_service_proto_goTypes = []any{
 	(*AccountDetailResponse)(nil),             // 47: message.AccountDetailResponse
 	(*HTTPRequest)(nil),                       // 48: message.HTTPRequest
 	(*HTTPResponse)(nil),                      // 49: message.HTTPResponse
-	(*AgentSessionOpen)(nil),                  // 50: message.AgentSessionOpen
-	(*AgentRequest)(nil),                      // 51: message.AgentRequest
-	(*AgentToolResult)(nil),                   // 52: message.AgentToolResult
-	(*AgentCancel)(nil),                       // 53: message.AgentCancel
-	(*AgentClientEvent)(nil),                  // 54: message.AgentClientEvent
-	(*AgentReady)(nil),                        // 55: message.AgentReady
-	(*AgentChatMessage)(nil),                  // 56: message.AgentChatMessage
-	(*AgentToolCall)(nil),                     // 57: message.AgentToolCall
-	(*AgentError)(nil),                        // 58: message.AgentError
-	(*AgentServerEvent)(nil),                  // 59: message.AgentServerEvent
-	nil,                                       // 60: message.HTTPRequest.QueryEntry
-	nil,                                       // 61: message.HTTPRequest.HeaderEntry
-	(*TokenAuthInfo)(nil),                     // 62: message.TokenAuthInfo
-	(*Session)(nil),                           // 63: message.Session
-	(RiskLevel)(0),                            // 64: message.RiskLevel
-	(*TerminalTask)(nil),                      // 65: message.TerminalTask
-	(*Gateway)(nil),                           // 66: message.Gateway
-	(*PublicSetting)(nil),                     // 67: message.PublicSetting
-	(*Asset)(nil),                             // 68: message.Asset
-	(*Cookie)(nil),                            // 69: message.Cookie
-	(*User)(nil),                              // 70: message.User
-	(*structpb.Struct)(nil),                   // 71: google.protobuf.Struct
+	nil,                                       // 50: message.HTTPRequest.QueryEntry
+	nil,                                       // 51: message.HTTPRequest.HeaderEntry
+	(*TokenAuthInfo)(nil),                     // 52: message.TokenAuthInfo
+	(*Session)(nil),                           // 53: message.Session
+	(RiskLevel)(0),                            // 54: message.RiskLevel
+	(*TerminalTask)(nil),                      // 55: message.TerminalTask
+	(*Gateway)(nil),                           // 56: message.Gateway
+	(*PublicSetting)(nil),                     // 57: message.PublicSetting
+	(*Asset)(nil),                             // 58: message.Asset
+	(*Cookie)(nil),                            // 59: message.Cookie
+	(*User)(nil),                              // 60: message.User
+	(*structpb.Struct)(nil),                   // 61: google.protobuf.Struct
 }
 var file_service_proto_depIdxs = []int32{
 	10, // 0: message.JoinFaceMonitorResponse.status:type_name -> message.Status
@@ -4341,15 +3446,15 @@ var file_service_proto_depIdxs = []int32{
 	10, // 3: message.AssetLoginTicketResponse.status:type_name -> message.Status
 	29, // 4: message.AssetLoginTicketResponse.ticket_info:type_name -> message.TicketInfo
 	10, // 5: message.TokenResponse.status:type_name -> message.Status
-	62, // 6: message.TokenResponse.data:type_name -> message.TokenAuthInfo
-	63, // 7: message.SessionCreateRequest.data:type_name -> message.Session
+	52, // 6: message.TokenResponse.data:type_name -> message.TokenAuthInfo
+	53, // 7: message.SessionCreateRequest.data:type_name -> message.Session
 	10, // 8: message.SessionCreateResponse.status:type_name -> message.Status
-	63, // 9: message.SessionCreateResponse.data:type_name -> message.Session
+	53, // 9: message.SessionCreateResponse.data:type_name -> message.Session
 	10, // 10: message.SessionFinishResp.status:type_name -> message.Status
 	10, // 11: message.ReplayResponse.status:type_name -> message.Status
-	64, // 12: message.CommandRequest.risk_level:type_name -> message.RiskLevel
+	54, // 12: message.CommandRequest.risk_level:type_name -> message.RiskLevel
 	10, // 13: message.CommandResponse.status:type_name -> message.Status
-	65, // 14: message.TaskResponse.task:type_name -> message.TerminalTask
+	55, // 14: message.TaskResponse.task:type_name -> message.TerminalTask
 	10, // 15: message.RemainReplayResponse.status:type_name -> message.Status
 	10, // 16: message.StatusResponse.status:type_name -> message.Status
 	10, // 17: message.CommandConfirmResponse.status:type_name -> message.Status
@@ -4360,91 +3465,80 @@ var file_service_proto_depIdxs = []int32{
 	32, // 22: message.TicketStateResponse.Data:type_name -> message.TicketState
 	10, // 23: message.TicketStateResponse.status:type_name -> message.Status
 	0,  // 24: message.TicketState.state:type_name -> message.TicketState.State
-	66, // 25: message.ForwardRequest.gateways:type_name -> message.Gateway
+	56, // 25: message.ForwardRequest.gateways:type_name -> message.Gateway
 	10, // 26: message.ForwardResponse.status:type_name -> message.Status
 	10, // 27: message.PublicSettingResponse.status:type_name -> message.Status
-	67, // 28: message.PublicSettingResponse.data:type_name -> message.PublicSetting
+	57, // 28: message.PublicSettingResponse.data:type_name -> message.PublicSetting
 	10, // 29: message.ListenPortResponse.status:type_name -> message.Status
 	10, // 30: message.PortInfoResponse.status:type_name -> message.Status
 	41, // 31: message.PortInfoResponse.data:type_name -> message.PortInfo
-	68, // 32: message.PortInfo.asset:type_name -> message.Asset
-	66, // 33: message.PortInfo.gateways:type_name -> message.Gateway
+	58, // 32: message.PortInfo.asset:type_name -> message.Asset
+	56, // 33: message.PortInfo.gateways:type_name -> message.Gateway
 	42, // 34: message.PortFailureRequest.data:type_name -> message.PortFailure
-	69, // 35: message.CookiesRequest.cookies:type_name -> message.Cookie
+	59, // 35: message.CookiesRequest.cookies:type_name -> message.Cookie
 	10, // 36: message.UserResponse.status:type_name -> message.Status
-	70, // 37: message.UserResponse.data:type_name -> message.User
+	60, // 37: message.UserResponse.data:type_name -> message.User
 	1,  // 38: message.SessionLifecycleLogRequest.event:type_name -> message.SessionLifecycleLogRequest.EventType
 	10, // 39: message.AccountDetailResponse.status:type_name -> message.Status
-	71, // 40: message.AccountDetailResponse.payload:type_name -> google.protobuf.Struct
-	60, // 41: message.HTTPRequest.query:type_name -> message.HTTPRequest.QueryEntry
-	61, // 42: message.HTTPRequest.header:type_name -> message.HTTPRequest.HeaderEntry
+	61, // 40: message.AccountDetailResponse.payload:type_name -> google.protobuf.Struct
+	50, // 41: message.HTTPRequest.query:type_name -> message.HTTPRequest.QueryEntry
+	51, // 42: message.HTTPRequest.header:type_name -> message.HTTPRequest.HeaderEntry
 	10, // 43: message.HTTPResponse.status:type_name -> message.Status
-	50, // 44: message.AgentClientEvent.open:type_name -> message.AgentSessionOpen
-	51, // 45: message.AgentClientEvent.request:type_name -> message.AgentRequest
-	52, // 46: message.AgentClientEvent.tool_result:type_name -> message.AgentToolResult
-	53, // 47: message.AgentClientEvent.cancel:type_name -> message.AgentCancel
-	37, // 48: message.AgentClientEvent.close:type_name -> message.Empty
-	55, // 49: message.AgentServerEvent.ready:type_name -> message.AgentReady
-	56, // 50: message.AgentServerEvent.chat:type_name -> message.AgentChatMessage
-	57, // 51: message.AgentServerEvent.tool_call:type_name -> message.AgentToolCall
-	58, // 52: message.AgentServerEvent.error:type_name -> message.AgentError
-	11, // 53: message.Service.GetTokenAuthInfo:input_type -> message.TokenRequest
-	11, // 54: message.Service.RenewToken:input_type -> message.TokenRequest
-	13, // 55: message.Service.CreateSession:input_type -> message.SessionCreateRequest
-	15, // 56: message.Service.FinishSession:input_type -> message.SessionFinishRequest
-	17, // 57: message.Service.UploadReplayFile:input_type -> message.ReplayRequest
-	19, // 58: message.Service.UploadCommand:input_type -> message.CommandRequest
-	21, // 59: message.Service.DispatchTask:input_type -> message.FinishedTaskRequest
-	23, // 60: message.Service.ScanRemainReplays:input_type -> message.RemainReplayRequest
-	26, // 61: message.Service.CreateCommandTicket:input_type -> message.CommandConfirmRequest
-	8,  // 62: message.Service.CheckOrCreateAssetLoginTicket:input_type -> message.AssetLoginTicketRequest
-	30, // 63: message.Service.CheckTicketState:input_type -> message.TicketRequest
-	30, // 64: message.Service.CancelTicket:input_type -> message.TicketRequest
-	33, // 65: message.Service.CreateForward:input_type -> message.ForwardRequest
-	34, // 66: message.Service.DeleteForward:input_type -> message.ForwardDeleteRequest
-	37, // 67: message.Service.GetPublicSetting:input_type -> message.Empty
-	37, // 68: message.Service.GetListenPorts:input_type -> message.Empty
-	39, // 69: message.Service.GetPortInfo:input_type -> message.PortInfoRequest
-	43, // 70: message.Service.HandlePortFailure:input_type -> message.PortFailureRequest
-	44, // 71: message.Service.CheckUserByCookies:input_type -> message.CookiesRequest
-	46, // 72: message.Service.RecordSessionLifecycleLog:input_type -> message.SessionLifecycleLogRequest
-	6,  // 73: message.Service.FaceRecognitionCallback:input_type -> message.FaceRecognitionCallbackRequest
-	4,  // 74: message.Service.FaceMonitorCallback:input_type -> message.FaceMonitorCallbackRequest
-	2,  // 75: message.Service.JoinFaceMonitor:input_type -> message.JoinFaceMonitorRequest
-	37, // 76: message.Service.GetAccountChat:input_type -> message.Empty
-	48, // 77: message.Service.CallAPI:input_type -> message.HTTPRequest
-	54, // 78: message.Service.AgentSession:input_type -> message.AgentClientEvent
-	12, // 79: message.Service.GetTokenAuthInfo:output_type -> message.TokenResponse
-	25, // 80: message.Service.RenewToken:output_type -> message.StatusResponse
-	14, // 81: message.Service.CreateSession:output_type -> message.SessionCreateResponse
-	16, // 82: message.Service.FinishSession:output_type -> message.SessionFinishResp
-	18, // 83: message.Service.UploadReplayFile:output_type -> message.ReplayResponse
-	20, // 84: message.Service.UploadCommand:output_type -> message.CommandResponse
-	22, // 85: message.Service.DispatchTask:output_type -> message.TaskResponse
-	24, // 86: message.Service.ScanRemainReplays:output_type -> message.RemainReplayResponse
-	28, // 87: message.Service.CreateCommandTicket:output_type -> message.CommandConfirmResponse
-	9,  // 88: message.Service.CheckOrCreateAssetLoginTicket:output_type -> message.AssetLoginTicketResponse
-	31, // 89: message.Service.CheckTicketState:output_type -> message.TicketStateResponse
-	25, // 90: message.Service.CancelTicket:output_type -> message.StatusResponse
-	35, // 91: message.Service.CreateForward:output_type -> message.ForwardResponse
-	25, // 92: message.Service.DeleteForward:output_type -> message.StatusResponse
-	36, // 93: message.Service.GetPublicSetting:output_type -> message.PublicSettingResponse
-	38, // 94: message.Service.GetListenPorts:output_type -> message.ListenPortResponse
-	40, // 95: message.Service.GetPortInfo:output_type -> message.PortInfoResponse
-	25, // 96: message.Service.HandlePortFailure:output_type -> message.StatusResponse
-	45, // 97: message.Service.CheckUserByCookies:output_type -> message.UserResponse
-	25, // 98: message.Service.RecordSessionLifecycleLog:output_type -> message.StatusResponse
-	7,  // 99: message.Service.FaceRecognitionCallback:output_type -> message.FaceRecognitionCallbackResponse
-	5,  // 100: message.Service.FaceMonitorCallback:output_type -> message.FaceMonitorCallbackResponse
-	3,  // 101: message.Service.JoinFaceMonitor:output_type -> message.JoinFaceMonitorResponse
-	47, // 102: message.Service.GetAccountChat:output_type -> message.AccountDetailResponse
-	49, // 103: message.Service.CallAPI:output_type -> message.HTTPResponse
-	59, // 104: message.Service.AgentSession:output_type -> message.AgentServerEvent
-	79, // [79:105] is the sub-list for method output_type
-	53, // [53:79] is the sub-list for method input_type
-	53, // [53:53] is the sub-list for extension type_name
-	53, // [53:53] is the sub-list for extension extendee
-	0,  // [0:53] is the sub-list for field type_name
+	11, // 44: message.Service.GetTokenAuthInfo:input_type -> message.TokenRequest
+	11, // 45: message.Service.RenewToken:input_type -> message.TokenRequest
+	13, // 46: message.Service.CreateSession:input_type -> message.SessionCreateRequest
+	15, // 47: message.Service.FinishSession:input_type -> message.SessionFinishRequest
+	17, // 48: message.Service.UploadReplayFile:input_type -> message.ReplayRequest
+	19, // 49: message.Service.UploadCommand:input_type -> message.CommandRequest
+	21, // 50: message.Service.DispatchTask:input_type -> message.FinishedTaskRequest
+	23, // 51: message.Service.ScanRemainReplays:input_type -> message.RemainReplayRequest
+	26, // 52: message.Service.CreateCommandTicket:input_type -> message.CommandConfirmRequest
+	8,  // 53: message.Service.CheckOrCreateAssetLoginTicket:input_type -> message.AssetLoginTicketRequest
+	30, // 54: message.Service.CheckTicketState:input_type -> message.TicketRequest
+	30, // 55: message.Service.CancelTicket:input_type -> message.TicketRequest
+	33, // 56: message.Service.CreateForward:input_type -> message.ForwardRequest
+	34, // 57: message.Service.DeleteForward:input_type -> message.ForwardDeleteRequest
+	37, // 58: message.Service.GetPublicSetting:input_type -> message.Empty
+	37, // 59: message.Service.GetListenPorts:input_type -> message.Empty
+	39, // 60: message.Service.GetPortInfo:input_type -> message.PortInfoRequest
+	43, // 61: message.Service.HandlePortFailure:input_type -> message.PortFailureRequest
+	44, // 62: message.Service.CheckUserByCookies:input_type -> message.CookiesRequest
+	46, // 63: message.Service.RecordSessionLifecycleLog:input_type -> message.SessionLifecycleLogRequest
+	6,  // 64: message.Service.FaceRecognitionCallback:input_type -> message.FaceRecognitionCallbackRequest
+	4,  // 65: message.Service.FaceMonitorCallback:input_type -> message.FaceMonitorCallbackRequest
+	2,  // 66: message.Service.JoinFaceMonitor:input_type -> message.JoinFaceMonitorRequest
+	37, // 67: message.Service.GetAccountChat:input_type -> message.Empty
+	48, // 68: message.Service.CallAPI:input_type -> message.HTTPRequest
+	12, // 69: message.Service.GetTokenAuthInfo:output_type -> message.TokenResponse
+	25, // 70: message.Service.RenewToken:output_type -> message.StatusResponse
+	14, // 71: message.Service.CreateSession:output_type -> message.SessionCreateResponse
+	16, // 72: message.Service.FinishSession:output_type -> message.SessionFinishResp
+	18, // 73: message.Service.UploadReplayFile:output_type -> message.ReplayResponse
+	20, // 74: message.Service.UploadCommand:output_type -> message.CommandResponse
+	22, // 75: message.Service.DispatchTask:output_type -> message.TaskResponse
+	24, // 76: message.Service.ScanRemainReplays:output_type -> message.RemainReplayResponse
+	28, // 77: message.Service.CreateCommandTicket:output_type -> message.CommandConfirmResponse
+	9,  // 78: message.Service.CheckOrCreateAssetLoginTicket:output_type -> message.AssetLoginTicketResponse
+	31, // 79: message.Service.CheckTicketState:output_type -> message.TicketStateResponse
+	25, // 80: message.Service.CancelTicket:output_type -> message.StatusResponse
+	35, // 81: message.Service.CreateForward:output_type -> message.ForwardResponse
+	25, // 82: message.Service.DeleteForward:output_type -> message.StatusResponse
+	36, // 83: message.Service.GetPublicSetting:output_type -> message.PublicSettingResponse
+	38, // 84: message.Service.GetListenPorts:output_type -> message.ListenPortResponse
+	40, // 85: message.Service.GetPortInfo:output_type -> message.PortInfoResponse
+	25, // 86: message.Service.HandlePortFailure:output_type -> message.StatusResponse
+	45, // 87: message.Service.CheckUserByCookies:output_type -> message.UserResponse
+	25, // 88: message.Service.RecordSessionLifecycleLog:output_type -> message.StatusResponse
+	7,  // 89: message.Service.FaceRecognitionCallback:output_type -> message.FaceRecognitionCallbackResponse
+	5,  // 90: message.Service.FaceMonitorCallback:output_type -> message.FaceMonitorCallbackResponse
+	3,  // 91: message.Service.JoinFaceMonitor:output_type -> message.JoinFaceMonitorResponse
+	47, // 92: message.Service.GetAccountChat:output_type -> message.AccountDetailResponse
+	49, // 93: message.Service.CallAPI:output_type -> message.HTTPResponse
+	69, // [69:94] is the sub-list for method output_type
+	44, // [44:69] is the sub-list for method input_type
+	44, // [44:44] is the sub-list for extension type_name
+	44, // [44:44] is the sub-list for extension extendee
+	0,  // [0:44] is the sub-list for field type_name
 }
 
 func init() { file_service_proto_init() }
@@ -5030,139 +4124,6 @@ func file_service_proto_init() {
 				return nil
 			}
 		}
-		file_service_proto_msgTypes[48].Exporter = func(v any, i int) any {
-			switch v := v.(*AgentSessionOpen); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_service_proto_msgTypes[49].Exporter = func(v any, i int) any {
-			switch v := v.(*AgentRequest); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_service_proto_msgTypes[50].Exporter = func(v any, i int) any {
-			switch v := v.(*AgentToolResult); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_service_proto_msgTypes[51].Exporter = func(v any, i int) any {
-			switch v := v.(*AgentCancel); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_service_proto_msgTypes[52].Exporter = func(v any, i int) any {
-			switch v := v.(*AgentClientEvent); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_service_proto_msgTypes[53].Exporter = func(v any, i int) any {
-			switch v := v.(*AgentReady); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_service_proto_msgTypes[54].Exporter = func(v any, i int) any {
-			switch v := v.(*AgentChatMessage); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_service_proto_msgTypes[55].Exporter = func(v any, i int) any {
-			switch v := v.(*AgentToolCall); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_service_proto_msgTypes[56].Exporter = func(v any, i int) any {
-			switch v := v.(*AgentError); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_service_proto_msgTypes[57].Exporter = func(v any, i int) any {
-			switch v := v.(*AgentServerEvent); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-	}
-	file_service_proto_msgTypes[52].OneofWrappers = []any{
-		(*AgentClientEvent_Open)(nil),
-		(*AgentClientEvent_Request)(nil),
-		(*AgentClientEvent_ToolResult)(nil),
-		(*AgentClientEvent_Cancel)(nil),
-		(*AgentClientEvent_Close)(nil),
-	}
-	file_service_proto_msgTypes[57].OneofWrappers = []any{
-		(*AgentServerEvent_Ready)(nil),
-		(*AgentServerEvent_Chat)(nil),
-		(*AgentServerEvent_ToolCall)(nil),
-		(*AgentServerEvent_Error)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -5170,7 +4131,7 @@ func file_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_service_proto_rawDesc,
 			NumEnums:      2,
-			NumMessages:   60,
+			NumMessages:   50,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

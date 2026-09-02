@@ -6,13 +6,11 @@ import (
 	"io"
 	"net"
 	"strconv"
-	"strings"
 
 	modelCommon "github.com/jumpserver-dev/sdk-go/common"
 	"github.com/jumpserver-dev/sdk-go/model"
 	"github.com/jumpserver-dev/sdk-go/service"
 	"github.com/jumpserver/wisp/cmd/common"
-	"github.com/jumpserver/wisp/pkg/config"
 	"github.com/jumpserver/wisp/pkg/forward"
 	"github.com/jumpserver/wisp/pkg/logger"
 	pb "github.com/jumpserver/wisp/protobuf-go/protobuf"
@@ -20,36 +18,22 @@ import (
 
 func NewJMServer(apiClient *service.JMService, uploader *common.UploaderService,
 	beat *common.BeatService) *JMServer {
-	conf := config.Get()
 	return &JMServer{
-		apiClient:     apiClient,
-		uploader:      uploader,
-		beat:          beat,
-		forwardStore:  common.NewForwardCache(),
-		tokenTickets:  common.NewTokenTicketCache(),
-		agentSessions: newAgentSessionRegistry(),
-		agentLimiter: newAgentRequestLimiter(
-			conf.AIMaxConcurrent, conf.AIRequestQueueSize,
-		),
+		apiClient:    apiClient,
+		uploader:     uploader,
+		beat:         beat,
+		forwardStore: common.NewForwardCache(),
+		tokenTickets: common.NewTokenTicketCache(),
 	}
 }
 
 type JMServer struct {
 	pb.UnimplementedServiceServer
-	apiClient *service.JMService
-
-	uploader      *common.UploaderService
-	beat          *common.BeatService
-	forwardStore  *common.ForwardCache
-	tokenTickets  *common.TokenTicketCache
-	agentSessions *agentSessionRegistry
-	agentLimiter  *agentRequestLimiter
-}
-
-func chatAIEnabledByModelConfig(setting model.TerminalConfig) bool {
-	return setting.ChatAIEnabled &&
-		strings.TrimSpace(setting.ChatAIApiKey) != "" &&
-		strings.TrimSpace(setting.ChatAIModel) != ""
+	apiClient    *service.JMService
+	uploader     *common.UploaderService
+	beat         *common.BeatService
+	forwardStore *common.ForwardCache
+	tokenTickets *common.TokenTicketCache
 }
 
 func (j *JMServer) GetTokenAuthInfo(ctx context.Context, req *pb.TokenRequest) (*pb.TokenResponse, error) {
@@ -80,7 +64,7 @@ func (j *JMServer) GetTokenAuthInfo(ctx context.Context, req *pb.TokenRequest) (
 		Permission:       ConvertToProtobufPermission(tokenAuthInfo.Actions),
 		ExpireInfo:       ConvertToProtobufExpireInfo(tokenAuthInfo.ExpireAt),
 		Gateways:         ConvertToProtobufGateways(gateways),
-		Setting:          ConvertToPbSetting(&setting, chatAIEnabledByModelConfig(setting)),
+		Setting:          ConvertToPbSetting(&setting),
 		Platform:         ConvertToPbPlatform(&tokenAuthInfo.Platform),
 		DataMaskingRules: ConvertToDataMaskingRules(tokenAuthInfo.DataMaskingRules),
 		FaceMonitorToken: tokenAuthInfo.FaceMonitorToken,
@@ -151,7 +135,6 @@ func (j *JMServer) FinishSession(ctx context.Context, req *pb.SessionFinishReque
 		return &pb.SessionFinishResp{Status: &status}, nil
 	}
 	status.Ok = true
-	j.agentSessions.close(req.Id)
 	j.beat.RemoveSessionId(req.Id)
 	logger.Debugf("Finish Session %s", req.Id)
 	return &pb.SessionFinishResp{Status: &status}, nil
