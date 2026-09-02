@@ -29,8 +29,7 @@ func NewJMServer(apiClient *service.JMService, uploader *common.UploaderService,
 
 type JMServer struct {
 	pb.UnimplementedServiceServer
-	apiClient *service.JMService
-
+	apiClient    *service.JMService
 	uploader     *common.UploaderService
 	beat         *common.BeatService
 	forwardStore *common.ForwardCache
@@ -396,10 +395,10 @@ func (j *JMServer) GetPublicSetting(ctx context.Context, empty *pb.Empty) (*pb.P
 	pbSetting := pb.PublicSetting{
 		XpackEnabled:   data.XpackEnabled,
 		ValidLicense:   data.ValidLicense,
-		GptBaseUrl:     setting.GptBaseUrl,
-		GptApiKey:      setting.GptApiKey,
-		GptProxy:       setting.GptProxy,
-		GptModel:       setting.GptModel,
+		ChatAiBaseUrl:  setting.ChatAIBaseUrl,
+		ChatAiApiKey:   setting.ChatAIApiKey,
+		ChatAiProxy:    setting.ChatAIProxy,
+		ChatAiModel:    setting.ChatAIModel,
 		LicenseContent: setting.LicenseContent,
 	}
 	return &pb.PublicSettingResponse{Status: &status, Data: &pbSetting}, nil
